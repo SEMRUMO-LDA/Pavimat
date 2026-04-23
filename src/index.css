@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  
+  /* Brand Colors */
+  --color-brand-orange: #FF6B00;
+  --color-brand-green: #013220;
+  --color-brand-grey-light: #F8F9FA;
+  --color-brand-grey-dark: #1A1A1A;
+
+  /* Elevation & Shadows */
+  --shadow-brand-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  --shadow-brand-medium: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+  --shadow-brand-deep: 0 30px 60px -20px rgba(0, 0, 0, 0.15);
+  --shadow-brand-hero: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+
+  /* Radius System */
+  --radius-brand: 24px;
+  --radius-brand-large: 32px;
+  --radius-brand-hero: 100px;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-white text-brand-grey-dark antialiased;
+  }
+
+  a, button, [role="button"], .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  /* Typography System */
+  h1, h2, h3, h4 {
+    @apply font-black tracking-tight;
+  }
+}
+
+@layer utilities {
+  .rounded-brand {
+    border-radius: var(--radius-brand);
+  }
+  .rounded-brand-large {
+    border-radius: var(--radius-brand-large);
+  }
+  .rounded-brand-hero {
+    border-radius: 0 0 var(--radius-brand-hero) var(--radius-brand-hero);
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Glassmorphism System */
+  .glass {
+    @apply bg-white/10 backdrop-blur-xl border-none;
+  }
+  .glass-dark {
+    @apply bg-brand-green/80 backdrop-blur-xl border border-white/10;
+  }
+}
