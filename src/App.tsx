@@ -29,6 +29,7 @@ interface Category {
 interface BrandPartner {
   name: string;
   category: string;
+  url: string;
 }
 
 // --- Data ---
@@ -64,14 +65,14 @@ const categories: Category[] = [
 ];
 
 const partners: BrandPartner[] = [
-  { name: 'Recer', category: 'ceramics' },
-  { name: 'Margres', category: 'ceramics' },
-  { name: 'Jacuzzi', category: 'bath' },
-  { name: 'Sanindusa', category: 'bath' },
-  { name: 'Grohe', category: 'bath' },
-  { name: 'Silestone', category: 'stone' },
-  { name: 'Weber', category: 'structural' },
-  { name: 'Sika', category: 'structural' },
+  { name: 'Recer', category: 'ceramics', url: 'https://www.recer.pt' },
+  { name: 'Margres', category: 'ceramics', url: 'https://www.margres.com' },
+  { name: 'Jacuzzi', category: 'bath', url: 'https://www.jacuzzi.pt' },
+  { name: 'Sanindusa', category: 'bath', url: 'https://www.sanindusa.pt' },
+  { name: 'Grohe', category: 'bath', url: 'https://www.grohe.pt' },
+  { name: 'Silestone', category: 'stone', url: 'https://www.cosentino.com/silestone/' },
+  { name: 'Weber', category: 'structural', url: 'https://www.pt.weber/' },
+  { name: 'Sika', category: 'structural', url: 'https://prt.sika.com/' },
 ];
 
 // --- Components ---
@@ -311,8 +312,11 @@ const ShowroomExperience = () => {
                 ))}
               </div>
 
-              <button className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95">
-                Agendar Consultoria
+              <button 
+                onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=Pavimat+Anadia+Malaposta', '_blank')}
+                className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer"
+              >
+                Visitar o Showroom
               </button>
             </motion.div>
           </div>
@@ -586,12 +590,15 @@ const BrandScroller = () => {
       <div className="relative w-full flex overflow-hidden group">
         <div className="flex gap-16 py-4 animate-infinite-scroll flex-nowrap">
           {trackItems.map((partner, idx) => (
-            <div 
+            <a 
               key={`${activeTab}-${idx}`} 
-              className="flex-shrink-0 text-4xl md:text-6xl font-black text-zinc-100 uppercase whitespace-nowrap hover:text-brand-orange transition-colors cursor-default select-none px-4"
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 text-4xl md:text-6xl font-black text-zinc-100 uppercase whitespace-nowrap hover:text-brand-orange transition-colors cursor-pointer select-none px-4 no-underline"
             >
               {partner.name}
-            </div>
+            </a>
           ))}
         </div>
       </div>
@@ -616,8 +623,28 @@ const BrandScroller = () => {
 
 const Footer = () => {
   return (
-    <footer id="contactos" className="bg-brand-green text-white py-24 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto">
+    <footer id="contactos" className="relative bg-brand-green text-white py-24 px-6 lg:px-12 overflow-hidden">
+      {/* Custom Background Pattern */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+        <svg width="100%" height="100%" viewBox="0 0 1000 400" preserveAspectRatio="center slice" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(500, 200)">
+            {/* Left Shape */}
+            <path 
+              d="M -600,-150 L -200,0 L -600,150 Q -100,0 -600,-150" 
+              fill="#FF6B00" 
+              opacity="0.8"
+            />
+            {/* Right Shape */}
+            <path 
+              d="M 600,-150 L 200,0 L 600,150 Q 100,0 600,-150" 
+              fill="#FF6B00" 
+              opacity="0.8"
+            />
+          </g>
+        </svg>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-8">
