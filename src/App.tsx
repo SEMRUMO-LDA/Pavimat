@@ -78,8 +78,21 @@ const partners: BrandPartner[] = [
 // --- Components ---
 
 const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
-  const textColor = useTransform(scrollY, [0, 100], ["#FFFFFF", "#013220"]);
+  const textColor = useTransform(scrollY, [0, 100], ["#FFFFFF", "var(--color-brand-green)"]);
+  const navBg = useTransform(scrollY, [0, 100], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.1)"]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const menuItems = [
     { name: 'Produtos', id: 'colecoes' },
@@ -89,39 +102,105 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
     { name: 'Contactos', id: 'contactos' }
   ];
 
+  const handleLinkClick = (id: string) => {
+    setIsOpen(false);
+    onScrollTo(id);
+  };
+
   return (
-    <motion.nav 
-      style={{ color: textColor }}
-      className="fixed top-0 left-0 right-0 z-[60] px-8 py-6 flex items-center justify-between w-full glass shadow-none"
-    >
-      <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-        <div 
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          <span className="text-3xl font-black tracking-[-0.05em]">pavimat</span>
-        </div>
+    <>
+      <motion.nav 
+        style={{ color: isOpen ? "var(--color-brand-green)" : textColor, backgroundColor: isOpen ? "transparent" : navBg }}
+        className={`fixed top-0 left-0 right-0 z-[70] px-6 md:px-8 py-5 md:py-6 flex items-center justify-between w-full ${!isOpen ? 'glass' : ''} shadow-none transition-colors duration-300`}
+      >
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+          <div 
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              setIsOpen(false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
+            <span className="text-2xl md:text-3xl font-black tracking-[-0.05em]">pavimat</span>
+          </div>
 
-        <div className="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em]">
-          {menuItems.map((item) => (
-            <motion.button 
-              key={item.name} 
-              onClick={() => onScrollTo(item.id)}
-              className="hover:opacity-70 transition-opacity relative group cursor-pointer"
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em]">
+            {menuItems.map((item) => (
+              <motion.button 
+                key={item.name} 
+                onClick={() => handleLinkClick(item.id)}
+                className="hover:opacity-70 transition-opacity relative group cursor-pointer"
+              >
+                {item.name}
+              </motion.button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => handleLinkClick('contactos')}
+              className="hidden sm:block bg-brand-orange text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-brand-green transition-all active:scale-95 shadow-brand-medium cursor-pointer"
             >
-              {item.name}
-            </motion.button>
-          ))}
-        </div>
+              Orcamento
+            </button>
 
-        <button 
-          onClick={() => onScrollTo('contactos')}
-          className="bg-brand-orange text-white px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-brand-green transition-all active:scale-95 shadow-brand-medium cursor-pointer"
-        >
-          Orcamento
-        </button>
-      </div>
-    </motion.nav>
+            {/* Burger Button */}
+            <button 
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 text-current hover:opacity-70 transition-opacity z-[80]"
+            >
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[65] bg-white pt-32 px-8 flex flex-col items-center justify-start h-screen overflow-hidden"
+          >
+            <div className="flex flex-col items-center gap-8 w-full max-w-sm">
+              {menuItems.map((item, idx) => (
+                <motion.button
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + idx * 0.05 }}
+                  key={item.name}
+                  onClick={() => handleLinkClick(item.id)}
+                  className="text-3xl font-black text-brand-green uppercase tracking-tighter hover:text-brand-orange transition-colors"
+                >
+                  {item.name}
+                </motion.button>
+              ))}
+              
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-8 pt-8 border-t border-zinc-100 w-full flex flex-col items-center gap-6"
+              >
+                <div className="flex gap-6">
+                  <Instagram className="text-zinc-300 hover:text-brand-orange transition-colors cursor-pointer" size={24} />
+                  <Linkedin className="text-zinc-300 hover:text-brand-orange transition-colors cursor-pointer" size={24} />
+                </div>
+                <button 
+                  onClick={() => handleLinkClick('contactos')}
+                  className="w-full bg-brand-orange text-white py-5 rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-brand-deep"
+                >
+                  Pedir Orçamento
+                </button>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -132,7 +211,7 @@ const Hero = () => {
         {/* Background Graphic Shapes - Now Full Screen */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
           <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" className="w-full h-full">
-            <rect width="1920" height="1080" fill="#FF6B00" />
+            <rect width="1920" height="1080" fill="var(--color-brand-orange)" />
             
             {/* Left organic shape */}
             <motion.path
@@ -140,7 +219,7 @@ const Hero = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
               d="M-100 -100 L 400 -100 C 400 400, 300 1000, -100 1100 Z"
-              fill="#013220"
+              fill="var(--color-brand-green)"
             />
             
             <motion.path
@@ -148,26 +227,26 @@ const Hero = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
               d="M1920 200 C 1300 250, 900 600, 1920 1000 L 2200 1000 L 2200 200 Z"
-              fill="#013220"
+              fill="var(--color-brand-green)"
             />
           </svg>
         </div>
 
-        <div className="relative z-10 h-full max-w-7xl mx-auto flex flex-col pt-32">
+        <div className="relative z-10 h-full max-w-7xl mx-auto flex flex-col pt-24 md:pt-32">
           {/* Content Overlay */}
-          <div className="flex-grow flex flex-col justify-center px-8 md:px-20 max-w-4xl">
+          <div className="flex-grow flex flex-col justify-center px-6 md:px-20 max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.95] mb-8 tracking-tight">
+              <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-white leading-[1.1] md:leading-[0.95] mb-6 md:mb-8 tracking-tight">
                 Materiais de<br/>
                 Construção<br/>
                 de Confiança.
               </h1>
               
-              <p className="text-xl md:text-2xl text-white font-medium mb-12 leading-relaxed max-w-xl">
+              <p className="text-lg md:text-2xl text-white font-medium mb-10 md:mb-12 leading-relaxed max-w-xl opacity-90">
                 Fornecemos as bases sólidas para os seus projetos. Materiais certificados e aconselhamento especializado para quem exige o melhor.
               </p>
             </motion.div>
@@ -198,9 +277,9 @@ const AboutUs = () => {
   ];
 
   return (
-    <section id="sobre" className="py-32 px-6 lg:px-12 bg-[#F8F9FA] overflow-hidden">
+    <section id="sobre" className="py-20 md:py-32 px-6 lg:px-12 bg-brand-lilac overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
           <div className="relative">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -222,10 +301,10 @@ const AboutUs = () => {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5 }}
-              className="absolute -bottom-10 -right-10 bg-brand-orange p-10 rounded-brand shadow-brand-deep z-20 text-white max-w-[280px]"
+              className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-brand-orange p-6 md:p-10 rounded-brand shadow-brand-deep z-20 text-white max-w-[220px] md:max-w-[280px]"
             >
-              <span className="text-[10px] font-black uppercase tracking-widest block mb-4">A Nossa Missão</span>
-              <p className="text-xl font-bold leading-tight">
+              <span className="text-[10px] font-black uppercase tracking-widest block mb-2 md:mb-4">A Nossa Missão</span>
+              <p className="text-lg md:text-xl font-bold leading-tight">
                 Transformamos visões arquitetónicas em realidades tangíveis e duradouras.
               </p>
             </motion.div>
@@ -244,7 +323,7 @@ const AboutUs = () => {
                 Fundada em 1998
               </span>
               <h2 className="text-4xl md:text-6xl font-black text-brand-green tracking-tight mb-8 leading-[1.1]">
-                Onde a <br/>Herança Encontra a <span className="text-brand-orange font-light italic serif">Inovação</span>.
+                Onde a <br/>Herança Encontra a <span className="text-brand-orange italic font-medium">Inovação</span>.
               </h2>
               <p className="text-zinc-500 mb-8 text-lg leading-relaxed font-medium">
                 Com mais de duas décadas de liderança no mercado, a Pavimat consolidou-se como o parceiro preferencial para os projetos mais exigentes de Portugal. A nossa história é escrita através da seleção rigorosa da matéria-prima e de um acompanhamento técnico sem paralelo.
@@ -275,9 +354,9 @@ const AboutUs = () => {
 
 const ShowroomExperience = () => {
   return (
-    <section id="showroom" className="py-32 px-6 lg:px-12 bg-white">
+    <section id="showroom" className="py-20 md:py-32 px-6 lg:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
           <div className="order-2 lg:order-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -285,11 +364,11 @@ const ShowroomExperience = () => {
               viewport={{ once: true }}
               className="max-w-xl"
             >
-              <span className="text-brand-orange font-black uppercase text-[10px] tracking-[0.4em] mb-6 inline-block">
+              <span className="text-brand-orange font-black uppercase text-[10px] tracking-[0.4em] mb-4 md:mb-6 inline-block">
                 Espaço Inspiracional
               </span>
-              <h2 className="text-4xl md:text-6xl font-black text-brand-green tracking-tight mb-8 leading-[1.1]">
-                Uma Experiência <br/>Sensorial <span className="text-brand-orange font-light italic">Tátil</span>.
+              <h2 className="text-3xl md:text-6xl font-black text-brand-green tracking-tight mb-6 md:mb-8 leading-[1.1]">
+                Uma Experiência <br/>Sensorial <span className="text-brand-orange italic font-medium">Tátil</span>.
               </h2>
               <p className="text-zinc-500 mb-10 text-lg leading-relaxed font-medium">
                 No nosso showroom de 700m², a matéria-prima ganha vida. Explore texturas, cores e acabamentos com o apoio da nossa equipa de consultoria especializada.
@@ -355,9 +434,9 @@ const ShowroomExperience = () => {
 
 const CTASection = () => {
   return (
-    <section className="py-32 px-6 lg:px-12 bg-white overflow-hidden">
+    <section className="py-20 md:py-32 px-6 lg:px-12 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="relative bg-brand-green rounded-brand-large p-12 lg:p-24 overflow-hidden border border-white/10 shadow-brand-deep">
+        <div className="relative bg-brand-green rounded-brand-large p-8 md:p-12 lg:p-24 overflow-hidden border border-white/10 shadow-brand-deep">
           {/* Animated Background Element */}
           <motion.div 
             animate={{ 
@@ -369,9 +448,9 @@ const CTASection = () => {
           />
           
           <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
-            <span className="text-brand-orange font-black uppercase text-xs tracking-[0.5em] mb-10">Solicite Orçamento</span>
-            <h2 className="text-5xl md:text-8xl font-black text-white leading-[0.9] mb-12 tracking-tighter">
-              Vamos Projetar o seu <span className="text-brand-orange italic font-light serif">Próximo Legado</span>.
+            <span className="text-brand-orange font-black uppercase text-xs tracking-[0.5em] mb-8 md:mb-10">Solicite Orçamento</span>
+            <h2 className="text-4xl md:text-8xl font-black text-white leading-[1.1] md:leading-[0.9] mb-8 md:mb-12 tracking-tighter">
+              Vamos Projetar o seu <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
             </h2>
             <p className="text-zinc-300 text-lg md:text-xl font-medium mb-16 max-w-2xl leading-relaxed">
               Trabalhamos em estreita colaboração com arquitetos e promotores para garantir a máxima qualidade técnica em cada metro quadrado.
@@ -399,10 +478,10 @@ const DynamicShowcase = () => {
   const activeIndex = showcaseCategories.findIndex(c => c.id === activeCategory.id);
 
   return (
-    <section id="colecoes" className="py-32 px-6 lg:px-12 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section id="colecoes" className="min-h-screen py-20 px-6 lg:px-12 bg-white overflow-hidden flex flex-col justify-center">
+      <div className="max-w-7xl mx-auto w-full">
         {/* Header (Top) */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-24">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 px-4">
           <div className="max-w-2xl">
             <motion.span 
               initial={{ opacity: 0, x: -10 }}
@@ -416,7 +495,7 @@ const DynamicShowcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               className="text-5xl md:text-7xl font-black text-brand-green tracking-tighter leading-[0.9]"
             >
-              Onde a <span className="text-brand-orange font-light italic serif">Técnica</span><br/>Eleva o Design.
+              Onde a <span className="text-brand-orange italic font-medium">Técnica</span><br/>Eleva o Design.
             </motion.h2>
           </div>
           <motion.p 
@@ -447,11 +526,11 @@ const DynamicShowcase = () => {
               >
                 <div className="absolute inset-4 border border-brand-orange/20 rounded-full animate-spin-slow pointer-events-none" />
                 <img
-                  src={activeCategory.imageUrl}
-                  alt={activeCategory.title}
-                  className="w-full h-full object-cover rounded-full shadow-[0_40px_80px_-20px_rgba(0,0,0,0.25)] border-[12px] md:border-[20px] border-white"
-                  referrerPolicy="no-referrer"
-                />
+                   src={activeCategory.imageUrl}
+                   alt={activeCategory.title}
+                   className="w-full h-full object-cover rounded-full shadow-[0_40px_80px_-20px_rgba(0,0,0,0.25)] border-[8px] md:border-[16px] border-white"
+                   referrerPolicy="no-referrer"
+                 />
                 
                 {/* Floating Micro-Badge */}
                 <motion.div 
@@ -631,13 +710,13 @@ const Footer = () => {
             {/* Left Shape */}
             <path 
               d="M -600,-150 L -200,0 L -600,150 Q -100,0 -600,-150" 
-              fill="#FF6B00" 
+              fill="var(--color-brand-orange)" 
               opacity="0.8"
             />
             {/* Right Shape */}
             <path 
               d="M 600,-150 L 200,0 L 600,150 Q 100,0 600,-150" 
-              fill="#FF6B00" 
+              fill="var(--color-brand-orange)" 
               opacity="0.8"
             />
           </g>

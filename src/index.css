@@ -4,11 +4,11 @@
 @theme {
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
   
-  /* Brand Colors */
-  --color-brand-orange: #FF6B00;
-  --color-brand-green: #013220;
-  --color-brand-grey-light: #F8F9FA;
-  --color-brand-grey-dark: #1A1A1A;
+  /* Brand Colors from Specification */
+  --color-brand-orange: #FF6600; /* Safety Orange */
+  --color-brand-green: #006F42;  /* Fun Green */
+  --color-brand-lilac: #F7F8FC;  /* White Lilac */
+  --color-brand-black: #1E1C1D;  /* Muted Black */
 
   /* Elevation & Shadows */
   --shadow-brand-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
@@ -24,7 +24,7 @@
 
 @layer base {
   body {
-    @apply font-sans bg-white text-brand-grey-dark antialiased;
+    @apply font-sans bg-white text-brand-black antialiased;
   }
 
   a, button, [role="button"], .cursor-pointer {
@@ -45,7 +45,12 @@
     border-radius: var(--radius-brand-large);
   }
   .rounded-brand-hero {
-    border-radius: 0 0 var(--radius-brand-hero) var(--radius-brand-hero);
+    border-radius: 0 0 22px 22px;
+  }
+  @media (min-width: 768px) {
+    .rounded-brand-hero {
+      border-radius: 0 0 var(--radius-brand-hero) var(--radius-brand-hero);
+    }
   }
   
   .no-scrollbar {
