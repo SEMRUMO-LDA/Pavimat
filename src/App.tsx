@@ -627,10 +627,10 @@ const DynamicShowcase = () => {
   }, [activeCategory.id, showcaseCategories]);
 
   return (
-    <section id="colecoes" className="min-h-screen py-20 px-6 lg:px-12 bg-white overflow-hidden flex flex-col justify-center">
-      <div className="max-w-7xl mx-auto w-full">
+    <section id="colecoes" className="min-h-screen py-10 lg:py-12 px-6 lg:px-12 bg-white overflow-hidden flex flex-col justify-center">
+      <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         {/* Header (Top) */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 px-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 lg:mb-10 px-4 flex-shrink-0">
           <div className="max-w-2xl">
             <motion.span 
               initial={{ opacity: 0, x: -10 }}
@@ -642,7 +642,7 @@ const DynamicShowcase = () => {
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="text-5xl md:text-7xl font-black text-brand-green tracking-tighter leading-[0.9]"
+              className="text-4xl md:text-6xl font-black text-brand-green tracking-tighter leading-[0.9]"
             >
               Onde a <span className="text-brand-orange italic font-medium">Técnica</span><br/>Eleva o Design.
             </motion.h2>
@@ -671,7 +671,7 @@ const DynamicShowcase = () => {
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 exit={{ opacity: 0, scale: 1.1, rotate: 5 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="relative w-full aspect-square max-w-[400px] md:max-w-[550px]"
+                className="relative w-full aspect-square max-w-[380px] md:max-w-[480px]"
               >
                 <div className="absolute inset-4 border border-brand-orange/20 rounded-full animate-spin-slow pointer-events-none" />
                 <img
@@ -699,7 +699,7 @@ const DynamicShowcase = () => {
           <div className="w-full lg:w-5/12 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             
             {/* Center-Right: Cards Container */}
-            <div className="w-full relative lg:h-[620px]">
+            <div className="w-full relative lg:h-[500px]">
               <div 
                 ref={scrollRef}
                 className="w-full flex lg:flex-col gap-4 md:gap-6 overflow-x-auto lg:overflow-y-auto h-full no-scrollbar snap-x lg:snap-y p-8 md:p-12 -m-8 md:-m-12 scroll-smooth"
