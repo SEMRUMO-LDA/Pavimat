@@ -515,27 +515,35 @@ const ShowroomExperience = () => {
               </div>
 
               {/* Thumbnails */}
-              <div className="mt-2 flex gap-8 overflow-x-auto no-scrollbar px-10 pt-10 pb-12 -mx-10">
-                {showroomImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentImgIndex(idx)}
-                    className={`relative flex-shrink-0 w-28 md:w-32 aspect-video rounded-xl transition-all duration-500 cursor-pointer ${
-                      idx === currentImgIndex 
-                        ? 'scale-110 z-10 shadow-2xl shadow-brand-orange/40 ring-2 ring-brand-orange' 
-                        : 'opacity-40 hover:opacity-100 grayscale hover:grayscale-0 hover:scale-105'
-                    }`}
-                  >
-                    <div className="w-full h-full rounded-xl overflow-hidden">
-                      <img 
-                        src={img.url} 
-                        alt="" 
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                  </button>
-                ))}
+              <div className="relative mt-0">
+                <div 
+                  className="flex gap-6 md:gap-8 overflow-x-auto no-scrollbar py-14 px-12 -my-4"
+                  style={{
+                    maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+                    WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)'
+                  }}
+                >
+                  {showroomImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentImgIndex(idx)}
+                      className={`relative flex-shrink-0 w-28 md:w-32 aspect-video rounded-xl transition-all duration-500 cursor-pointer ${
+                        idx === currentImgIndex 
+                          ? 'scale-110 z-10 shadow-2xl shadow-brand-orange/40 ring-2 ring-brand-orange' 
+                          : 'opacity-40 hover:opacity-100 grayscale hover:grayscale-0 hover:scale-105'
+                      }`}
+                    >
+                      <div className="w-full h-full rounded-xl overflow-hidden">
+                        <img 
+                          src={img.url} 
+                          alt="" 
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -585,7 +593,11 @@ const CTASection = () => {
   );
 };
 
-const DynamicShowcase = () => {
+interface DynamicShowcaseProps {
+  onBrandCategoryClick?: (id: string) => void;
+}
+
+const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
   const showcaseCategories = categories.slice(0, 4);
   const [activeCategory, setActiveCategory] = useState(showcaseCategories[0]);
   const activeIndex = showcaseCategories.findIndex(c => c.id === activeCategory.id);
@@ -705,7 +717,9 @@ const DynamicShowcase = () => {
                 className="w-full flex lg:flex-col gap-4 md:gap-6 overflow-x-auto lg:overflow-y-auto h-full no-scrollbar snap-x lg:snap-y p-8 md:p-12 -m-8 md:-m-12 scroll-smooth"
                 style={{
                   paddingTop: '35%',
-                  paddingBottom: '35%'
+                  paddingBottom: '35%',
+                  maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)'
                 }}
               >
                 {showcaseCategories.map((cat, idx) => (
@@ -718,6 +732,9 @@ const DynamicShowcase = () => {
                         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                       }
                       setActiveCategory(cat);
+                      if (onBrandCategoryClick) {
+                        onBrandCategoryClick(cat.id);
+                      }
                     }}
                     className={`flex-shrink-0 snap-center cursor-pointer flex items-center gap-4 md:gap-6 p-5 md:p-6 rounded-brand-large transition-all text-left w-[260px] md:w-full group relative border ${
                       activeCategory.id === cat.id
@@ -756,14 +773,6 @@ const DynamicShowcase = () => {
                   </motion.div>
                 ))}
               </div>
-              
-              {/* Vertical Scroll Gradients */}
-              <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white to-transparent pointer-events-none z-10 hidden lg:block opacity-60" />
-              <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none z-10 hidden lg:block" />
-              
-              {/* Horizontal Scroll Shadows (for mobile) */}
-              <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none z-10 lg:hidden" />
-              <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 lg:hidden" />
             </div>
 
             {/* Far-Right: Indicator Line (Desktop Only) */}
@@ -827,9 +836,12 @@ const DynamicShowcase = () => {
   );
 };
 
-const BrandScroller = () => {
-  const [activeTab, setActiveTab] = useState<string>(categories[0].id);
+interface BrandScrollerProps {
+  activeTab: string;
+  setActiveTab: (id: string) => void;
+}
 
+const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
   const filteredPartners = partners.filter(p => p.category === activeTab);
   
   // Create a robust set of items (repeat enough times to cover any width, then double for loop)
@@ -991,11 +1003,31 @@ const Footer = () => {
 };
 
 const MainContent = () => {
+  const [activeBrandTab, setActiveBrandTab] = useState<string>(categories[0].id);
+
+  const handleScrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      // Find the App's vh if possible, but 100vh is usually fine or we can just scroll the element into view if we are already in the relative container
+      // Actually, since we are in the fixed content div that moves by transform, standard scrollIntoView might not work as expected with the custom scroll logic.
+      // But we can use the same logic as the Navbar.
+      // Since MainContent doesn't have access to vh easily without passing it, I'll just use a window scroll based on the offset.
+      const vh = window.innerHeight;
+      window.scrollTo({
+        top: vh + element.offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <>
-      <DynamicShowcase />
+      <DynamicShowcase onBrandCategoryClick={(catId) => {
+        setActiveBrandTab(catId);
+        handleScrollToSection('marcas');
+      }} />
       <AboutUs />
-      <BrandScroller />
+      <BrandScroller activeTab={activeBrandTab} setActiveTab={setActiveBrandTab} />
       <ShowroomExperience />
       <CTASection />
       <Footer />
