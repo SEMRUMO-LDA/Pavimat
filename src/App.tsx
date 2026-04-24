@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { 
   ArrowRight, 
+  Check,
   ChevronRight, 
   ChevronLeft,
   Layout,
@@ -381,6 +382,10 @@ const ShowroomExperience = () => {
 
   const showroomImages = [
     {
+      url: "/showroom_exterior.jpg",
+      title: "Showroom Pavimat - Exterior"
+    },
+    {
       url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200",
       title: "Design de Interiores"
     },
@@ -554,10 +559,18 @@ const ShowroomExperience = () => {
 };
 
 const CTASection = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+  };
+
   return (
-    <section className="py-20 md:py-32 px-6 lg:px-12 bg-white overflow-hidden">
+    <section id="contacto" className="py-20 md:py-32 px-6 lg:px-12 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="relative bg-brand-green rounded-brand-large p-8 md:p-12 lg:p-24 overflow-hidden border border-white/10 shadow-brand-deep">
+        <div className={`relative bg-brand-green rounded-brand-large p-8 md:p-12 lg:p-24 overflow-hidden border border-white/10 shadow-brand-deep transition-all duration-700 ${showForm ? 'lg:py-16' : ''}`}>
           {/* Animated Background Element */}
           <motion.div 
             animate={{ 
@@ -568,23 +581,98 @@ const CTASection = () => {
             className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-brand-orange/10 rounded-full blur-[120px] pointer-events-none"
           />
           
-          <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
-            <span className="text-brand-orange font-black uppercase text-xs tracking-[0.5em] mb-8 md:mb-10">Solicite Orçamento</span>
-            <h2 className="text-4xl md:text-8xl font-black text-white leading-[1.1] md:leading-[0.9] mb-8 md:mb-12 tracking-tighter">
-              Vamos Projetar o seu <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
-            </h2>
-            <p className="text-zinc-300 text-lg md:text-xl font-medium mb-16 max-w-2xl leading-relaxed">
-              Trabalhamos em estreita colaboração com arquitetos e promotores para garantir a máxima qualidade técnica em cada metro quadrado.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6">
-              <button className="bg-brand-orange text-white px-14 py-6 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 flex items-center gap-4">
-                Falar com Especialista <ArrowRight size={18} />
-              </button>
-              <button className="bg-transparent border border-white/20 text-white px-14 py-6 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-all active:scale-95">
-                Ver Portefólio
-              </button>
-            </div>
-          </div>
+          <AnimatePresence mode="wait">
+            {!showForm ? (
+              <motion.div 
+                key="cta-content"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.5 }}
+                className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto"
+              >
+                <span className="text-brand-orange font-black uppercase text-xs tracking-[0.5em] mb-8 md:mb-10">Solicite Orçamento</span>
+                <h2 className="text-4xl md:text-8xl font-black text-white leading-[1.1] md:leading-[0.9] mb-8 md:mb-12 tracking-tighter">
+                  Vamos Projetar o seu <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
+                </h2>
+                <p className="text-zinc-300 text-lg md:text-xl font-medium mb-16 max-w-2xl leading-relaxed">
+                  Trabalhamos em estreita colaboração com arquitetos e promotores para garantir a máxima qualidade técnica em cada metro quadrado.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-6">
+                  <button 
+                    onClick={() => setShowForm(true)}
+                    className="bg-brand-orange text-white px-14 py-6 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 flex items-center gap-4"
+                  >
+                    Falar com Especialista <ArrowRight size={18} />
+                  </button>
+                  <button className="bg-transparent border border-white/20 text-white px-14 py-6 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-all active:scale-95">
+                    Ver Portefólio
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="contact-form"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 0.5 }}
+                className="relative z-10 w-full max-w-3xl mx-auto"
+              >
+                {!formSubmitted ? (
+                  <>
+                    <div className="text-center mb-12">
+                      <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Agende uma Consultoria</h2>
+                      <p className="text-zinc-400">Entraremos em contacto consigo num prazo de 24 horas.</p>
+                    </div>
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold ml-2">Nome Completo</label>
+                        <input required type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-brand-orange outline-none transition-colors" placeholder="Ex: João Silva" />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold ml-2">Email Profissional</label>
+                        <input required type="email" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-brand-orange outline-none transition-colors" placeholder="joao@empresa.com" />
+                      </div>
+                      <div className="space-y-2 md:col-span-2">
+                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold ml-2">Assunto / Projeto</label>
+                        <textarea required rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-brand-orange outline-none transition-colors resize-none" placeholder="Breve descrição do seu projeto..." />
+                      </div>
+                      <div className="md:col-span-2 flex flex-col sm:flex-row items-center justify-between gap-8 pt-4">
+                        <button type="button" onClick={() => setShowForm(false)} className="text-zinc-500 hover:text-white transition-colors text-xs font-black uppercase tracking-widest active:scale-95">
+                          Voltar atrás
+                        </button>
+                        <button type="submit" className="bg-brand-orange text-white px-12 py-5 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 w-full sm:w-auto">
+                          Enviar Solicitação
+                        </button>
+                      </div>
+                    </form>
+                  </>
+                ) : (
+                  <div className="text-center py-10 md:py-20 flex flex-col items-center">
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", damping: 12, stiffness: 200 }}
+                      className="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mb-8 shadow-2xl shadow-brand-orange/40"
+                    >
+                      <Check size={40} className="text-white" />
+                    </motion.div>
+                    <h2 className="text-3xl md:text-6xl font-black text-white mb-6 tracking-tighter">Mensagem Enviada!</h2>
+                    <p className="text-zinc-400 text-lg md:text-xl mb-12 max-w-md mx-auto leading-relaxed">
+                      Obrigado pelo seu interesse. Um dos nossos especialistas entrará em contacto muito brevemente.
+                    </p>
+                    <button 
+                      onClick={() => {setShowForm(false); setFormSubmitted(false);}}
+                      className="text-brand-orange font-black uppercase text-xs tracking-widest hover:text-white transition-colors flex items-center gap-2"
+                    >
+                      Voltar ao Início <ArrowRight size={14} />
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <div className="absolute bottom-[-10%] left-[-5%] w-64 h-64 bg-white/5 rounded-full blur-[60px]" />
         </div>
