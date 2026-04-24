@@ -3,6 +3,8 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { 
   ArrowRight, 
   ChevronRight, 
+  ChevronLeft,
+  Layout,
   Menu, 
   X, 
   LayoutGrid, 
@@ -125,7 +127,7 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-10 text-[10px] font-bold uppercase tracking-[0.2em]">
+          <div className="hidden md:flex items-center gap-10 text-[12px] font-bold uppercase tracking-[0.2em]">
             {menuItems.map((item) => (
               <motion.button 
                 key={item.name} 
@@ -140,7 +142,7 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
           <div className="flex items-center gap-4">
             <button 
               onClick={() => handleLinkClick('contactos')}
-              className="hidden sm:block bg-brand-orange text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-brand-green transition-all active:scale-95 shadow-brand-medium cursor-pointer"
+              className="hidden sm:block bg-brand-orange text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-brand-green transition-all active:scale-95 shadow-brand-medium cursor-pointer"
             >
               Orcamento
             </button>
@@ -252,15 +254,37 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          <div className="pb-16 flex justify-center">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="flex items-center gap-4 text-white/40 uppercase font-black text-[10px] tracking-[0.5em]"
-              >
-                Explorar
-              </motion.div>
+          <div className="pb-8 md:pb-16 flex justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 1 }}
+              className="flex flex-col items-center gap-4 cursor-pointer group"
+              onClick={() => {
+                const target = document.getElementById('sobre');
+                target?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-white/40 uppercase font-black text-[11px] tracking-[0.4em] group-hover:text-brand-lilac transition-colors duration-300">
+                  Explorar
+                </span>
+                <div className="w-[20px] h-[34px] border-2 border-white/20 rounded-full flex justify-center p-1.5 group-hover:border-white/40 transition-colors duration-300">
+                  <motion.div 
+                    animate={{ 
+                      y: [0, 10, 0],
+                      opacity: [1, 0.4, 1]
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    className="w-1 h-1.5 bg-brand-orange rounded-full shadow-[0_0_8px_rgba(255,102,0,0.6)]"
+                  />
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -303,7 +327,7 @@ const AboutUs = () => {
               transition={{ delay: 0.5 }}
               className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-brand-orange p-6 md:p-10 rounded-brand shadow-brand-deep z-20 text-white max-w-[220px] md:max-w-[280px]"
             >
-              <span className="text-[10px] font-black uppercase tracking-widest block mb-2 md:mb-4">A Nossa Missão</span>
+              <span className="text-[11px] font-black uppercase tracking-widest block mb-2 md:mb-4">A Nossa Missão</span>
               <p className="text-lg md:text-xl font-bold leading-tight">
                 Transformamos visões arquitetónicas em realidades tangíveis e duradouras.
               </p>
@@ -319,7 +343,7 @@ const AboutUs = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-brand-orange font-black uppercase text-[10px] tracking-[0.4em] mb-6 inline-block">
+              <span className="text-brand-orange font-black uppercase text-[11px] tracking-[0.4em] mb-6 inline-block">
                 Fundada em 1998
               </span>
               <h2 className="text-4xl md:text-6xl font-black text-brand-green tracking-tight mb-8 leading-[1.1]">
@@ -338,7 +362,7 @@ const AboutUs = () => {
                     <div className="text-3xl md:text-5xl font-black text-brand-green mb-1 tracking-tighter">
                       {stat.value}
                     </div>
-                    <div className="text-[10px] font-black text-brand-orange uppercase tracking-widest">
+                    <div className="text-[11px] font-black text-brand-orange uppercase tracking-widest">
                       {stat.label}
                     </div>
                   </div>
@@ -353,10 +377,43 @@ const AboutUs = () => {
 };
 
 const ShowroomExperience = () => {
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+
+  const showroomImages = [
+    {
+      url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200",
+      title: "Design de Interiores"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200",
+      title: "Pavimentos Modernos"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200",
+      title: "Espaços Gourmet"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1616489953149-75897fa94ee3?auto=format&fit=crop&q=80&w=1200",
+      title: "Revestimentos de Luxo"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1616137422495-1e90558f2473?auto=format&fit=crop&q=80&w=1200",
+      title: "Soluções Térmicas"
+    }
+  ];
+
+  const nextImg = () => {
+    setCurrentImgIndex((prev) => (prev + 1) % showroomImages.length);
+  };
+
+  const prevImg = () => {
+    setCurrentImgIndex((prev) => (prev - 1 + showroomImages.length) % showroomImages.length);
+  };
+
   return (
     <section id="showroom" className="py-20 md:py-32 px-6 lg:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
           <div className="order-2 lg:order-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -364,7 +421,7 @@ const ShowroomExperience = () => {
               viewport={{ once: true }}
               className="max-w-xl"
             >
-              <span className="text-brand-orange font-black uppercase text-[10px] tracking-[0.4em] mb-4 md:mb-6 inline-block">
+              <span className="text-brand-orange font-black uppercase text-[11px] tracking-[0.4em] mb-4 md:mb-6 inline-block">
                 Espaço Inspiracional
               </span>
               <h2 className="text-3xl md:text-6xl font-black text-brand-green tracking-tight mb-6 md:mb-8 leading-[1.1]">
@@ -381,7 +438,7 @@ const ShowroomExperience = () => {
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 rounded-full bg-brand-green/5 flex items-center justify-center flex-shrink-0">
-                      <ChevronRight className="text-brand-orange" />
+                      <Layout className="text-brand-orange" />
                     </div>
                     <div>
                       <h4 className="font-black text-brand-green uppercase text-xs tracking-widest mb-1">{item.title}</h4>
@@ -391,38 +448,94 @@ const ShowroomExperience = () => {
                 ))}
               </div>
 
-              <button 
-                onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=Pavimat+Anadia+Malaposta', '_blank')}
-                className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer"
-              >
-                Visitar o Showroom
-              </button>
+              <div className="flex flex-wrap gap-4">
+                <button 
+                  onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=Pavimat+Anadia+Malaposta', '_blank')}
+                  className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer"
+                >
+                  Visitar o Showroom
+                </button>
+              </div>
             </motion.div>
           </div>
 
-          <div className="order-1 lg:order-2 relative group h-[500px] md:h-[600px]">
-            <div className="absolute -inset-4 bg-brand-orange/5 rounded-brand-large blur-2xl group-hover:bg-brand-orange/10 transition-colors" />
-            <div className="relative h-full w-full overflow-hidden rounded-brand-large shadow-brand-deep border border-zinc-100">
-              <img 
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200" 
-                alt="Showroom Pavimat"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-green/80 via-transparent to-transparent opacity-60" />
-              <div className="absolute bottom-10 left-10 p-2">
-                <div className="flex gap-3 items-center">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="w-12 h-12 rounded-full border-4 border-white overflow-hidden shadow-brand-soft">
-                        <img src={`https://i.pravatar.cc/100?img=${i+45}`} alt="Expert" />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="glass px-4 py-2 rounded-full">
-                    <span className="text-[10px] font-black text-white uppercase tracking-widest whitespace-nowrap">Equipa de Especialistas</span>
-                  </div>
+          <div className="order-1 lg:order-2">
+            <div className="relative group">
+              {/* Main Image Container */}
+              <div className="relative aspect-[4/5] rounded-brand-large overflow-hidden shadow-brand-deep border border-zinc-100 bg-zinc-50">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentImgIndex}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.5, ease: "anticipate" }}
+                    src={showroomImages[currentImgIndex].url}
+                    alt={showroomImages[currentImgIndex].title}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </AnimatePresence>
+                
+                {/* Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-green/60 via-transparent to-transparent pointer-events-none" />
+                
+                {/* Navigation Arrows */}
+                <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); prevImg(); }}
+                    className="p-3 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-brand-orange hover:scale-110 transition-all active:scale-90"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); nextImg(); }}
+                    className="p-3 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-brand-orange hover:scale-110 transition-all active:scale-90"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
                 </div>
+
+                {/* Content Overlay */}
+                <div className="absolute bottom-8 left-8 right-8 text-white">
+                  <motion.div
+                    key={`info-${currentImgIndex}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-brand-orange px-3 py-1.5 rounded-full mb-3 inline-block shadow-lg">
+                      Espaço Showroom
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-black tracking-tight leading-none">
+                      {showroomImages[currentImgIndex].title}
+                    </h3>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Thumbnails */}
+              <div className="mt-2 flex gap-8 overflow-x-auto no-scrollbar px-10 pt-10 pb-12 -mx-10">
+                {showroomImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentImgIndex(idx)}
+                    className={`relative flex-shrink-0 w-28 md:w-32 aspect-video rounded-xl transition-all duration-500 cursor-pointer ${
+                      idx === currentImgIndex 
+                        ? 'scale-110 z-10 shadow-2xl shadow-brand-orange/40 ring-2 ring-brand-orange' 
+                        : 'opacity-40 hover:opacity-100 grayscale hover:grayscale-0 hover:scale-105'
+                    }`}
+                  >
+                    <div className="w-full h-full rounded-xl overflow-hidden">
+                      <img 
+                        src={img.url} 
+                        alt="" 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -476,6 +589,42 @@ const DynamicShowcase = () => {
   const showcaseCategories = categories.slice(0, 4);
   const [activeCategory, setActiveCategory] = useState(showcaseCategories[0]);
   const activeIndex = showcaseCategories.findIndex(c => c.id === activeCategory.id);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollRef.current) return;
+      const container = scrollRef.current;
+      const children = Array.from(container.children).filter(
+        (child) => (child as HTMLElement).getAttribute('data-category') === 'true'
+      ) as HTMLElement[];
+      
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.top + containerRect.height / 2;
+
+      let closest: { category: any; distance: number } | null = null;
+
+      children.forEach((child, idx) => {
+        const rect = child.getBoundingClientRect();
+        const childCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(containerCenter - childCenter);
+
+        if (closest === null || distance < closest.distance) {
+          closest = { category: showcaseCategories[idx], distance };
+        }
+      });
+
+      if (closest && closest.category.id !== activeCategory.id) {
+        setActiveCategory(closest.category);
+      }
+    };
+
+    const container = scrollRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll, { passive: true });
+    }
+    return () => container?.removeEventListener('scroll', handleScroll);
+  }, [activeCategory.id, showcaseCategories]);
 
   return (
     <section id="colecoes" className="min-h-screen py-20 px-6 lg:px-12 bg-white overflow-hidden flex flex-col justify-center">
@@ -486,7 +635,7 @@ const DynamicShowcase = () => {
             <motion.span 
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="text-brand-orange font-black uppercase tracking-[0.5em] text-[10px] block mb-6 px-1 border-l-2 border-brand-orange"
+              className="text-brand-orange font-black uppercase tracking-[0.5em] text-[11px] block mb-6 px-1 border-l-2 border-brand-orange"
             >
               Coleções de Excelência
             </motion.span>
@@ -540,7 +689,7 @@ const DynamicShowcase = () => {
                   className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-brand-green text-white px-6 py-2 rounded-full shadow-2xl flex items-center gap-2"
                 >
                   <div className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
-                  <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Especificação Premium</span>
+                  <span className="text-[11px] font-black uppercase tracking-widest whitespace-nowrap">Especificação Premium</span>
                 </motion.div>
               </motion.div>
             </AnimatePresence>
@@ -550,53 +699,83 @@ const DynamicShowcase = () => {
           <div className="w-full lg:w-5/12 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             
             {/* Center-Right: Cards Container */}
-            <div className="w-full flex lg:flex-col gap-4 md:gap-5 overflow-x-auto lg:overflow-y-auto lg:h-[480px] no-scrollbar snap-x lg:snap-y pb-6 lg:pb-0 px-2 lg:px-0 scroll-smooth pr-6">
-              {showcaseCategories.map((cat, idx) => (
-                <motion.button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`flex-shrink-0 snap-center lg:snap-start flex items-center gap-4 md:gap-6 p-5 md:p-6 rounded-brand-large transition-all text-left w-[260px] md:w-full group relative overflow-hidden border ${
-                    activeCategory.id === cat.id
-                      ? 'bg-white shadow-brand-medium border-zinc-100'
-                      : 'opacity-40 hover:opacity-100 bg-white/50 backdrop-blur-sm border-transparent'
-                  }`}
-                  whileHover={activeCategory.id !== cat.id && window.innerWidth > 1024 ? { x: 10, backgroundColor: 'rgba(255,255,255,0.8)' } : {}}
-                >
-                  <div className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex-shrink-0 overflow-hidden border-2 transition-all duration-500 ${
-                    activeCategory.id === cat.id ? 'border-brand-orange scale-110 shadow-brand-soft' : 'border-zinc-200'
-                  }`}>
-                    <img 
-                      src={cat.imageUrl} 
-                      className={`w-full h-full object-cover transition-transform duration-700 ${activeCategory.id === cat.id ? 'scale-110' : 'scale-100'}`} 
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  
-                  <div className="relative z-10">
-                    <span className={`text-[10px] font-black uppercase tracking-widest mb-1 transition-colors ${activeCategory.id === cat.id ? 'text-brand-orange' : 'text-zinc-400'}`}>
-                      0{idx + 1} &mdash; Linha
-                    </span>
-                    <h4 className="text-brand-green font-black text-lg md:text-xl mb-2 tracking-tight">
-                       {cat.title}
-                    </h4>
-                    <p className="text-[11px] md:text-xs text-zinc-500 font-medium leading-relaxed max-w-[200px] md:max-w-[240px]">
-                      {cat.description}
-                    </p>
-                  </div>
+            <div className="w-full relative lg:h-[620px]">
+              <div 
+                ref={scrollRef}
+                className="w-full flex lg:flex-col gap-4 md:gap-6 overflow-x-auto lg:overflow-y-auto h-full no-scrollbar snap-x lg:snap-y p-8 md:p-12 -m-8 md:-m-12 scroll-smooth"
+                style={{
+                  paddingTop: '35%',
+                  paddingBottom: '35%'
+                }}
+              >
+                {showcaseCategories.map((cat, idx) => (
+                  <motion.div
+                    key={cat.id}
+                    data-category="true"
+                    onClick={() => {
+                      if (scrollRef.current) {
+                        const target = scrollRef.current.children[idx] as HTMLElement;
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                      setActiveCategory(cat);
+                    }}
+                    className={`flex-shrink-0 snap-center cursor-pointer flex items-center gap-4 md:gap-6 p-5 md:p-6 rounded-brand-large transition-all text-left w-[260px] md:w-full group relative border ${
+                      activeCategory.id === cat.id
+                        ? 'bg-white shadow-brand-medium border-zinc-100 opacity-100'
+                        : 'opacity-20 hover:opacity-100 bg-white/50 backdrop-blur-sm border-transparent'
+                    }`}
+                  >
+                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex-shrink-0 overflow-hidden border-2 transition-all duration-500 ${
+                      activeCategory.id === cat.id ? 'border-brand-orange scale-110 shadow-brand-soft' : 'border-zinc-200'
+                    }`}>
+                      <img 
+                        src={cat.imageUrl} 
+                        className={`w-full h-full object-cover transition-transform duration-700 ${activeCategory.id === cat.id ? 'scale-110' : 'scale-100'}`} 
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <span className={`text-[11px] font-black uppercase tracking-widest mb-1 transition-colors ${activeCategory.id === cat.id ? 'text-brand-orange' : 'text-zinc-400'}`}>
+                        0{idx + 1} &mdash; Linha
+                      </span>
+                      <h4 className="text-brand-green font-black text-lg md:text-xl mb-2 tracking-tight">
+                         {cat.title}
+                      </h4>
+                      <p className="text-[11px] md:text-xs text-zinc-500 font-medium leading-relaxed max-w-[200px] md:max-w-[240px]">
+                        {cat.description}
+                      </p>
+                    </div>
 
-                  {activeCategory.id === cat.id && (
-                    <motion.div 
-                      layoutId="active-nav-indicator"
-                      className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-12 bg-brand-orange rounded-full hidden md:block"
-                    />
-                  )}
-                </motion.button>
-              ))}
+                    {activeCategory.id === cat.id && (
+                      <motion.div 
+                        layoutId="active-nav-indicator"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-12 bg-brand-orange rounded-full hidden md:block"
+                      />
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Vertical Scroll Gradients */}
+              <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white to-transparent pointer-events-none z-10 hidden lg:block opacity-60" />
+              <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none z-10 hidden lg:block" />
+              
+              {/* Horizontal Scroll Shadows (for mobile) */}
+              <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none z-10 lg:hidden" />
+              <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 lg:hidden" />
             </div>
 
             {/* Far-Right: Indicator Line (Desktop Only) */}
-            <div className="hidden lg:flex flex-col items-center h-[350px] w-16 relative">
-              <div className="w-[1px] h-full bg-zinc-100 rounded-full overflow-hidden">
+            <div 
+              className="hidden lg:flex flex-col items-center h-[350px] w-16 relative cursor-ns-resize group/indicator"
+              onWheel={(e) => {
+                if (scrollRef.current) {
+                  scrollRef.current.scrollTop += e.deltaY;
+                }
+              }}
+            >
+              <div className="w-[1px] h-full bg-zinc-100 rounded-full overflow-hidden transition-all group-hover/indicator:w-[3px] group-hover/indicator:bg-zinc-200">
                 <motion.div 
                   className="w-full bg-brand-orange"
                   initial={{ height: 0 }}
@@ -604,14 +783,30 @@ const DynamicShowcase = () => {
                 />
               </div>
               
-              <div className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
+              <div className="absolute inset-x-0 inset-y-0 flex flex-col justify-between py-2">
                 {showcaseCategories.map((_, i) => (
-                  <div key={i} className={`w-2 h-2 rounded-full border-2 transition-colors ${i <= activeIndex ? 'bg-brand-orange border-brand-orange shadow-[0_0_10px_rgba(255,107,0,0.5)]' : 'bg-white border-zinc-200'}`} />
+                  <button 
+                    key={i} 
+                    onClick={() => {
+                      if (scrollRef.current) {
+                        const target = scrollRef.current.children[i] as HTMLElement;
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                      setActiveCategory(showcaseCategories[i]);
+                    }}
+                    className="flex justify-center w-full group/dot cursor-pointer"
+                  >
+                    <div className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full border-2 transition-all duration-500 group-hover/dot:scale-150 ${
+                      i <= activeIndex 
+                        ? 'bg-brand-orange border-brand-orange shadow-[0_0_15px_rgba(255,107,0,0.6)]' 
+                        : 'bg-white border-zinc-200 hover:border-brand-orange'
+                    }`} />
+                  </button>
                 ))}
               </div>
 
               <div className="absolute -bottom-10 flex flex-col items-center gap-1">
-                <span className="text-[9px] font-black text-zinc-300 uppercase tracking-widest">Capacidade</span>
+                <span className="text-[11px] font-black text-zinc-300 uppercase tracking-widest">Capacidade</span>
                 <span className="text-sm font-black text-brand-green tabular-nums">0{showcaseCategories.length}</span>
               </div>
             </div>
@@ -644,7 +839,7 @@ const BrandScroller = () => {
   return (
     <section id="marcas" className="py-24 bg-white border-y border-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center mb-16">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-8">
+        <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-gray-400 mb-8">
           Parceiros de Confiança
         </h3>
         <div className="flex flex-wrap justify-center gap-4">
@@ -652,7 +847,7 @@ const BrandScroller = () => {
             <button
               key={cat.id}
               onClick={() => setActiveTab(cat.id)}
-              className={`px-8 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all cursor-pointer ${
+              className={`px-8 py-3 rounded-full font-bold text-[11px] uppercase tracking-widest transition-all cursor-pointer ${
                 activeTab === cat.id 
                   ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/20' 
                   : 'bg-zinc-50 text-gray-400 hover:text-brand-green'
@@ -667,6 +862,10 @@ const BrandScroller = () => {
       </div>
 
       <div className="relative w-full flex overflow-hidden group">
+        {/* Shadow Overlays */}
+        <div className="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
         <div className="flex gap-16 py-4 animate-infinite-scroll flex-nowrap">
           {trackItems.map((partner, idx) => (
             <a 
