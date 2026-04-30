@@ -3,22 +3,44 @@
 
 @theme {
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  
-  /* Brand Colors from Specification */
-  --color-brand-orange: #FF6600; /* Safety Orange */
-  --color-brand-green: #006F42;  /* Fun Green */
-  --color-brand-lilac: #F7F8FC;  /* White Lilac */
-  --color-brand-black: #1E1C1D;  /* Muted Black */
 
-  /* Elevation & Shadows */
+  /* ── Color Palette ──────────────────────────────────────── */
+  /* The official Pavimat palette is exactly four colors.        */
+  /* Hierarchy/depth comes from opacity modifiers, not new hues. */
+  --color-brand-orange: #FF6600;          /* Safety Orange — primary accent */
+  --color-brand-green: #006F42;           /* Fun Green — primary surface */
+  --color-brand-lilac: #F7F8FC;           /* White Lilac — off-white surface */
+  --color-brand-black: #1E1C1D;           /* Muted Black — default ink + dark accents */
+
+  /* ── Type Scale ─────────────────────────────────────────── */
+  /* Custom additions; everything else uses Tailwind defaults */
+  --text-eyebrow: 0.6875rem;              /* 11px — uppercase tracked labels */
+  --text-display: 5rem;                   /* 80px — hero display heading */
+  --text-display--line-height: 0.95;
+
+  /* ── Letter-spacing ─────────────────────────────────────── */
+  --tracking-eyebrow: 0.3em;              /* unified spacing for ALL CAPS labels */
+
+  /* ── Elevation & Shadows ────────────────────────────────── */
   --shadow-brand-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
   --shadow-brand-medium: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
   --shadow-brand-deep: 0 30px 60px -20px rgba(0, 0, 0, 0.15);
   --shadow-brand-hero: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
 
-  /* Radius System */
+  /* ── Radius System ──────────────────────────────────────── */
+  /* xs   12px  → tags, eyebrow chips                          */
+  /* sm   16px  → inputs, small pills                          */
+  /* icon 20px  → icon container squircles                     */
+  /* md   24px  → small cards          (alias: rounded-brand)  */
+  /* lg   32px  → medium cards   (alias: rounded-brand-large)  */
+  /* xl   40px  → large cards                                  */
+  /* hero 100px → hero corner radius                           */
+  --radius-brand-tag: 12px;
+  --radius-brand-input: 16px;
+  --radius-brand-icon: 20px;
   --radius-brand: 24px;
   --radius-brand-large: 32px;
+  --radius-brand-card: 40px;
   --radius-brand-hero: 100px;
 }
 
@@ -38,14 +60,16 @@
 }
 
 @layer utilities {
-  .rounded-brand {
-    border-radius: var(--radius-brand);
-  }
-  .rounded-brand-large {
-    border-radius: var(--radius-brand-large);
-  }
+  /* Radius utilities — tokens defined in @theme */
+  .rounded-brand-tag    { border-radius: var(--radius-brand-tag); }
+  .rounded-brand-input  { border-radius: var(--radius-brand-input); }
+  .rounded-brand-icon   { border-radius: var(--radius-brand-icon); }
+  .rounded-brand        { border-radius: var(--radius-brand); }
+  .rounded-brand-large  { border-radius: var(--radius-brand-large); }
+  .rounded-brand-card   { border-radius: var(--radius-brand-card); }
+  /* Hero bottom corner — 60px mobile, 100px desktop */
   .rounded-brand-hero {
-    border-radius: 0 0 22px 22px;
+    border-radius: 0 0 60px 60px;
   }
   @media (min-width: 768px) {
     .rounded-brand-hero {

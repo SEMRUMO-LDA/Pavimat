@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { 
   ArrowRight, 
+  ArrowUpRight,
   Check,
   ChevronRight, 
   ChevronLeft,
@@ -17,8 +21,16 @@ import {
   Facebook,
   Phone,
   Mail,
-  MapPin
+  MapPin,
+  ShieldCheck,
+  Truck,
+  Star
 } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
+
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 
 // --- Types ---
 interface Category {
@@ -80,10 +92,15 @@ const partners: BrandPartner[] = [
 
 // --- Components ---
 
-const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
+interface NavbarProps {
+  onScrollTo: (id: string) => void;
+  onCtaClick: (theme: ContactTheme) => void;
+}
+
+const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
-  const textColor = useTransform(scrollY, [0, 100], ["#FFFFFF", "var(--color-brand-green)"]);
+  const textColor = useTransform(scrollY, [0, 100], ["#FFFFFF", "#006F42"]);
   const navBg = useTransform(scrollY, [0, 100], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.1)"]);
 
   useEffect(() => {
@@ -110,6 +127,11 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
     onScrollTo(id);
   };
 
+  const handleCtaClick = (theme: ContactTheme) => {
+    setIsOpen(false);
+    onCtaClick(theme);
+  };
+
   return (
     <>
       <motion.nav 
@@ -117,23 +139,23 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
         className={`fixed top-0 left-0 right-0 z-[70] px-6 md:px-8 py-5 md:py-6 flex items-center justify-between w-full ${!isOpen ? 'glass' : ''} shadow-none transition-colors duration-300`}
       >
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-          <div 
-            className="flex items-center gap-2 cursor-pointer"
+          <div
+            className="flex items-center gap-2 cursor-pointer magnetic"
             onClick={() => {
               setIsOpen(false);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              onScrollTo('top');
             }}
           >
             <span className="text-2xl md:text-3xl font-black tracking-[-0.05em]">pavimat</span>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-10 text-[12px] font-bold uppercase tracking-[0.2em]">
+          <div className="hidden md:flex items-center gap-10 text-xs font-bold uppercase tracking-eyebrow">
             {menuItems.map((item) => (
               <motion.button 
                 key={item.name} 
                 onClick={() => handleLinkClick(item.id)}
-                className="hover:opacity-70 transition-opacity relative group cursor-pointer"
+                className="hover:opacity-70 transition-opacity relative group cursor-pointer magnetic"
               >
                 {item.name}
               </motion.button>
@@ -141,15 +163,16 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => handleLinkClick('contactos')}
-              className="hidden sm:block bg-brand-orange text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-brand-green transition-all active:scale-95 shadow-brand-medium cursor-pointer"
+            {/* Header CTA — Orçamento */}
+            <button
+              onClick={() => handleCtaClick('orcamento')}
+              className="hidden sm:inline-flex items-center bg-brand-orange text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-eyebrow font-black uppercase tracking-widest hover:bg-brand-green transition-all active:scale-95 shadow-brand-medium cursor-pointer magnetic"
             >
-              Orcamento
+              Orçamento
             </button>
 
             {/* Burger Button */}
-            <button 
+            <button
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden p-2 text-current hover:opacity-70 transition-opacity z-[80]"
             >
@@ -182,7 +205,7 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
                 </motion.button>
               ))}
               
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.4 }}
@@ -192,11 +215,11 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
                   <Instagram className="text-zinc-300 hover:text-brand-orange transition-colors cursor-pointer" size={24} />
                   <Linkedin className="text-zinc-300 hover:text-brand-orange transition-colors cursor-pointer" size={24} />
                 </div>
-                <button 
-                  onClick={() => handleLinkClick('contactos')}
-                  className="w-full bg-brand-orange text-white py-5 rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-brand-deep"
+                <button
+                  onClick={() => handleCtaClick('orcamento')}
+                  className="w-full bg-brand-orange text-white py-5 rounded-full text-xs font-black uppercase tracking-eyebrow shadow-brand-deep"
                 >
-                  Pedir Orçamento
+                  Orçamento
                 </button>
               </motion.div>
             </div>
@@ -207,83 +230,168 @@ const Navbar = ({ onScrollTo }: { onScrollTo: (id: string) => void }) => {
   );
 };
 
-const Hero = () => {
+interface HeroProps {
+  onContactClick: (theme: ContactTheme) => void;
+  onScrollTo: (id: string) => void;
+}
+
+const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
   return (
     <section className="relative h-screen w-full bg-white z-40">
-      <div className="relative h-full w-full overflow-hidden bg-brand-orange rounded-brand-hero shadow-brand-hero z-10">
-        {/* Background Graphic Shapes - Now Full Screen */}
-        <div className="absolute inset-0 z-0 select-none pointer-events-none">
-          <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" className="w-full h-full">
-            <rect width="1920" height="1080" fill="var(--color-brand-orange)" />
-            
-            {/* Left organic shape */}
-            <motion.path
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-              d="M-100 -100 L 400 -100 C 400 400, 300 1000, -100 1100 Z"
-              fill="var(--color-brand-green)"
-            />
-            
-            <motion.path
-              initial={{ x: 200, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-              d="M1920 200 C 1300 250, 900 600, 1920 1000 L 2200 1000 L 2200 200 Z"
-              fill="var(--color-brand-green)"
+      <div className="relative h-full w-full overflow-hidden rounded-brand-hero shadow-[0_20px_80px_rgba(0,0,0,0.3)] z-10">
+        <div className="absolute inset-0 z-0 bg-brand-orange overflow-hidden">
+          {/* Ambient highlights — warm light + soft shadow for depth on orange */}
+          <div className="absolute top-[5%] -right-[5%] w-[800px] h-[800px] bg-white/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+          <div className="absolute top-[30%] -left-[10%] w-[900px] h-[900px] bg-brand-black/20 rounded-full blur-[150px] animate-pulse" style={{ animationDuration: '12s' }} />
+
+          {/* Brand chevron — anchored bottom-right, peeks from behind the cards */}
+          <svg
+            viewBox="0 0 616.641 603.9885"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            preserveAspectRatio="xMaxYMax meet"
+            className="absolute -bottom-32 -right-40 w-[95vw] max-w-[1100px] h-auto text-brand-green pointer-events-none"
+          >
+            <path
+              fill="currentColor"
+              d="M0,305.6806c0-31.6217,11.2478-57.6255,33.7313-77.9994,22.4775-20.392,62.5321-40.7658,120.1635-61.1397L616.6406,0v176.029s-398.4474,129.6515-398.4474,129.6515l398.4477,126.4925v171.8155s-460.6361-161.2727-460.6361-161.2727c-58.3368-20.3919-98.9218-40.5849-121.7489-60.6091C11.4287,362.0764,0,336.5971,0,305.6806Z"
             />
           </svg>
         </div>
-
+        
         <div className="relative z-10 h-full max-w-7xl mx-auto flex flex-col pt-24 md:pt-32">
-          {/* Content Overlay */}
-          <div className="flex-grow flex flex-col justify-center px-6 md:px-20 max-w-4xl">
+          {/* Main Content Area */}
+          <div className="flex-grow flex flex-col lg:flex-row items-center justify-between px-6 md:px-20">
+            
+            {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
+              className="w-full lg:w-3/5"
             >
-              <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-white leading-[1.1] md:leading-[0.95] mb-6 md:mb-8 tracking-tight">
-                Materiais de<br/>
-                Construção<br/>
-                de Confiança.
+              <h1 className="text-5xl sm:text-6xl md:text-display font-black text-white leading-[0.95] mb-8 tracking-tight">
+                Construa o seu<br />
+                <span className="text-brand-orange italic drop-shadow-[0_0_30px_rgba(255,90,0,0.3)]">Legado</span> de<br />
+                Confiança.
               </h1>
               
-              <p className="text-lg md:text-2xl text-white font-medium mb-10 md:mb-12 leading-relaxed max-w-xl opacity-90">
-                Fornecemos as bases sólidas para os seus projetos. Materiais certificados e aconselhamento especializado para quem exige o melhor.
+              <p className="text-lg md:text-xl text-white/90 font-medium mb-10 leading-relaxed max-w-xl">
+                Fornecemos as bases sólidas para os seus projetos.<br className="hidden md:block" />
+                Materiais certificados e aconselhamento<br className="hidden md:block" />
+                especializado para quem exige excelência técnica.
               </p>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => onContactClick('especialista')}
+                  className="bg-brand-orange hover:bg-brand-orange/90 text-white px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest flex items-center gap-2 transition-all cursor-pointer magnetic"
+                >
+                  Falar com especialista <ArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => onScrollTo('colecoes')}
+                  className="bg-transparent border border-white/30 hover:bg-white/10 text-white px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all cursor-pointer magnetic"
+                >
+                  Explorar Coleções
+                </button>
+              </div>
             </motion.div>
+
+            {/* Right Content - Floating Cards */}
+            <div className="hidden lg:block w-full lg:w-5/12 relative h-[550px]">
+
+              {/* Card 1 - Showroom */}
+              <motion.div 
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="absolute top-0 right-4 bg-brand-green/40 backdrop-blur-xl border border-white/10 p-4 rounded-brand-large flex items-center gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] w-[340px] z-10 magnetic"
+              >
+                <div className="w-16 h-16 rounded-brand-icon bg-brand-orange flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <LayoutGrid className="text-white w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-lg mb-0.5 tracking-tight">Showroom 700m²</h4>
+                  <p className="text-white/60 text-sm">Consultoria tátil e técnica.</p>
+                </div>
+              </motion.div>
+
+              {/* Card 2 - Qualidade Master */}
+              <motion.div 
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="absolute top-[130px] left-0 bg-brand-green/40 backdrop-blur-xl border border-white/10 p-4 rounded-brand-large flex items-center gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] w-[340px] z-10 magnetic"
+              >
+                <div className="w-16 h-16 rounded-brand-icon bg-brand-green flex items-center justify-center flex-shrink-0">
+                  <ShieldCheck className="text-white w-8 h-8 opacity-80" />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-lg mb-0.5 tracking-tight">Qualidade Master</h4>
+                  <p className="text-white/60 text-sm">Marcas líderes mundiais.</p>
+                </div>
+              </motion.div>
+
+              {/* Card 3 - Frota Própria */}
+              <motion.div 
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 1.0 }}
+                className="absolute top-[260px] right-0 bg-brand-green/40 backdrop-blur-xl border border-white/10 p-4 rounded-brand-large flex items-center gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] w-[340px] z-10 magnetic"
+              >
+                <div className="w-16 h-16 rounded-brand-icon bg-brand-black flex items-center justify-center flex-shrink-0">
+                  <Truck className="text-white w-8 h-8" />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-lg mb-0.5 tracking-tight">Frota Própria</h4>
+                  <p className="text-white/60 text-sm">Logística rápida e segura.</p>
+                </div>
+              </motion.div>
+
+              {/* Card 4 - Desde 1994 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
+                className="absolute top-[390px] left-12 bg-brand-green/40 backdrop-blur-xl border border-white/10 p-4 rounded-brand-large flex items-center gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] w-[340px] z-10 magnetic"
+              >
+                <div className="w-16 h-16 rounded-brand-icon bg-white flex items-center justify-center flex-shrink-0 shadow-xl">
+                  <Star className="text-brand-orange w-8 h-8 fill-current" />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-lg mb-0.5 tracking-tight">DESDE 1994</h4>
+                  <p className="text-white/60 text-sm">Décadas de experiência.</p>
+                </div>
+              </motion.div>
+            </div>
           </div>
 
-          <div className="pb-8 md:pb-16 flex justify-center">
+          {/* Scroll Down Indicator */}
+          <div className="pb-8 md:pb-12 flex justify-center w-full">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 1 }}
-              className="flex flex-col items-center gap-4 cursor-pointer group"
-              onClick={() => {
-                const target = document.getElementById('sobre');
-                target?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              transition={{ delay: 1.4, duration: 1 }}
+              className="flex flex-col items-center gap-3 cursor-pointer group"
+              onClick={() => onScrollTo('sobre')}
             >
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-white/40 uppercase font-black text-[11px] tracking-[0.4em] group-hover:text-brand-lilac transition-colors duration-300">
-                  Explorar
-                </span>
-                <div className="w-[20px] h-[34px] border-2 border-white/20 rounded-full flex justify-center p-1.5 group-hover:border-white/40 transition-colors duration-300">
-                  <motion.div 
-                    animate={{ 
-                      y: [0, 10, 0],
-                      opacity: [1, 0.4, 1]
-                    }}
-                    transition={{ 
-                      duration: 2, 
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    className="w-1 h-1.5 bg-brand-orange rounded-full shadow-[0_0_8px_rgba(255,102,0,0.6)]"
-                  />
-                </div>
+              <span className="text-white/40 uppercase font-black text-eyebrow tracking-eyebrow group-hover:text-white transition-colors duration-300">
+                Descobrir Mais
+              </span>
+              <div className="w-[18px] h-[30px] border-2 border-white/20 rounded-full flex justify-center p-1 group-hover:border-white/40 transition-colors duration-300">
+                <motion.div 
+                  animate={{ 
+                    y: [0, 8, 0],
+                    opacity: [1, 0.4, 1]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="w-1 h-1.5 bg-brand-orange rounded-full"
+                />
               </div>
             </motion.div>
           </div>
@@ -294,83 +402,121 @@ const Hero = () => {
 };
 
 const AboutUs = () => {
-  const stats = [
-    { label: 'Anos de Experiência', value: '25+' },
-    { label: 'Projetos Realizados', value: '1.2k' },
-    { label: 'Especialistas', value: '45' },
-    { label: 'Showroom', value: '700m²' }
+  const cards = [
+    {
+      icon: <Star className="w-5 h-5 text-white" />,
+      iconBg: 'bg-brand-orange',
+      tag: 'ANOS 70',
+      title: 'Herança Familiar',
+      desc: 'Raízes profundas nos anos 70, evoluindo de uma empresa familiar para referência em materiais técnicos.'
+    },
+    {
+      icon: <LayoutGrid className="w-5 h-5 text-white" />,
+      iconBg: 'bg-brand-green',
+      tag: 'MARCOS 1997',
+      title: 'Expandir Horizontes',
+      desc: 'Em 1997 iniciámos a exclusividade Recer, elevando a curadoria técnica de pavimentos em Portugal.'
+    },
+    {
+      icon: <ShieldCheck className="w-5 h-5 text-white" />,
+      iconBg: 'bg-brand-black',
+      tag: 'PARCEIROS GLOBAIS',
+      title: 'Soluções de Luxo',
+      desc: 'Desde 2000 que oferecemos hidromassagem Jacuzzi e sanitários de design Sanindusa.'
+    },
+    {
+      icon: <Layout className="w-5 h-5 text-white" />,
+      iconBg: 'bg-brand-orange',
+      tag: 'CONSULTORIA TÁTIL',
+      title: 'Espaço Sensorial',
+      desc: '700m² de showroom onde a estética e o acompanhamento técnico garantem o sucesso da sua obra.'
+    }
   ];
 
   return (
-    <section id="sobre" className="py-20 md:py-32 px-6 lg:px-12 bg-brand-lilac overflow-hidden">
+    <section id="sobre" className="py-24 md:py-40 px-6 lg:px-12 bg-brand-lilac overflow-hidden relative">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
-          <div className="relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative rounded-brand-large overflow-hidden shadow-brand-deep aspect-[4/5] z-10"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=1200" 
-                alt="Architecture and materials"
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-brand-green/20" />
-            </motion.div>
-            
-            {/* Floating badge */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-              className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-brand-orange p-6 md:p-10 rounded-brand shadow-brand-deep z-20 text-white max-w-[220px] md:max-w-[280px]"
-            >
-              <span className="text-[11px] font-black uppercase tracking-widest block mb-2 md:mb-4">A Nossa Missão</span>
-              <p className="text-lg md:text-xl font-bold leading-tight">
-                Transformamos visões arquitetónicas em realidades tangíveis e duradouras.
-              </p>
-            </motion.div>
-
-            {/* Background decorative element */}
-            <div className="absolute -top-10 -left-10 w-64 h-64 bg-brand-green/5 rounded-full blur-3xl -z-10" />
-          </div>
-
-          <div>
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-brand-orange font-black uppercase text-[11px] tracking-[0.4em] mb-6 inline-block">
-                Fundada em 1998
-              </span>
-              <h2 className="text-4xl md:text-6xl font-black text-brand-green tracking-tight mb-8 leading-[1.1]">
-                Onde a <br/>Herança Encontra a <span className="text-brand-orange italic font-medium">Inovação</span>.
-              </h2>
-              <p className="text-zinc-500 mb-8 text-lg leading-relaxed font-medium">
-                Com mais de duas décadas de liderança no mercado, a Pavimat consolidou-se como o parceiro preferencial para os projetos mais exigentes de Portugal. A nossa história é escrita através da seleção rigorosa da matéria-prima e de um acompanhamento técnico sem paralelo.
-              </p>
-              <p className="text-zinc-500 mb-12 text-lg leading-relaxed font-medium">
-                Não fornecemos apenas materiais; oferecemos o conhecimento técnico que garante que cada escolha estética é suportada por uma performance estrutural superior.
-              </p>
-
-              <div className="grid grid-cols-2 gap-8">
-                {stats.map((stat) => (
-                  <div key={stat.label}>
-                    <div className="text-3xl md:text-5xl font-black text-brand-green mb-1 tracking-tighter">
-                      {stat.value}
-                    </div>
-                    <div className="text-[11px] font-black text-brand-orange uppercase tracking-widest">
-                      {stat.label}
-                    </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+          
+          {/* Left: Floating Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 order-2 lg:order-1">
+            {cards.map((card, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className={`bg-white p-8 rounded-brand-card shadow-[0_15px_40px_rgba(0,0,0,0.04)] border-2 border-transparent transition-all duration-500 group relative overflow-hidden cursor-default
+                  ${card.iconBg === 'bg-brand-orange' ? 'hover:border-brand-orange/30' : card.iconBg === 'bg-brand-green' ? 'hover:border-brand-green/30' : 'hover:border-zinc-800/30'}`}
+              >
+                <div className="flex justify-between items-start mb-10">
+                  <div className={`w-12 h-12 rounded-brand-icon ${card.iconBg} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                    {card.icon}
                   </div>
-                ))}
+                  <span className="text-eyebrow font-black text-zinc-300 tracking-eyebrow">{card.tag}</span>
+                </div>
+                
+                <h4 className={`font-black text-lg mb-4 tracking-tight transition-colors duration-300
+                  ${card.iconBg === 'bg-brand-orange' ? 'text-brand-green group-hover:text-brand-orange' : card.iconBg === 'bg-brand-green' ? 'text-brand-green group-hover:text-brand-green' : 'text-brand-green group-hover:text-zinc-800'}`}>
+                  {card.title}
+                </h4>
+                
+                <p className="text-zinc-400 text-xs leading-relaxed font-medium mb-6">
+                  {card.desc}
+                </p>
+                
+                <div className={`w-8 h-[2px] transition-all duration-500
+                  ${card.iconBg === 'bg-brand-orange' ? 'bg-zinc-100 group-hover:bg-brand-orange group-hover:w-16' : card.iconBg === 'bg-brand-green' ? 'bg-zinc-100 group-hover:bg-brand-green group-hover:w-16' : 'bg-zinc-100 group-hover:bg-zinc-800 group-hover:w-16'}`} 
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Right: Storytelling Content */}
+          <div className="order-1 lg:order-2">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              {/* Top Label */}
+              <div className="flex items-center gap-6 mb-12">
+                <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
+                  EST. 1985 / RAÍZES ANOS 70
+                </span>
+                <div className="w-full h-[1px] bg-zinc-200/50" />
               </div>
+
+              {/* Headline */}
+              <h2 className="text-5xl md:text-display font-black text-brand-green leading-[0.9] tracking-tighter mb-12">
+                Onde a <br />
+                <span className="text-brand-orange italic font-medium">Tradição</span> <br />
+                Encontra a <br />
+                Engenharia.
+              </h2>
+
+              {/* Quote Block */}
+              <div className="border-l-4 border-brand-orange pl-8 mb-12">
+                <p className="text-zinc-500 text-lg md:text-xl italic font-medium leading-relaxed">
+                  "O nosso percurso começou nos anos 70 como uma empresa familiar, evoluindo da robustez dos materiais básicos para a sofisticação do design contemporâneo."
+                </p>
+              </div>
+
+              {/* Narrative Text */}
+              <div className="space-y-8 text-zinc-500 text-sm md:text-base font-medium leading-relaxed mb-16">
+                <p>
+                  Fundada originalmente como Vale Paraíso em 1985, a Pavimat consolidou-se através de parcerias estratégicas, como a exclusividade Recer em 1997.
+                </p>
+                <p>
+                  Hoje, oferecemos soluções integrais: de cerâmicos a pastilha para piscina, passando por mobiliário de banho e sanitários de alto padrão. O nosso compromisso é o acompanhamento constante, garantindo que a visão técnica e a estética se unem em cada projeto.
+                </p>
+              </div>
+
+              <div className="w-full h-[1px] bg-zinc-100 mb-12" />
             </motion.div>
           </div>
+
         </div>
       </div>
     </section>
@@ -382,7 +528,7 @@ const ShowroomExperience = () => {
 
   const showroomImages = [
     {
-      url: "/showroom_exterior.jpg",
+      url: "/img/pavimat-showroom-out1.png",
       title: "Showroom Pavimat - Exterior"
     },
     {
@@ -426,7 +572,7 @@ const ShowroomExperience = () => {
               viewport={{ once: true }}
               className="max-w-xl"
             >
-              <span className="text-brand-orange font-black uppercase text-[11px] tracking-[0.4em] mb-4 md:mb-6 inline-block">
+              <span className="text-brand-orange font-black uppercase text-eyebrow tracking-eyebrow mb-4 md:mb-6 inline-block">
                 Espaço Inspiracional
               </span>
               <h2 className="text-3xl md:text-6xl font-black text-brand-green tracking-tight mb-6 md:mb-8 leading-[1.1]">
@@ -456,7 +602,7 @@ const ShowroomExperience = () => {
               <div className="flex flex-wrap gap-4">
                 <button 
                   onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=Pavimat+Anadia+Malaposta', '_blank')}
-                  className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer"
+                  className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer magnetic"
                 >
                   Visitar o Showroom
                 </button>
@@ -467,7 +613,7 @@ const ShowroomExperience = () => {
           <div className="order-1 lg:order-2">
             <div className="relative group">
               {/* Main Image Container */}
-              <div className="relative aspect-[4/5] rounded-brand-large overflow-hidden shadow-brand-deep border border-zinc-100 bg-zinc-50">
+              <div className="relative aspect-[4/3] rounded-brand-large overflow-hidden shadow-brand-deep border border-zinc-100 bg-zinc-50">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImgIndex}
@@ -477,7 +623,7 @@ const ShowroomExperience = () => {
                     transition={{ duration: 0.5, ease: "anticipate" }}
                     src={showroomImages[currentImgIndex].url}
                     alt={showroomImages[currentImgIndex].title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover parallax-img"
                     referrerPolicy="no-referrer"
                   />
                 </AnimatePresence>
@@ -509,7 +655,7 @@ const ShowroomExperience = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] bg-brand-orange px-3 py-1.5 rounded-full mb-3 inline-block shadow-lg">
+                    <span className="text-eyebrow font-black uppercase tracking-eyebrow bg-brand-orange px-3 py-1.5 rounded-full mb-3 inline-block shadow-lg">
                       Espaço Showroom
                     </span>
                     <h3 className="text-2xl md:text-3xl font-black tracking-tight leading-none">
@@ -532,13 +678,13 @@ const ShowroomExperience = () => {
                     <button
                       key={idx}
                       onClick={() => setCurrentImgIndex(idx)}
-                      className={`relative flex-shrink-0 w-28 md:w-32 aspect-video rounded-xl transition-all duration-500 cursor-pointer ${
+                      className={`relative flex-shrink-0 w-28 md:w-32 aspect-video rounded-brand-tag transition-all duration-500 cursor-pointer ${
                         idx === currentImgIndex 
                           ? 'scale-110 z-10 shadow-2xl shadow-brand-orange/40 ring-2 ring-brand-orange' 
                           : 'opacity-40 hover:opacity-100 grayscale hover:grayscale-0 hover:scale-105'
                       }`}
                     >
-                      <div className="w-full h-full rounded-xl overflow-hidden">
+                      <div className="w-full h-full rounded-brand-tag overflow-hidden">
                         <img 
                           src={img.url} 
                           alt="" 
@@ -552,129 +698,6 @@ const ShowroomExperience = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const CTASection = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormSubmitted(true);
-  };
-
-  return (
-    <section id="contacto" className="py-20 md:py-32 px-6 lg:px-12 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className={`relative bg-brand-green rounded-brand-large p-8 md:p-12 lg:p-24 overflow-hidden border border-white/10 shadow-brand-deep transition-all duration-700 ${showForm ? 'lg:py-16' : ''}`}>
-          {/* Animated Background Element */}
-          <motion.div 
-            animate={{ 
-              rotate: [0, 360],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-brand-orange/10 rounded-full blur-[120px] pointer-events-none"
-          />
-          
-          <AnimatePresence mode="wait">
-            {!showForm ? (
-              <motion.div 
-                key="cta-content"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.05 }}
-                transition={{ duration: 0.5 }}
-                className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto"
-              >
-                <span className="text-brand-orange font-black uppercase text-xs tracking-[0.5em] mb-8 md:mb-10">Solicite Orçamento</span>
-                <h2 className="text-4xl md:text-8xl font-black text-white leading-[1.1] md:leading-[0.9] mb-8 md:mb-12 tracking-tighter">
-                  Vamos Projetar o seu <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
-                </h2>
-                <p className="text-zinc-300 text-lg md:text-xl font-medium mb-16 max-w-2xl leading-relaxed">
-                  Trabalhamos em estreita colaboração com arquitetos e promotores para garantir a máxima qualidade técnica em cada metro quadrado.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-6">
-                  <button 
-                    onClick={() => setShowForm(true)}
-                    className="bg-brand-orange text-white px-14 py-6 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 flex items-center gap-4"
-                  >
-                    Falar com Especialista <ArrowRight size={18} />
-                  </button>
-                  <button className="bg-transparent border border-white/20 text-white px-14 py-6 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-all active:scale-95">
-                    Ver Portefólio
-                  </button>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="contact-form"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.5 }}
-                className="relative z-10 w-full max-w-3xl mx-auto"
-              >
-                {!formSubmitted ? (
-                  <>
-                    <div className="text-center mb-12">
-                      <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Agende uma Consultoria</h2>
-                      <p className="text-zinc-400">Entraremos em contacto consigo num prazo de 24 horas.</p>
-                    </div>
-                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold ml-2">Nome Completo</label>
-                        <input required type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-brand-orange outline-none transition-colors" placeholder="Ex: João Silva" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold ml-2">Email Profissional</label>
-                        <input required type="email" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-brand-orange outline-none transition-colors" placeholder="joao@empresa.com" />
-                      </div>
-                      <div className="space-y-2 md:col-span-2">
-                        <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold ml-2">Assunto / Projeto</label>
-                        <textarea required rows={4} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-brand-orange outline-none transition-colors resize-none" placeholder="Breve descrição do seu projeto..." />
-                      </div>
-                      <div className="md:col-span-2 flex flex-col sm:flex-row items-center justify-between gap-8 pt-4">
-                        <button type="button" onClick={() => setShowForm(false)} className="text-zinc-500 hover:text-white transition-colors text-xs font-black uppercase tracking-widest active:scale-95">
-                          Voltar atrás
-                        </button>
-                        <button type="submit" className="bg-brand-orange text-white px-12 py-5 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 w-full sm:w-auto">
-                          Enviar Solicitação
-                        </button>
-                      </div>
-                    </form>
-                  </>
-                ) : (
-                  <div className="text-center py-10 md:py-20 flex flex-col items-center">
-                    <motion.div 
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", damping: 12, stiffness: 200 }}
-                      className="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mb-8 shadow-2xl shadow-brand-orange/40"
-                    >
-                      <Check size={40} className="text-white" />
-                    </motion.div>
-                    <h2 className="text-3xl md:text-6xl font-black text-white mb-6 tracking-tighter">Mensagem Enviada!</h2>
-                    <p className="text-zinc-400 text-lg md:text-xl mb-12 max-w-md mx-auto leading-relaxed">
-                      Obrigado pelo seu interesse. Um dos nossos especialistas entrará em contacto muito brevemente.
-                    </p>
-                    <button 
-                      onClick={() => {setShowForm(false); setFormSubmitted(false);}}
-                      className="text-brand-orange font-black uppercase text-xs tracking-widest hover:text-white transition-colors flex items-center gap-2"
-                    >
-                      Voltar ao Início <ArrowRight size={14} />
-                    </button>
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div className="absolute bottom-[-10%] left-[-5%] w-64 h-64 bg-white/5 rounded-full blur-[60px]" />
         </div>
       </div>
     </section>
@@ -735,7 +758,7 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
             <motion.span 
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="text-brand-orange font-black uppercase tracking-[0.5em] text-[11px] block mb-6 px-1 border-l-2 border-brand-orange"
+              className="text-brand-orange font-black uppercase tracking-eyebrow text-eyebrow block mb-6 px-1 border-l-2 border-brand-orange"
             >
               Coleções de Excelência
             </motion.span>
@@ -789,7 +812,7 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
                   className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-brand-green text-white px-6 py-2 rounded-full shadow-2xl flex items-center gap-2"
                 >
                   <div className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
-                  <span className="text-[11px] font-black uppercase tracking-widest whitespace-nowrap">Especificação Premium</span>
+                  <span className="text-eyebrow font-black uppercase tracking-widest whitespace-nowrap">Especificação Premium</span>
                 </motion.div>
               </motion.div>
             </AnimatePresence>
@@ -841,13 +864,13 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
                     </div>
                     
                     <div className="relative z-10">
-                      <span className={`text-[11px] font-black uppercase tracking-widest mb-1 transition-colors ${activeCategory.id === cat.id ? 'text-brand-orange' : 'text-zinc-400'}`}>
+                      <span className={`text-eyebrow font-black uppercase tracking-widest mb-1 transition-colors ${activeCategory.id === cat.id ? 'text-brand-orange' : 'text-zinc-400'}`}>
                         0{idx + 1} &mdash; Linha
                       </span>
                       <h4 className="text-brand-green font-black text-lg md:text-xl mb-2 tracking-tight">
                          {cat.title}
                       </h4>
-                      <p className="text-[11px] md:text-xs text-zinc-500 font-medium leading-relaxed max-w-[200px] md:max-w-[240px]">
+                      <p className="text-xs text-zinc-500 font-medium leading-relaxed max-w-[200px] md:max-w-[240px]">
                         {cat.description}
                       </p>
                     </div>
@@ -903,7 +926,7 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
               </div>
 
               <div className="absolute -bottom-10 flex flex-col items-center gap-1">
-                <span className="text-[11px] font-black text-zinc-300 uppercase tracking-widest">Capacidade</span>
+                <span className="text-eyebrow font-black text-zinc-300 uppercase tracking-widest">Capacidade</span>
                 <span className="text-sm font-black text-brand-green tabular-nums">0{showcaseCategories.length}</span>
               </div>
             </div>
@@ -939,7 +962,7 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
   return (
     <section id="marcas" className="py-24 bg-white border-y border-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center mb-16">
-        <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-gray-400 mb-8">
+        <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-zinc-300 mb-8">
           Parceiros de Confiança
         </h3>
         <div className="flex flex-wrap justify-center gap-4">
@@ -947,10 +970,10 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
             <button
               key={cat.id}
               onClick={() => setActiveTab(cat.id)}
-              className={`px-8 py-3 rounded-full font-bold text-[11px] uppercase tracking-widest transition-all cursor-pointer ${
+              className={`px-8 py-3 rounded-full font-bold text-eyebrow uppercase tracking-widest transition-all cursor-pointer ${
                 activeTab === cat.id 
                   ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/20' 
-                  : 'bg-zinc-50 text-gray-400 hover:text-brand-green'
+                  : 'bg-zinc-50 text-zinc-300 hover:text-brand-green'
               }`}
             >
               {cat.id === 'ceramics' ? 'Cerâmicos' : 
@@ -999,37 +1022,162 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
   );
 };
 
-const Footer = () => {
+interface FooterProps {
+  contactTheme: ContactTheme;
+  setContactTheme: (theme: ContactTheme) => void;
+}
+
+const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const themes: { id: ContactTheme; label: string; icon: string }[] = [
+    { id: 'especialista', label: 'Especialista', icon: '📞' },
+    { id: 'orcamento', label: 'Orçamento', icon: '📄' },
+    { id: 'showroom', label: 'Showroom', icon: '✨' },
+    { id: 'outro', label: 'Outro', icon: '✉️' },
+  ];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+  };
+
   return (
-    <footer id="contactos" className="relative bg-brand-green text-white py-24 px-6 lg:px-12 overflow-hidden">
-      {/* Custom Background Pattern */}
-      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-        <svg width="100%" height="100%" viewBox="0 0 1000 400" preserveAspectRatio="center slice" xmlns="http://www.w3.org/2000/svg">
-          <g transform="translate(500, 200)">
-            {/* Left Shape */}
-            <path 
-              d="M -600,-150 L -200,0 L -600,150 Q -100,0 -600,-150" 
-              fill="var(--color-brand-orange)" 
-              opacity="0.8"
-            />
-            {/* Right Shape */}
-            <path 
-              d="M 600,-150 L 200,0 L 600,150 Q 100,0 600,-150" 
-              fill="var(--color-brand-orange)" 
-              opacity="0.8"
-            />
-          </g>
+    <footer id="contactos" className="relative text-white py-24 px-6 lg:px-12 overflow-hidden">
+      {/* ── BG LAYER ── (mirrors the hero pattern: solid canvas + ambient
+          highlights + chevron all in a single absolute z-0 layer, separated
+          from the content layer so backdrop-filter sees through cleanly) */}
+      <div className="absolute inset-0 z-0 bg-brand-green overflow-hidden">
+        <div className="absolute top-[10%] -right-[10%] w-[800px] h-[800px] bg-white/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '10s' }} />
+        <div className="absolute bottom-[20%] -left-[10%] w-[900px] h-[900px] bg-brand-black/20 rounded-full blur-[150px] animate-pulse" style={{ animationDuration: '14s' }} />
+        <svg
+          viewBox="0 0 616.641 603.9885"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          preserveAspectRatio="xMaxYMax meet"
+          className="absolute top-0 -right-40 w-[95vw] max-w-[1100px] h-auto text-brand-orange pointer-events-none"
+        >
+          <path
+            fill="currentColor"
+            d="M0,305.6806c0-31.6217,11.2478-57.6255,33.7313-77.9994,22.4775-20.392,62.5321-40.7658,120.1635-61.1397L616.6406,0v176.029s-398.4474,129.6515-398.4474,129.6515l398.4477,126.4925v171.8155s-460.6361-161.2727-460.6361-161.2727c-58.3368-20.3919-98.9218-40.5849-121.7489-60.6091C11.4287,362.0764,0,336.5971,0,305.6806Z"
+          />
         </svg>
       </div>
 
+      {/* ── CONTENT LAYER ── */}
       <div className="max-w-7xl mx-auto relative z-10">
+        {/* CTA Section Integrated in Footer */}
+        <div className="relative mb-24 pb-24 border-b border-white/10">
+          <AnimatePresence mode="wait">
+            {!formSubmitted ? (
+              <motion.div
+                key="footer-cta-form"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start"
+              >
+                <div>
+                  <span className="text-brand-orange font-black uppercase text-xs tracking-eyebrow mb-8 block">Projectar o Futuro</span>
+                  <h2 className="text-4xl md:text-7xl font-black text-white leading-[1.1] md:leading-[0.9] mb-8 md:mb-12 tracking-tighter">
+                    Vamos Iniciar o seu <br />
+                    <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
+                  </h2>
+                  <p className="text-zinc-300 text-lg md:text-xl font-medium mb-12 max-w-xl leading-relaxed">
+                    Trabalhamos em estreita colaboração com arquitetos e promotores para garantir a máxima qualidade técnica em cada metro quadrado.
+                  </p>
+
+                  <ul className="space-y-5 text-zinc-200 font-medium">
+                    <li className="flex items-center gap-4">
+                      <Phone className="w-5 h-5 text-brand-orange flex-shrink-0" />
+                      <span>+351 239 000 000</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <Mail className="w-5 h-5 text-brand-orange flex-shrink-0" />
+                      <span>geral@pavimat.pt</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0" />
+                      <span>Rua Principal, 400 — 3000-001 Coimbra, Portugal</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-brand-green/40 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-brand-large shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="space-y-4">
+                      <label className="text-eyebrow uppercase tracking-eyebrow text-white/50 font-black ml-1 block">Assunto</label>
+                      <div className="flex flex-wrap gap-2.5">
+                        {themes.map((t) => (
+                          <button
+                            type="button"
+                            key={t.id}
+                            onClick={() => setContactTheme(t.id)}
+                            className={`px-5 py-2.5 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${
+                              contactTheme === t.id
+                                ? 'bg-brand-orange text-white shadow-lg'
+                                : 'bg-white/10 border border-white/10 text-white/40 hover:text-white hover:bg-white/20'
+                            }`}
+                          >
+                            <span className="text-sm">{t.icon}</span>
+                            {t.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <label className="text-eyebrow uppercase tracking-eyebrow text-white/50 font-black ml-1">Nome</label>
+                        <input required type="text" className="w-full bg-white/10 border border-white/10 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/20" placeholder="Nome Completo" />
+                      </div>
+                      <div className="space-y-3">
+                        <label className="text-eyebrow uppercase tracking-eyebrow text-white/50 font-black ml-1">Email</label>
+                        <input required type="email" className="w-full bg-white/10 border border-white/10 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/20" placeholder="exemplo@mail.com" />
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-eyebrow uppercase tracking-eyebrow text-white/50 font-black ml-1">Mensagem</label>
+                      <textarea required rows={4} className="w-full bg-white/10 border border-white/10 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/20 resize-none" placeholder="Conte-nos sobre o seu projeto..." />
+                    </div>
+                    <button type="submit" className="w-full bg-brand-orange text-white py-6 rounded-brand-input font-black uppercase text-xs tracking-eyebrow hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 flex items-center justify-center gap-4 group">
+                      Enviar mensagem <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </form>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="footer-success-msg"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-10 md:py-20 flex flex-col items-center"
+              >
+                <div className="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mb-8 shadow-2xl">
+                  <Check size={40} className="text-white" />
+                </div>
+                <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">Mensagem Enviada!</h2>
+                <p className="text-zinc-400 text-lg md:text-xl mb-12 max-w-md mx-auto leading-relaxed">
+                  Obrigado pelo seu interesse. Um dos nossos especialistas entrará em contacto muito brevemente.
+                </p>
+                <button 
+                  onClick={() => setFormSubmitted(false)}
+                  className="text-brand-orange font-black uppercase text-xs tracking-widest hover:text-white transition-colors"
+                >
+                  Enviar nova mensagem
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-8">
               <span className="text-3xl font-black tracking-tighter">PAVIMAT</span>
               <div className="w-2 h-2 rounded-full bg-brand-orange" />
             </div>
-            <p className="text-gray-400 font-medium mb-8 leading-relaxed">
+            <p className="text-zinc-100 font-medium mb-8 leading-relaxed">
               Elevando a arquitetura desde 1970 com materiais que definem padrões de luxo e durabilidade.
             </p>
             <div className="flex gap-4">
@@ -1043,7 +1191,7 @@ const Footer = () => {
 
           <div>
             <h4 className="text-lg font-bold mb-8">Soluções</h4>
-            <ul className="space-y-4 text-gray-400 font-medium">
+            <ul className="space-y-4 text-zinc-300 font-medium">
               {['Cerâmicos', 'Sanitários', 'Cozinhas', 'Pavimentos', 'Construção'].map(item => (
                 <li key={item}><a href="#" className="hover:text-white transition-colors">{item}</a></li>
               ))}
@@ -1052,7 +1200,7 @@ const Footer = () => {
 
           <div>
             <h4 className="text-lg font-bold mb-8">Empresa</h4>
-            <ul className="space-y-4 text-gray-400 font-medium">
+            <ul className="space-y-4 text-zinc-300 font-medium">
               {['Sobre Nós', 'Showroom', 'Carreiras', 'Projetos', 'Contacto'].map(item => (
                 <li key={item}><a href="#" className="hover:text-white transition-colors">{item}</a></li>
               ))}
@@ -1061,7 +1209,7 @@ const Footer = () => {
 
           <div>
             <h4 className="text-lg font-bold mb-8">Contacto</h4>
-            <ul className="space-y-6 text-gray-400 font-medium text-sm">
+            <ul className="space-y-6 text-zinc-300 font-medium text-sm">
               <li className="flex items-center gap-3">
                 <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0" />
                 <span>Rua Principal, 400<br/>3000-001 Coimbra, Portugal</span>
@@ -1078,7 +1226,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-top border-white/10 flex flex-col md:flex-row justify-between gap-4 text-sm text-gray-500 font-medium">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-4 text-sm text-zinc-400 font-medium">
           <p>© 2024 Pavimat S.A. Todos os direitos reservados.</p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-white">Privacidade</a>
@@ -1090,116 +1238,206 @@ const Footer = () => {
   );
 };
 
-const MainContent = () => {
-  const [activeBrandTab, setActiveBrandTab] = useState<string>(categories[0].id);
 
-  const handleScrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      // Find the App's vh if possible, but 100vh is usually fine or we can just scroll the element into view if we are already in the relative container
-      // Actually, since we are in the fixed content div that moves by transform, standard scrollIntoView might not work as expected with the custom scroll logic.
-      // But we can use the same logic as the Navbar.
-      // Since MainContent doesn't have access to vh easily without passing it, I'll just use a window scroll based on the offset.
-      const vh = window.innerHeight;
-      window.scrollTo({
-        top: vh + element.offsetTop,
-        behavior: 'smooth'
-      });
-    }
-  };
 
-  return (
-    <>
-      <DynamicShowcase onBrandCategoryClick={(catId) => {
-        setActiveBrandTab(catId);
-        handleScrollToSection('marcas');
-      }} />
-      <AboutUs />
-      <BrandScroller activeTab={activeBrandTab} setActiveTab={setActiveBrandTab} />
-      <ShowroomExperience />
-      <CTASection />
-      <Footer />
-    </>
-  );
-};
+export type ContactTheme = 'especialista' | 'orcamento' | 'showroom' | 'outro';
 
 export default function App() {
-  const { scrollY } = useScroll();
-  const [vh, setVh] = useState(0);
-  const [contentHeight, setContentHeight] = useState(0);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
+  const [activeBrandTab, setActiveBrandTab] = useState<string>(categories[0].id);
+  const [contactTheme, setContactTheme] = useState<ContactTheme>('especialista');
 
   useEffect(() => {
-    setVh(window.innerHeight);
-    const handleResize = () => {
-      setVh(window.innerHeight);
-      if (contentRef.current) {
-        setContentHeight(contentRef.current.scrollHeight);
-      }
-    };
-    
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    
-    // Set a timeout to ensure dynamic content Is rendered before measuring
-    const timer = setTimeout(handleResize, 500);
-    
+    // Initialize Lenis for smooth scrolling
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+    lenisRef.current = lenis;
+
+    // Keep ScrollTrigger in sync with Lenis's smooth scroll
+    lenis.on('scroll', ScrollTrigger.update);
+
+    function update(time: number) {
+      lenis.raf(time * 1000);
+    }
+
+    gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
+
     return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timer);
+      gsap.ticker.remove(update);
+      lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
-  // 1. Hero Lift: Moves from 0 up past the viewport to hide shadow completely
-  const heroY = useTransform(scrollY, [0, vh], [0, -(vh + 200)]);
-  
-  // 2. Content Scroll: Stays at 0 until scroll exceeds vh, then matches scroll speed
-  const contentY = useTransform(scrollY, (value) => {
-    if (value <= vh) return 0;
-    return -(value - vh);
-  });
+  useGSAP(() => {
+    // Hero Curtain Reveal: page is pinned at the top while the hero (overlay) slides up.
+    gsap.to(".hero-curtain", {
+      yPercent: -105, // Slightly more to ensure shadow is gone
+      ease: "power2.inOut",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "+=100%",
+        pin: ".content-overlay",
+        pinSpacing: true,
+        scrub: 1,
+        snap: {
+          snapTo: 1,
+          duration: 1.2,
+          ease: "power3.inOut"
+        },
+        onLeave: () => gsap.set(".hero-curtain", { display: "none" }),
+        onEnterBack: () => gsap.set(".hero-curtain", { display: "block" }),
+        invalidateOnRefresh: true
+      }
+    });
+
+    // Skew effect on scroll for images
+    let proxy = { skew: 0 },
+        skewSetter = gsap.quickSetter(".parallax-img", "skewY", "deg"),
+        clamp = gsap.utils.clamp(-2, 2);
+
+    ScrollTrigger.create({
+      onUpdate: (self) => {
+        let skew = clamp(self.getVelocity() / -400);
+        if (Math.abs(skew) > Math.abs(proxy.skew)) {
+          proxy.skew = skew;
+          gsap.to(proxy, {
+            skew: 0,
+            duration: 0.8,
+            ease: "power3",
+            overwrite: true,
+            onUpdate: () => skewSetter(proxy.skew)
+          });
+        }
+      }
+    });
+
+    // Parallax Images
+    const parallaxImages = document.querySelectorAll('.parallax-img');
+    parallaxImages.forEach((img) => {
+      gsap.to(img, {
+        yPercent: -15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: img,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    });
+
+    // Magnetic Buttons
+    const magneticElements = document.querySelectorAll('.magnetic');
+    magneticElements.forEach((el) => {
+      el.addEventListener('mousemove', (e: any) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        gsap.to(el, {
+          x: x * 0.4,
+          y: y * 0.4,
+          duration: 0.5,
+          ease: "power2.out"
+        });
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        gsap.to(el, {
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          ease: "elastic.out(1, 0.3)"
+        });
+      });
+    });
+  }, { scope: containerRef });
 
   const handleScrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      // The scroll position in the main window needs to be vh + element.offsetTop
-      // because the content only begins to move after vh.
-      window.scrollTo({
-        top: vh + element.offsetTop,
-        behavior: 'smooth'
-      });
+    // Lenis controls scroll — use its scrollTo so the smooth-scroll engine
+    // actually animates to the target (native scrollIntoView gets overridden
+    // by Lenis's RAF loop).
+    const lenis = lenisRef.current;
+    if (id === 'top') {
+      if (lenis) lenis.scrollTo(0, { duration: 1.4 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    if (!lenis) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    // Compute the document offset via the offsetTop chain. getBoundingClientRect
+    // returns the *visual* position, which is wrong during the curtain pin —
+    // every section reads 1 viewport short of its post-pin scroll target.
+    let target = 0;
+    let cur: HTMLElement | null = element;
+    while (cur) {
+      target += cur.offsetTop;
+      cur = cur.offsetParent as HTMLElement | null;
+    }
+
+    // .content-overlay is pinned with pinSpacing: true, which adds one viewport
+    // of phantom scroll before the content. Compensate when target is inside it.
+    const overlay = document.querySelector('.content-overlay');
+    if (overlay?.contains(element)) {
+      target += window.innerHeight;
+    }
+
+    lenis.scrollTo(target, { duration: 1.4 });
+  };
+
+  const handleGoToContact = (theme: ContactTheme) => {
+    setContactTheme(theme);
+    handleScrollToSection('contactos');
   };
 
   return (
     <div 
+      ref={containerRef}
       className="relative selection:bg-brand-orange/30 selection:text-brand-green bg-white"
-      style={{ height: vh + contentHeight }} // Total scrollable height
     >
-      <Navbar onScrollTo={handleScrollToSection} />
-      
-      <main className="relative">
-        {/* Layer 1: The Hero "Cover" (No fade, lifts completely) */}
-        <motion.div 
-          style={{ y: heroY }}
-          className="fixed top-0 left-0 w-full h-screen z-40 bg-white"
-        >
-          <Hero />
-        </motion.div>
+      <Navbar onScrollTo={handleScrollToSection} onCtaClick={handleGoToContact} />
 
-        {/* 
-          Layer 0: The Rest of the Content revealed Underneath
-          Stays static (contentY = 0) during the first vh of scroll.
-        */}
-        <motion.div 
-          ref={contentRef}
-          style={{ y: contentY }}
-          className="fixed top-0 left-0 w-full z-10 bg-white"
-        >
-          <MainContent />
-        </motion.div>
-      </main>
+      {/* Page Content — sits at the top of the document, hidden under the hero curtain
+          until the hero slides up. ScrollTrigger pins this in place during the reveal,
+          so the page is perfectly stationary while only the hero moves. */}
+      <div className="content-overlay relative z-10 bg-white">
+        <DynamicShowcase onBrandCategoryClick={(catId) => {
+          setActiveBrandTab(catId);
+          handleScrollToSection('marcas');
+        }} />
+        <AboutUs />
+        <BrandScroller activeTab={activeBrandTab} setActiveTab={setActiveBrandTab} />
+        <ShowroomExperience />
+        <Footer
+          contactTheme={contactTheme}
+          setContactTheme={setContactTheme}
+        />
+      </div>
+
+      {/* Hero — fixed overlay above the content. Animates upward on scroll to
+          reveal the (pinned) page beneath it. */}
+      <div className="hero-curtain fixed inset-x-0 top-0 h-screen z-30 will-change-transform">
+        <Hero onContactClick={handleGoToContact} onScrollTo={handleScrollToSection} />
+      </div>
     </div>
   );
 }
-
