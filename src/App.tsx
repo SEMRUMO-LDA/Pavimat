@@ -55,28 +55,28 @@ const categories: Category[] = [
   {
     id: 'ceramics',
     title: 'Cerâmicos e Revestimentos',
-    description: 'A vanguarda em texturas e acabamentos para superfícies que contam histórias.',
+    description: 'Texturas, formatos e acabamentos que definem o caráter de cada espaço.',
     icon: <LayoutGrid className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'bath',
     title: 'Soluções de Banho',
-    description: 'Design escandinavo e minimalismo funcional para o seu santuário particular.',
+    description: 'Sanitários, hidromassagem e mobiliário com a precisão dos grandes nomes europeus.',
     icon: <Droplets className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'stone',
     title: 'Pedra Natural e Flutuantes',
-    description: 'A nobreza da matéria-prima em harmonia com o conforto contemporâneo.',
+    description: 'Pedras nobres e pavimentos flutuantes para interiores que duram gerações.',
     icon: <Gem className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'structural',
     title: 'Materiais Estruturais',
-    description: 'Soluções robustas e tecnicamente superiores para a fundação do seu amanhã.',
+    description: 'A base técnica de cada obra — argamassas, impermeabilização e soluções de fundação.',
     icon: <Hammer className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
   }
@@ -190,7 +190,7 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           <motion.div
             style={{ color: isOpen ? '#FF6600' : logoColor }}
-            className="flex items-center gap-2 cursor-pointer magnetic"
+            className="flex items-center gap-2 cursor-pointer"
             onClick={() => {
               setIsOpen(false);
               onScrollTo('top');
@@ -307,9 +307,9 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
   // Loop: cycle through cards every 2.8s
   const heroCards = [
     { Icon: LayoutGrid, iconBg: 'bg-brand-orange', iconClass: 'text-white', title: 'Showroom 700m²', subtitle: 'Consultoria tátil e técnica.' },
-    { Icon: ShieldCheck, iconBg: 'bg-brand-green', iconClass: 'text-white opacity-80', title: 'Qualidade Master', subtitle: 'Marcas líderes mundiais.' },
-    { Icon: Truck, iconBg: 'bg-brand-black', iconClass: 'text-white', title: 'Frota Própria', subtitle: 'Logística rápida e segura.' },
-    { Icon: Star, iconBg: 'bg-white', iconClass: 'text-brand-orange fill-current', title: 'DESDE 1994', subtitle: 'Décadas de experiência.' },
+    { Icon: ShieldCheck, iconBg: 'bg-brand-green', iconClass: 'text-white opacity-80', title: 'Marcas Master', subtitle: 'Líderes ibéricos e mundiais.' },
+    { Icon: Truck, iconBg: 'bg-brand-black', iconClass: 'text-white', title: 'Frota Própria', subtitle: 'Entregas em obra, sem intermediários.' },
+    { Icon: Star, iconBg: 'bg-white', iconClass: 'text-brand-orange fill-current', title: 'DESDE 1985', subtitle: 'Quatro décadas a construir.' },
   ];
   const [activeCardIdx, setActiveCardIdx] = useState(0);
   useEffect(() => {
@@ -363,7 +363,7 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
-                Fornecemos as bases sólidas para os seus projetos. Materiais certificados e aconselhamento especializado para quem exige excelência técnica.
+                Materiais certificados e consultoria técnica para arquitetos, construtores e designers que recusam compromissos.
               </p>
 
               <div className="flex flex-wrap gap-3">
@@ -449,24 +449,24 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.4, duration: 1 }}
-              className="flex flex-col items-center gap-3 cursor-pointer group"
-              onClick={() => onScrollTo('sobre')}
+              className="flex flex-col items-center gap-3 cursor-pointer"
+              onClick={() => onScrollTo('colecoes')}
             >
-              <span className="text-white/40 uppercase font-black text-eyebrow tracking-eyebrow group-hover:text-white transition-colors duration-300">
+              <span className="text-white/60 uppercase font-black text-eyebrow tracking-eyebrow">
                 Descobrir Mais
               </span>
-              <div className="w-[18px] h-[30px] border-2 border-white/20 rounded-full flex justify-center p-1 group-hover:border-white/40 transition-colors duration-300">
-                <motion.div 
-                  animate={{ 
+              <div className="w-[18px] h-[30px] border-2 border-white/40 rounded-full flex justify-center p-1">
+                <motion.div
+                  animate={{
                     y: [0, 8, 0],
                     opacity: [1, 0.4, 1]
                   }}
-                  transition={{ 
-                    duration: 2, 
+                  transition={{
+                    duration: 2,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="w-1 h-1.5 bg-brand-orange rounded-full"
+                  className="w-1 h-1.5 bg-white rounded-full"
                 />
               </div>
             </motion.div>
@@ -605,110 +605,137 @@ const AboutUsV1 = () => {
 };
 
 /**
- * AboutUs V2 — storytelling on the right, customer testimonials on the left.
- * Replaces the milestone-cards layout with social proof.
+ * AboutUs V2 — editorial manifesto. Typography-as-image: large display
+ * headline, lead paragraph + aside, horizontal timeline strip, one pull-quote
+ * testimonial. No decorative cards — the section earns its weight from
+ * hierarchy and whitespace alone, matching the editorial scale of Hero/Coleções
+ * while staying light without imagery.
  */
-const AboutUs = () => {
-  const testimonials = [
-    {
-      quote: 'A Pavimat acompanhou-nos do design ao acabamento. A consultoria técnica fez toda a diferença.',
-      name: 'Joana Ribeiro',
-      role: 'Arquiteta · Coimbra',
-    },
-    {
-      quote: 'Materiais de excelência, prazos cumpridos e uma equipa que sabe responder a cada detalhe.',
-      name: 'Carlos Mendes',
-      role: 'Construtor · Aveiro',
-    },
-    {
-      quote: 'O showroom é uma experiência. Saímos com clareza do que escolher e porquê.',
-      name: 'Ana Sousa',
-      role: 'Designer de Interiores · Porto',
-    },
+const AboutUsV2 = () => {
+  const milestones = [
+    { year: '1985', label: 'Fundação', desc: 'Vale Paraíso' },
+    { year: '1997', label: 'Exclusividade', desc: 'Recer · referência ibérica' },
+    { year: '2010', label: 'Showroom', desc: '700m² de experiência' },
+    { year: 'Hoje', label: '+50 marcas', desc: 'Cerâmica, banho e design' },
   ];
 
   return (
-    <section id="sobre" data-nav-theme="light" className="py-24 md:py-40 px-6 lg:px-12 bg-brand-lilac overflow-hidden relative">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+    <section id="sobre" data-nav-theme="light" className="py-32 md:py-48 px-6 lg:px-12 bg-brand-lilac overflow-hidden">
+      <div className="max-w-6xl mx-auto">
 
-          {/* Left: Testimonials — minimalist editorial style */}
-          <div className="flex flex-col gap-10 order-2 lg:order-1">
-            <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block">
-              O que dizem de nós
+        {/* Eyebrow + divider rule */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-6 mb-12 md:mb-16"
+        >
+          <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
+            A nossa história
+          </span>
+          <div className="flex-1 h-px bg-zinc-300/60" />
+          <span className="text-brand-green/60 font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
+            Desde 1985
+          </span>
+        </motion.div>
+
+        {/* Editorial headline */}
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-20 md:mb-28 max-w-5xl"
+        >
+          Quatro décadas a construir<br />
+          o <span className="text-brand-orange italic font-medium">legado</span> dos seus projetos.
+        </motion.h2>
+
+        {/* Lead paragraph + aside */}
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 mb-24 md:mb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7"
+          >
+            <p className="text-xl md:text-2xl font-medium text-brand-black/80 leading-relaxed">
+              Fundada como Vale Paraíso em <span className="text-brand-green font-black">1985</span>, a Pavimat cresceu de uma empresa familiar para uma referência ibérica em materiais premium. A exclusividade Recer em 1997 marcou o início dessa transformação.
+            </p>
+          </motion.div>
+          <motion.aside
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-5 lg:pl-10 lg:border-l border-zinc-300/60"
+          >
+            <p className="text-zinc-500 text-base md:text-lg font-medium leading-relaxed mb-6">
+              Hoje cobrimos toda a obra: cerâmica, banho, pedra e estruturais. Acompanhamos cada projeto do desenho ao acabamento — porque a estética só vale quando a técnica responde.
+            </p>
+            <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase">
+              Compromisso · Excelência · Acompanhamento
             </span>
-            <div className="flex flex-col gap-10">
-              {testimonials.map((t, idx) => (
-                <motion.figure
-                  key={idx}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.08 }}
-                  viewport={{ once: true }}
-                  className="border-l border-zinc-200 pl-6"
-                >
-                  <p className="text-zinc-600 text-base md:text-lg italic font-medium leading-relaxed mb-3">
-                    "{t.quote}"
-                  </p>
-                  <figcaption className="text-zinc-400 text-xs font-medium tracking-wide">
-                    <span className="text-brand-green font-black">{t.name}</span>
-                    <span className="mx-2 text-zinc-300">·</span>
-                    {t.role}
-                  </figcaption>
-                </motion.figure>
-              ))}
-            </div>
-          </div>
-
-          {/* Right: Storytelling Content */}
-          <div className="order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              {/* Top Label */}
-              <div className="flex items-center gap-6 mb-12">
-                <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-                  EST. 1985 / RAÍZES ANOS 70
-                </span>
-                <div className="w-full h-[1px] bg-zinc-200/50" />
-              </div>
-
-              {/* Headline */}
-              <h2 className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.9] tracking-tighter mb-12">
-                Onde a <br />
-                <span className="text-brand-orange italic font-medium">Tradição</span> <br />
-                Encontra a <br />
-                Engenharia.
-              </h2>
-
-              {/* Quote Block */}
-              <div className="border-l-4 border-brand-orange pl-8 mb-12">
-                <p className="text-zinc-500 text-lg md:text-xl italic font-medium leading-relaxed">
-                  "O nosso percurso começou nos anos 70 como uma empresa familiar, evoluindo da robustez dos materiais básicos para a sofisticação do design contemporâneo."
-                </p>
-              </div>
-
-              {/* Narrative Text */}
-              <div className="space-y-8 text-zinc-500 text-sm md:text-base font-medium leading-relaxed mb-16">
-                <p>
-                  Fundada originalmente como Vale Paraíso em 1985, a Pavimat consolidou-se através de parcerias estratégicas, como a exclusividade Recer em 1997.
-                </p>
-                <p>
-                  Hoje, oferecemos soluções integrais: de cerâmicos a pastilha para piscina, passando por mobiliário de banho e sanitários de alto padrão. O nosso compromisso é o acompanhamento constante, garantindo que a visão técnica e a estética se unem em cada projeto.
-                </p>
-              </div>
-
-              <div className="w-full h-[1px] bg-zinc-100 mb-12" />
-            </motion.div>
-          </div>
-
+          </motion.aside>
         </div>
+
+        {/* Horizontal timeline strip */}
+        <div className="border-y border-zinc-300/60 py-12 md:py-16 mb-24 md:mb-32">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6">
+            {milestones.map((m, idx) => (
+              <motion.div
+                key={m.year}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+              >
+                <div className="text-5xl md:text-6xl font-black text-brand-green tracking-tighter leading-none mb-3">
+                  {m.year}
+                </div>
+                <div className="text-brand-orange text-eyebrow font-black uppercase tracking-eyebrow mb-2">
+                  {m.label}
+                </div>
+                <div className="text-zinc-500 text-sm font-medium">
+                  {m.desc}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Pull quote — single hero testimonial */}
+        <motion.figure
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="max-w-4xl mx-auto text-center"
+        >
+          <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase mb-10 block">
+            Quem trabalha connosco
+          </span>
+          <blockquote className="text-3xl md:text-4xl lg:text-5xl font-black text-brand-green leading-[1.15] tracking-tight mb-10">
+            <span className="text-brand-orange">"</span>
+            O showroom é uma experiência. Saímos com clareza do que escolher e porquê.
+            <span className="text-brand-orange">"</span>
+          </blockquote>
+          <figcaption className="flex items-center justify-center gap-4 text-sm">
+            <span className="text-brand-green font-black uppercase tracking-wide">Ana Sousa</span>
+            <span className="w-8 h-px bg-zinc-300" />
+            <span className="text-zinc-500 font-medium">Designer de Interiores · Porto</span>
+          </figcaption>
+        </motion.figure>
+
       </div>
     </section>
   );
 };
+
+// Active alias — swap to AboutUsV1 to revert to the milestone-cards layout.
+const AboutUs = AboutUsV2;
 
 const ShowroomExperience = () => {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
@@ -759,20 +786,20 @@ const ShowroomExperience = () => {
               viewport={{ once: true }}
               className="max-w-xl"
             >
-              <span className="text-brand-orange font-black uppercase text-eyebrow tracking-eyebrow mb-4 md:mb-6 inline-block">
-                Espaço Inspiracional
+              <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">
+                Showroom 700m²
               </span>
-              <h2 className="text-3xl md:text-6xl font-black text-brand-green tracking-tight mb-6 md:mb-8 leading-[1.1]">
+              <h2 className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-6 md:mb-8">
                 Uma Experiência <br/>Sensorial <span className="text-brand-orange italic font-medium">Tátil</span>.
               </h2>
               <p className="text-zinc-500 mb-10 text-lg leading-relaxed font-medium">
-                No nosso showroom de 700m², a matéria-prima ganha vida. Explore texturas, cores e acabamentos com o apoio da nossa equipa de consultoria especializada.
+                Em 700m² de exposição encontra cada material, textura e acabamento. A nossa equipa acompanha-o na seleção, com olho técnico e noção de obra.
               </p>
               
               <div className="space-y-6 mb-12">
                 {[
-                  { title: 'Consultoria Técnica', desc: 'Apoio especializado na seleção de materiais e especificações.' },
-                  { title: 'Amostras Exclusivas', desc: 'Vasta galeria de revestimentos, cerâmicos e pedras naturais.' }
+                  { title: 'Consultoria Técnica', desc: 'Especificação por projeto, com a precisão que a obra exige.' },
+                  { title: 'Galeria Completa', desc: 'Cerâmicos, pedras naturais, sanitários e revestimentos sob o mesmo teto.' }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 rounded-full bg-brand-green/5 flex items-center justify-center flex-shrink-0">
@@ -950,14 +977,14 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
             <motion.span 
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="text-brand-orange font-black uppercase tracking-eyebrow text-eyebrow block mb-6 px-1 border-l-2 border-brand-orange"
+              className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6"
             >
-              Coleções de Excelência
+              Coleções
             </motion.span>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-6xl font-black text-brand-green tracking-tighter leading-[0.9]"
+              className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight"
             >
               Onde a <span className="text-brand-orange italic font-medium">Técnica</span><br/>Eleva o Design.
             </motion.h2>
@@ -968,7 +995,7 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
             transition={{ delay: 0.2 }}
             className="text-zinc-500 max-w-sm font-medium text-lg leading-relaxed"
           >
-            Explore o detalhe técnico e a estética superior que sustenta os projetos mais exclusivos.
+            Cerâmica, banho, pedra e estruturais. Tudo o que precisa para um projeto de assinatura.
           </motion.p>
         </div>
 
@@ -1156,7 +1183,7 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
     <section id="marcas" data-nav-theme="light" className="py-24 bg-white border-y border-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center mb-16">
         <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-zinc-300 mb-8">
-          Parceiros de Confiança
+          Parceiros que escolhemos a dedo
         </h3>
         <div className="flex flex-wrap justify-center gap-4">
           {categories.map((cat) => (
@@ -1272,13 +1299,13 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
                 className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start"
               >
                 <div>
-                  <span className="text-brand-orange font-black uppercase text-xs tracking-eyebrow mb-8 block">Projectar o Futuro</span>
-                  <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.1] md:leading-[0.9] mb-8 md:mb-12 tracking-tighter">
-                    Vamos Iniciar o seu <br />
+                  <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">Vamos falar</span>
+                  <h2 className="text-5xl md:text-7xl lg:text-display font-black text-white leading-[0.95] tracking-tight mb-8 md:mb-12">
+                    Vamos iniciar o seu <br />
                     <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
                   </h2>
                   <p className="text-zinc-300 text-lg md:text-xl font-medium mb-12 max-w-xl leading-relaxed">
-                    Trabalhamos em estreita colaboração com arquitetos e promotores para garantir a máxima qualidade técnica em cada metro quadrado.
+                    Diga-nos o que está a desenhar. Respondemos com proposta técnica e amostras à medida — para arquitetos, construtores e promotores.
                   </p>
 
                   <ul className="space-y-5 text-zinc-200 font-medium">
@@ -1388,7 +1415,7 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
               }}
             />
             <p className="text-zinc-100 font-medium mb-8 leading-relaxed max-w-[260px]">
-              Elevando a arquitetura desde 1970 com materiais que definem padrões de luxo e durabilidade.
+              Construímos referências em cerâmica, banho e estruturais desde 1985.
             </p>
             <div className="flex gap-4">
               {[Instagram, Facebook].map((Icon, idx) => (
@@ -1404,7 +1431,7 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
             <div>
               <h4 className="text-lg font-bold mb-8">Soluções</h4>
               <ul className="space-y-4 text-zinc-300 font-medium">
-                {['Cerâmicos', 'Sanitários', 'Cozinhas', 'Pavimentos', 'Construção'].map(item => (
+                {['Cerâmicos e Revestimentos', 'Soluções de Banho', 'Pedra Natural', 'Materiais Estruturais', 'Showroom'].map(item => (
                   <li key={item}><a href="#" className="hover:text-white transition-colors">{item}</a></li>
                 ))}
               </ul>
@@ -1572,8 +1599,8 @@ export default function App() {
         const y = e.clientY - rect.top - rect.height / 2;
         
         gsap.to(el, {
-          x: x * 0.4,
-          y: y * 0.4,
+          x: x * 0.15,
+          y: y * 0.15,
           duration: 0.5,
           ease: "power2.out"
         });
@@ -1648,8 +1675,8 @@ export default function App() {
           setActiveBrandTab(catId);
           handleScrollToSection('marcas');
         }} />
-        <AboutUs />
         <BrandScroller activeTab={activeBrandTab} setActiveTab={setActiveBrandTab} />
+        <AboutUs />
         <ShowroomExperience />
         <Footer
           contactTheme={contactTheme}
