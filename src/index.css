@@ -92,4 +92,15 @@
   .glass-dark {
     @apply bg-brand-green/80 backdrop-blur-xl border border-white/10;
   }
+
+  /* Coleções vertical scroll fade mask — only on desktop where the cards
+     stack vertically with snap-y. Mobile/tablet uses horizontal scroll without mask. */
+  @media (min-width: 1024px) {
+    .cards-mask {
+      padding-top: 35%;
+      padding-bottom: 35%;
+      mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    }
+  }
 }
