@@ -827,7 +827,7 @@ const ShowroomExperience = () => {
           <div className="order-1 lg:order-2">
             <div className="relative group">
               {/* Main Image Container */}
-              <div className="relative aspect-[4/3] rounded-brand-large overflow-hidden shadow-brand-deep border border-zinc-100 bg-zinc-50">
+              <div className="relative aspect-square md:aspect-[4/3] rounded-brand-large overflow-hidden shadow-brand-deep border border-zinc-100 bg-zinc-50">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImgIndex}
@@ -863,8 +863,8 @@ const ShowroomExperience = () => {
 
               {/* Thumbnails */}
               <div className="relative mt-0">
-                <div 
-                  className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar py-8 md:py-14 px-6 md:px-12 -my-2 md:-my-4"
+                <div
+                  className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar py-14 px-6 md:px-12 -my-4"
                   style={{
                     maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)'
@@ -969,7 +969,7 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
   }, [activeCategory.id, showcaseCategories]);
 
   return (
-    <section id="colecoes" data-nav-theme="light" className="relative z-[5] lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 lg:px-12 bg-white flex flex-col lg:justify-center">
+    <section id="colecoes" data-nav-theme="light" className="relative z-10 lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 lg:px-12 bg-white flex flex-col lg:justify-center">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         {/* Header (Top) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 md:items-end mb-8 lg:mb-10 px-4 flex-shrink-0">
@@ -1034,7 +1034,7 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
               <div
                 ref={scrollRef}
                 style={{ scrollPaddingLeft: '24px' }}
-                className="w-screen lg:w-full -ml-6 lg:ml-0 flex lg:flex-col gap-4 overflow-x-auto lg:overflow-y-auto h-full no-scrollbar snap-x snap-mandatory lg:snap-y pl-6 pr-6 py-12 lg:p-12 lg:pr-12 -my-12 lg:-m-12 scroll-smooth cards-mask"
+                className="w-screen lg:w-full -ml-6 lg:ml-0 flex lg:flex-col gap-4 overflow-x-auto lg:overflow-y-auto h-full no-scrollbar snap-x snap-mandatory lg:snap-y pl-6 pr-6 py-24 lg:p-12 lg:pr-12 -my-24 lg:-m-12 scroll-smooth cards-mask"
               >
                 {showcaseCategories.map((cat, idx) => {
                   const isActive = activeCategory.id === cat.id;
@@ -1177,18 +1177,75 @@ interface BrandScrollerProps {
 
 const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
   const filteredPartners = partners.filter(p => p.category === activeTab);
-  
-  // Create a robust set of items (repeat enough times to cover any width, then double for loop)
+
+  // Duplicate the partner list so we can wrap scrollLeft seamlessly: when the
+  // track scrolls past 50% of its content width, jump back by that amount —
+  // the next half is identical, so the visual is continuous.
   const baseItems = filteredPartners.length > 0 ? [...filteredPartners, ...filteredPartners, ...filteredPartners] : [];
   const trackItems = [...baseItems, ...baseItems];
 
+  const trackRef = useRef<HTMLDivElement>(null);
+  const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    let raf = 0;
+    let lastT = performance.now();
+    const pxPerSec = 90;
+
+    const tick = (now: number) => {
+      const dt = (now - lastT) / 1000;
+      lastT = now;
+
+      if (!isPausedRef.current && track.scrollWidth > 0) {
+        track.scrollLeft += pxPerSec * dt;
+        const half = track.scrollWidth / 2;
+        if (track.scrollLeft >= half) track.scrollLeft -= half;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    let resumeTimer: number | undefined;
+    const queueResume = () => {
+      if (resumeTimer) window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => { isPausedRef.current = false; }, 1500);
+    };
+
+    const onPointerDown = () => { isPausedRef.current = true; if (resumeTimer) window.clearTimeout(resumeTimer); };
+    const onPointerEnd = () => { queueResume(); };
+    const onWheel = () => { isPausedRef.current = true; queueResume(); };
+    const onMouseEnter = () => { isPausedRef.current = true; if (resumeTimer) window.clearTimeout(resumeTimer); };
+    const onMouseLeave = () => { isPausedRef.current = false; };
+
+    track.addEventListener('pointerdown', onPointerDown);
+    track.addEventListener('pointerup', onPointerEnd);
+    track.addEventListener('pointercancel', onPointerEnd);
+    track.addEventListener('wheel', onWheel, { passive: true });
+    track.addEventListener('mouseenter', onMouseEnter);
+    track.addEventListener('mouseleave', onMouseLeave);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (resumeTimer) window.clearTimeout(resumeTimer);
+      track.removeEventListener('pointerdown', onPointerDown);
+      track.removeEventListener('pointerup', onPointerEnd);
+      track.removeEventListener('pointercancel', onPointerEnd);
+      track.removeEventListener('wheel', onWheel);
+      track.removeEventListener('mouseenter', onMouseEnter);
+      track.removeEventListener('mouseleave', onMouseLeave);
+    };
+  }, [activeTab]);
+
   return (
-    <section id="marcas" data-nav-theme="light" className="py-24 bg-white overflow-hidden">
+    <section id="marcas" data-nav-theme="light" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center mb-16">
         <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-zinc-300 mb-8">
           Parceiros que escolhemos a dedo
         </h3>
-        <div className="flex sm:flex-wrap justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar -mx-6 sm:mx-0 px-6 sm:px-0">
+        <div className="flex sm:flex-wrap justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar -mx-6 sm:mx-0 px-6 sm:px-0 py-4 sm:py-0 -my-4 sm:my-0">
           {categories.map((cat) => (
             <button
               key={cat.id}
@@ -1207,40 +1264,28 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
         </div>
       </div>
 
-      <div className="relative w-full flex overflow-hidden group">
-        {/* Shadow Overlays */}
+      <div className="relative w-full">
+        {/* Edge fades — fixed over the scrollable track */}
         <div className="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-        <div className="flex gap-16 py-4 animate-infinite-scroll flex-nowrap">
-          {trackItems.map((partner, idx) => (
-            <a 
-              key={`${activeTab}-${idx}`} 
-              href={partner.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-shrink-0 text-4xl md:text-6xl font-black text-zinc-100 uppercase whitespace-nowrap hover:text-brand-orange transition-colors cursor-pointer select-none px-4 no-underline"
-            >
-              {partner.name}
-            </a>
-          ))}
+        <div ref={trackRef} className="overflow-x-auto no-scrollbar">
+          <div className="flex gap-8 md:gap-12 py-4 flex-nowrap">
+            {trackItems.map((partner, idx) => (
+              <a
+                key={`${activeTab}-${idx}`}
+                href={partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                draggable={false}
+                className="flex-shrink-0 text-4xl md:text-6xl font-black text-zinc-100 uppercase whitespace-nowrap hover:text-brand-orange transition-colors cursor-pointer select-none px-2 no-underline"
+              >
+                {partner.name}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes infiniteScroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-infinite-scroll {
-          animation: infiniteScroll 30s linear infinite;
-          display: flex;
-          width: max-content;
-        }
-        .group:hover .animate-infinite-scroll {
-          animation-play-state: paused;
-        }
-      `}} />
     </section>
   );
 };
