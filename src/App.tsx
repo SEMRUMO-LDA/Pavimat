@@ -165,8 +165,8 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
 
   const menuItems = [
     { name: 'Produtos', id: 'colecoes' },
-    { name: 'Sobre', id: 'sobre' },
     { name: 'Marcas', id: 'marcas' },
+    { name: 'Sobre', id: 'sobre' },
     { name: 'Showroom', id: 'showroom' },
     { name: 'Contactos', id: 'contactos' }
   ];
@@ -969,7 +969,7 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
   }, [activeCategory.id, showcaseCategories]);
 
   return (
-    <section id="colecoes" data-nav-theme="light" className="min-h-screen pt-28 pb-10 lg:pt-32 lg:pb-12 px-6 lg:px-12 bg-white overflow-hidden flex flex-col justify-center">
+    <section id="colecoes" data-nav-theme="light" className="relative z-[5] min-h-screen pt-28 pb-10 lg:pt-32 lg:pb-12 px-6 lg:px-12 bg-white flex flex-col justify-center">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         {/* Header (Top) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 lg:mb-10 px-4 flex-shrink-0">
@@ -1180,7 +1180,7 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
   const trackItems = [...baseItems, ...baseItems];
 
   return (
-    <section id="marcas" data-nav-theme="light" className="py-24 bg-white border-y border-gray-100 overflow-hidden">
+    <section id="marcas" data-nav-theme="light" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center mb-16">
         <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-zinc-300 mb-8">
           Parceiros que escolhemos a dedo
