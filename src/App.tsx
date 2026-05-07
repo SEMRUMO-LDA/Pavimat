@@ -1043,10 +1043,13 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
                     key={cat.id}
                     data-category="true"
                     onClick={() => {
-                      scrollToCard(idx);
-                      setActiveCategory(cat);
-                      if (onBrandCategoryClick) {
-                        onBrandCategoryClick(cat.id);
+                      if (isActive) {
+                        // Second click on the active card jumps to its brand filter.
+                        if (onBrandCategoryClick) onBrandCategoryClick(cat.id);
+                      } else {
+                        // First click just brings the card into focus.
+                        scrollToCard(idx);
+                        setActiveCategory(cat);
                       }
                     }}
                     animate={{
