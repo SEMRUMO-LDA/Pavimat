@@ -1477,8 +1477,18 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-4 text-sm text-white font-medium">
-          <p>© 2024 Pavimat S.A. Todos os direitos reservados.</p>
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm text-white font-medium">
+          <p>
+            © 2026 Pavimat S.A. Todos os direitos reservados. — Desenvolvido por{' '}
+            <a
+              href="https://aorubro.pt/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-black hover:text-brand-orange transition-colors"
+            >
+              AORUBRO
+            </a>
+          </p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-brand-orange transition-colors">Privacidade</a>
             <a href="#" className="hover:text-brand-orange transition-colors">Termos de Uso</a>
