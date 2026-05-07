@@ -200,7 +200,7 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8 xl:gap-10 text-xs font-bold uppercase tracking-eyebrow">
+          <div className="hidden lg:flex items-center gap-8 xl:gap-10 text-sm font-bold uppercase tracking-wider">
             {menuItems.map((item) => (
               <motion.button
                 key={item.name}
@@ -1556,11 +1556,6 @@ export default function App() {
         pin: ".content-overlay",
         pinSpacing: true,
         scrub: 1,
-        snap: {
-          snapTo: 1,
-          duration: 1.2,
-          ease: "power3.inOut"
-        },
         onLeave: () => gsap.set(".hero-curtain", { display: "none" }),
         onEnterBack: () => gsap.set(".hero-curtain", { display: "block" }),
         invalidateOnRefresh: true
