@@ -356,7 +356,7 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="w-full lg:w-3/5"
             >
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
                 Construa o seu<br />
                 <span className="text-brand-green italic">Legado</span> de<br />
                 Confiança.
@@ -366,16 +366,16 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
                 Materiais certificados e consultoria técnica para arquitetos, construtores e designers que recusam compromissos.
               </p>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 <button
                   onClick={() => onContactClick('especialista')}
-                  className="bg-white hover:bg-white/90 text-brand-orange px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest flex items-center gap-2 transition-all cursor-pointer magnetic"
+                  className="w-full sm:w-auto bg-white hover:bg-white/90 text-brand-orange px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer magnetic"
                 >
                   Falar com especialista <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => onScrollTo('colecoes')}
-                  className="bg-transparent border border-white hover:bg-white hover:text-brand-orange text-white px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all cursor-pointer magnetic"
+                  className="w-full sm:w-auto bg-transparent border border-white hover:bg-white hover:text-brand-orange text-white px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all cursor-pointer magnetic"
                 >
                   Explorar Coleções
                 </button>
@@ -443,8 +443,8 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
             </div>
           </div>
 
-          {/* Scroll Down Indicator */}
-          <div className="pb-8 md:pb-12 flex justify-center w-full">
+          {/* Scroll Down Indicator — hidden on small phones where vertical real estate is tight */}
+          <div className="hidden sm:flex pb-8 md:pb-12 justify-center w-full">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -570,7 +570,7 @@ const AboutUsV1 = () => {
               </div>
 
               {/* Headline */}
-              <h2 className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.9] tracking-tighter mb-12">
+              <h2 className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.9] tracking-tighter mb-12">
                 Onde a <br />
                 <span className="text-brand-orange italic font-medium">Tradição</span> <br />
                 Encontra a <br />
@@ -646,7 +646,7 @@ const AboutUsV2 = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-20 md:mb-28 max-w-5xl"
+          className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-20 md:mb-28 max-w-5xl"
         >
           Quatro décadas a construir<br />
           o <span className="text-brand-orange italic font-medium">legado</span> dos seus projetos.
@@ -789,7 +789,7 @@ const ShowroomExperience = () => {
               <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">
                 Showroom 700m²
               </span>
-              <h2 className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-6 md:mb-8">
+              <h2 className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-6 md:mb-8">
                 Uma Experiência <br/>Sensorial <span className="text-brand-orange italic font-medium">Tátil</span>.
               </h2>
               <p className="text-zinc-500 mb-10 text-lg leading-relaxed font-medium">
@@ -969,12 +969,12 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
   }, [activeCategory.id, showcaseCategories]);
 
   return (
-    <section id="colecoes" data-nav-theme="light" className="relative z-[5] min-h-screen pt-28 pb-10 lg:pt-32 lg:pb-12 px-6 lg:px-12 bg-white flex flex-col justify-center">
+    <section id="colecoes" data-nav-theme="light" className="relative z-[5] lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 lg:px-12 bg-white flex flex-col lg:justify-center">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         {/* Header (Top) */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 lg:mb-10 px-4 flex-shrink-0">
-          <div className="max-w-2xl">
-            <motion.span 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 md:items-end mb-8 lg:mb-10 px-4 flex-shrink-0">
+          <div className="md:col-span-2 max-w-2xl">
+            <motion.span
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
               className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6"
@@ -984,16 +984,16 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="text-5xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight"
+              className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight"
             >
               Onde a <span className="text-brand-orange italic font-medium">Técnica</span><br/>Eleva o Design.
             </motion.h2>
           </div>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-zinc-500 max-w-sm font-medium text-lg leading-relaxed"
+            className="text-zinc-500 font-medium text-base md:text-lg leading-relaxed"
           >
             Cerâmica, banho, pedra e estruturais. Tudo o que precisa para um projeto de assinatura.
           </motion.p>
@@ -1188,19 +1188,19 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
         <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-zinc-300 mb-8">
           Parceiros que escolhemos a dedo
         </h3>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex sm:flex-wrap justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar -mx-6 sm:mx-0 px-6 sm:px-0">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveTab(cat.id)}
-              className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-eyebrow uppercase tracking-widest transition-all cursor-pointer ${
+              className={`flex-shrink-0 px-5 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-eyebrow uppercase tracking-widest whitespace-nowrap transition-all cursor-pointer ${
                 activeTab === cat.id
                   ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/20'
                   : 'bg-zinc-50 text-zinc-300 hover:text-brand-green'
               }`}
             >
-              {cat.id === 'ceramics' ? 'Cerâmicos' : 
-               cat.id === 'bath' ? 'Soluções Banho' : 
+              {cat.id === 'ceramics' ? 'Cerâmicos' :
+               cat.id === 'bath' ? 'Soluções Banho' :
                cat.id === 'stone' ? 'Pedra e Madeira' : 'Estruturais'}
             </button>
           ))}
@@ -1303,7 +1303,7 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
               >
                 <div>
                   <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">Vamos falar</span>
-                  <h2 className="text-5xl md:text-7xl lg:text-display font-black text-white leading-[0.95] tracking-tight mb-8 md:mb-12">
+                  <h2 className="text-4xl md:text-7xl lg:text-display font-black text-white leading-[0.95] tracking-tight mb-8 md:mb-12">
                     Vamos iniciar o seu <br />
                     <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
                   </h2>
@@ -1480,18 +1480,22 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm text-white font-medium">
-          <p>
-            © 2026 Pavimat S.A. Todos os direitos reservados. — Desenvolvido por{' '}
-            <a
-              href="https://aorubro.pt/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-black hover:text-brand-orange transition-colors"
-            >
-              AORUBRO
-            </a>
-          </p>
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-4 text-sm text-white font-medium">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 sm:gap-x-2">
+            <p>© 2026 Pavimat S.A. Todos os direitos reservados.</p>
+            <span className="hidden sm:inline" aria-hidden="true">—</span>
+            <p>
+              Desenvolvido por{' '}
+              <a
+                href="https://aorubro.pt/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-black hover:text-brand-orange transition-colors"
+              >
+                AORUBRO
+              </a>
+            </p>
+          </div>
           <div className="flex gap-8">
             <a href="#" className="hover:text-brand-orange transition-colors">Privacidade</a>
             <a href="#" className="hover:text-brand-orange transition-colors">Termos de Uso</a>
