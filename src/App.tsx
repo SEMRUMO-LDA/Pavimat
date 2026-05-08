@@ -205,7 +205,7 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
               <motion.button
                 key={item.name}
                 onClick={() => handleLinkClick(item.id)}
-                className="hover:opacity-70 transition-opacity relative group cursor-pointer magnetic"
+                className="hover:opacity-70 transition-opacity relative group cursor-pointer"
               >
                 {item.name}
               </motion.button>
@@ -216,7 +216,7 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
             {/* Header CTA — Orçamento (theme-aware: inverts on dark sections so it pops on the orange hero) */}
             <button
               onClick={() => handleCtaClick('orcamento')}
-              className={`hidden sm:inline-flex items-center px-6 md:px-8 py-2 md:py-3 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all active:scale-95 shadow-brand-medium cursor-pointer magnetic ${
+              className={`hidden sm:inline-flex items-center px-6 md:px-8 py-2 md:py-3 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all active:scale-95 shadow-brand-medium cursor-pointer ${
                 isDark
                   ? 'bg-white text-brand-orange hover:bg-white/90'
                   : 'bg-brand-orange text-white hover:bg-brand-green'
@@ -369,13 +369,13 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 <button
                   onClick={() => onContactClick('especialista')}
-                  className="w-full sm:w-auto bg-white hover:bg-white/90 text-brand-orange px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer magnetic"
+                  className="w-full sm:w-auto bg-white hover:bg-white/90 text-brand-orange px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   Falar com especialista <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => onScrollTo('colecoes')}
-                  className="w-full sm:w-auto bg-transparent border border-white hover:bg-white hover:text-brand-orange text-white px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all cursor-pointer magnetic"
+                  className="w-full sm:w-auto bg-transparent border border-white hover:bg-white hover:text-brand-orange text-white px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all cursor-pointer"
                 >
                   Explorar Coleções
                 </button>
@@ -428,7 +428,7 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
                       scale: { type: 'spring', stiffness: 220, damping: 14 },
                       y: { type: 'spring', stiffness: 220, damping: 14 },
                     }}
-                    className={`bg-brand-green/40 backdrop-blur-xl border border-white/10 p-4 rounded-brand-large flex items-center gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] z-10 magnetic w-[340px] ${positions[idx]}`}
+                    className={`bg-brand-green/40 backdrop-blur-xl border border-white/10 p-4 rounded-brand-large flex items-center gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] z-10 w-[340px] ${positions[idx]}`}
                   >
                     <div className={`w-16 h-16 rounded-brand-icon ${card.iconBg} flex items-center justify-center flex-shrink-0 shadow-lg`}>
                       <CardIcon className={`w-8 h-8 ${card.iconClass}`} />
@@ -619,6 +619,29 @@ const AboutUsV2 = () => {
     { year: 'Hoje', label: '+50 marcas', desc: 'Cerâmica, banho e design' },
   ];
 
+  const testimonials = [
+    {
+      quote: 'O showroom é uma experiência. Saímos com clareza do que escolher e porquê.',
+      name: 'Ana Sousa',
+      role: 'Designer de Interiores · Porto',
+    },
+    {
+      quote: 'A Pavimat acompanhou-nos do design ao acabamento. A consultoria técnica fez toda a diferença.',
+      name: 'Joana Ribeiro',
+      role: 'Arquiteta · Coimbra',
+    },
+    {
+      quote: 'Materiais de excelência, prazos cumpridos e uma equipa que sabe responder a cada detalhe.',
+      name: 'Carlos Mendes',
+      role: 'Construtor · Aveiro',
+    },
+  ];
+
+  const [testimonialIdx, setTestimonialIdx] = useState(0);
+  const activeTestimonial = testimonials[testimonialIdx];
+  const nextTestimonial = () => setTestimonialIdx((i) => (i + 1) % testimonials.length);
+  const prevTestimonial = () => setTestimonialIdx((i) => (i - 1 + testimonials.length) % testimonials.length);
+
   return (
     <section id="sobre" data-nav-theme="light" className="py-32 md:py-48 px-6 lg:px-12 bg-brand-lilac overflow-hidden">
       <div className="max-w-6xl mx-auto">
@@ -706,8 +729,8 @@ const AboutUsV2 = () => {
           </div>
         </div>
 
-        {/* Pull quote — single hero testimonial */}
-        <motion.figure
+        {/* Testimonials slider — pull quote of the week, with crossfade between voices */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -717,17 +740,60 @@ const AboutUsV2 = () => {
           <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase mb-10 block">
             Quem trabalha connosco
           </span>
-          <blockquote className="text-3xl md:text-4xl lg:text-5xl font-black text-brand-green leading-[1.15] tracking-tight mb-10">
-            <span className="text-brand-orange">"</span>
-            O showroom é uma experiência. Saímos com clareza do que escolher e porquê.
-            <span className="text-brand-orange">"</span>
-          </blockquote>
-          <figcaption className="flex items-center justify-center gap-4 text-sm">
-            <span className="text-brand-green font-black uppercase tracking-wide">Ana Sousa</span>
-            <span className="w-8 h-px bg-zinc-300" />
-            <span className="text-zinc-500 font-medium">Designer de Interiores · Porto</span>
-          </figcaption>
-        </motion.figure>
+
+          <div className="relative min-h-[14rem] md:min-h-[16rem]">
+            <AnimatePresence mode="wait">
+              <motion.figure
+                key={testimonialIdx}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              >
+                <blockquote className="text-3xl md:text-4xl lg:text-5xl font-black text-brand-green leading-[1.15] tracking-tight mb-10">
+                  <span className="text-brand-orange">"</span>
+                  {activeTestimonial.quote}
+                  <span className="text-brand-orange">"</span>
+                </blockquote>
+                <figcaption className="flex items-center justify-center gap-4 text-sm">
+                  <span className="text-brand-green font-black uppercase tracking-wide">{activeTestimonial.name}</span>
+                  <span className="w-8 h-px bg-zinc-300" />
+                  <span className="text-zinc-500 font-medium">{activeTestimonial.role}</span>
+                </figcaption>
+              </motion.figure>
+            </AnimatePresence>
+          </div>
+
+          {/* Slider controls */}
+          <div className="flex items-center justify-center gap-6 mt-12">
+            <button
+              onClick={prevTestimonial}
+              aria-label="Testemunho anterior"
+              className="p-2 rounded-full text-brand-green/60 hover:text-brand-orange transition-colors cursor-pointer"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <div className="flex items-center gap-2">
+              {testimonials.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setTestimonialIdx(idx)}
+                  aria-label={`Testemunho ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                    idx === testimonialIdx ? 'w-8 bg-brand-orange' : 'w-1.5 bg-zinc-300 hover:bg-zinc-400'
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={nextTestimonial}
+              aria-label="Testemunho seguinte"
+              className="p-2 rounded-full text-brand-green/60 hover:text-brand-orange transition-colors cursor-pointer"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </motion.div>
 
       </div>
     </section>
@@ -816,7 +882,7 @@ const ShowroomExperience = () => {
               <div className="flex flex-wrap gap-4">
                 <button 
                   onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=Pavimat+Anadia+Malaposta', '_blank')}
-                  className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer magnetic"
+                  className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer"
                 >
                   Visitar o Showroom
                 </button>
@@ -1541,9 +1607,17 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
               </a>
             </p>
           </div>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 sm:gap-8">
             <a href="#" className="hover:text-brand-orange transition-colors">Privacidade</a>
             <a href="#" className="hover:text-brand-orange transition-colors">Termos de Uso</a>
+            <a
+              href="https://www.livroreclamacoes.pt/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-brand-orange transition-colors"
+            >
+              Livro de Reclamações Online
+            </a>
           </div>
         </div>
       </div>
@@ -1647,31 +1721,6 @@ export default function App() {
       });
     });
 
-    // Magnetic Buttons
-    const magneticElements = document.querySelectorAll('.magnetic');
-    magneticElements.forEach((el) => {
-      el.addEventListener('mousemove', (e: any) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        
-        gsap.to(el, {
-          x: x * 0.15,
-          y: y * 0.15,
-          duration: 0.5,
-          ease: "power2.out"
-        });
-      });
-      
-      el.addEventListener('mouseleave', () => {
-        gsap.to(el, {
-          x: 0,
-          y: 0,
-          duration: 0.8,
-          ease: "elastic.out(1, 0.3)"
-        });
-      });
-    });
   }, { scope: containerRef });
 
   const handleScrollToSection = (id: string) => {
