@@ -1,8 +1,24 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
+import * as LucideIcons from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {
+  getCategories,
+  getPartners,
+  getTestimonials,
+  getShowroomImages,
+  submitContactForm,
+  subscribeNewsletter
+} from './lib/kiban';
+
+// Helper to render Lucide icons dynamically from a string name
+const getIconNode = (iconName: string): React.ReactNode => {
+  const IconComponent = (LucideIcons as any)[iconName] || LucideIcons.HelpCircle;
+  return <IconComponent className="w-6 h-6" />;
+};
+
 import { useGSAP } from '@gsap/react';
 import {
   ArrowRight,
@@ -611,7 +627,7 @@ const AboutUsV1 = () => {
  * hierarchy and whitespace alone, matching the editorial scale of Hero/Coleções
  * while staying light without imagery.
  */
-const AboutUsV2 = () => {
+const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; role: string; quote: string }[] }) => {
   const milestones = [
     { year: '1985', label: 'Fundação', desc: 'Vale Paraíso' },
     { year: '1997', label: 'Exclusividade', desc: 'Recer · referência ibérica' },
@@ -619,7 +635,7 @@ const AboutUsV2 = () => {
     { year: 'Hoje', label: '+50 marcas', desc: 'Cerâmica, banho e design' },
   ];
 
-  const testimonials = [
+  const testimonials = testimonialsList && testimonialsList.length > 0 ? testimonialsList : [
     {
       quote: 'O showroom é uma experiência. Saímos com clareza do que escolher e porquê.',
       name: 'Ana Sousa',
@@ -638,7 +654,7 @@ const AboutUsV2 = () => {
   ];
 
   const [testimonialIdx, setTestimonialIdx] = useState(0);
-  const activeTestimonial = testimonials[testimonialIdx];
+  const activeTestimonial = testimonials[testimonialIdx] || testimonials[0];
   const nextTestimonial = () => setTestimonialIdx((i) => (i + 1) % testimonials.length);
   const prevTestimonial = () => setTestimonialIdx((i) => (i - 1 + testimonials.length) % testimonials.length);
 
@@ -803,10 +819,10 @@ const AboutUsV2 = () => {
 // Active alias — swap to AboutUsV1 to revert to the milestone-cards layout.
 const AboutUs = AboutUsV2;
 
-const ShowroomExperience = () => {
+const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList: { url: string; title: string }[] }) => {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
-  const showroomImages = [
+  const showroomImages = showroomImagesList && showroomImagesList.length > 0 ? showroomImagesList : [
     {
       url: "/img/pavimat-showroom-out1.png",
       title: "Showroom Pavimat - Exterior"
@@ -968,13 +984,20 @@ const ShowroomExperience = () => {
 
 interface DynamicShowcaseProps {
   onBrandCategoryClick?: (id: string) => void;
+  categoriesList: Category[];
 }
 
-const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
-  const showcaseCategories = categories.slice(0, 4);
-  const [activeCategory, setActiveCategory] = useState(showcaseCategories[0]);
-  const activeIndex = showcaseCategories.findIndex(c => c.id === activeCategory.id);
+const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowcaseProps) => {
+  const showcaseCategories = categoriesList.slice(0, 4);
+  const [activeCategory, setActiveCategory] = useState(showcaseCategories[0] || categoriesList[0]);
+  const activeIndex = showcaseCategories.findIndex(c => c.id === (activeCategory?.id || ''));
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (showcaseCategories.length > 0) {
+      setActiveCategory(showcaseCategories[0]);
+    }
+  }, [categoriesList]);
 
   // Scroll only the cards container — using element.scrollIntoView({block:'center'})
   // also bubbles up to the document/window, causing the whole page to shift.
@@ -1239,10 +1262,12 @@ const DynamicShowcase = ({ onBrandCategoryClick }: DynamicShowcaseProps) => {
 interface BrandScrollerProps {
   activeTab: string;
   setActiveTab: (id: string) => void;
+  partnersList: BrandPartner[];
+  categoriesList: Category[];
 }
 
-const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
-  const filteredPartners = partners.filter(p => p.category === activeTab);
+const BrandScroller = ({ activeTab, setActiveTab, partnersList, categoriesList }: BrandScrollerProps) => {
+  const filteredPartners = partnersList.filter(p => p.category === activeTab);
 
   // Duplicate the partner list so we can wrap scrollLeft seamlessly: when the
   // track scrolls past 50% of its content width, jump back by that amount —
@@ -1312,7 +1337,7 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
           Parceiros que escolhemos a dedo
         </h3>
         <div className="flex sm:flex-wrap justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar -mx-6 sm:mx-0 px-6 sm:px-0 py-4 sm:py-0 -my-4 sm:my-0">
-          {categories.map((cat) => (
+          {categoriesList.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveTab(cat.id)}
@@ -1359,10 +1384,17 @@ const BrandScroller = ({ activeTab, setActiveTab }: BrandScrollerProps) => {
 interface FooterProps {
   contactTheme: ContactTheme;
   setContactTheme: (theme: ContactTheme) => void;
+  onSubmitContact: (name: string, email: string, message: string, subject: string) => Promise<boolean>;
+  onSubscribeNewsletter: (email: string) => Promise<boolean>;
 }
 
-const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
+const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNewsletter }: FooterProps) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const themes: { id: ContactTheme; label: string; icon: string }[] = [
     { id: 'especialista', label: 'Especialista', icon: '📞' },
@@ -1371,9 +1403,50 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
     { id: 'outro', label: 'Outro', icon: '✉️' },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormSubmitted(true);
+    setFormLoading(true);
+    setFormError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('nome') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('mensagem') as string;
+    const subject = themes.find(t => t.id === contactTheme)?.label || contactTheme;
+
+    try {
+      const success = await onSubmitContact(name, email, message, subject);
+      if (success) {
+        setFormSubmitted(true);
+      } else {
+        setFormError('Ocorreu um erro ao submeter o formulário. Por favor, tente novamente.');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Erro de ligação ao servidor.');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+
+    setNewsletterStatus('loading');
+    try {
+      const success = await onSubscribeNewsletter(newsletterEmail);
+      if (success) {
+        setNewsletterStatus('success');
+        setNewsletterEmail('');
+        setTimeout(() => setNewsletterStatus('idle'), 5000);
+      } else {
+        setNewsletterStatus('error');
+        setTimeout(() => setNewsletterStatus('idle'), 4000);
+      }
+    } catch {
+      setNewsletterStatus('error');
+      setTimeout(() => setNewsletterStatus('idle'), 4000);
+    }
   };
 
   return (
@@ -1462,22 +1535,28 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
                         ))}
                       </div>
                     </div>
+                    {formError && (
+                      <div className="text-sm font-semibold bg-red-500/10 border border-red-500/20 px-6 py-4 rounded-brand-input text-red-400">
+                        {formError}
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
                         <label className="text-eyebrow uppercase tracking-eyebrow text-white font-black ml-1">Nome</label>
-                        <input required type="text" className="w-full bg-white/10 border border-white/20 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/60" placeholder="Nome Completo" />
+                        <input required name="nome" type="text" className="w-full bg-white/10 border border-white/20 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/60" placeholder="Nome Completo" />
                       </div>
                       <div className="space-y-3">
                         <label className="text-eyebrow uppercase tracking-eyebrow text-white font-black ml-1">Email</label>
-                        <input required type="email" className="w-full bg-white/10 border border-white/20 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/60" placeholder="exemplo@mail.com" />
+                        <input required name="email" type="email" className="w-full bg-white/10 border border-white/20 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/60" placeholder="exemplo@mail.com" />
                       </div>
                     </div>
                     <div className="space-y-3">
                       <label className="text-eyebrow uppercase tracking-eyebrow text-white font-black ml-1">Mensagem</label>
-                      <textarea required rows={4} className="w-full bg-white/10 border border-white/20 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/60 resize-none" placeholder="Conte-nos sobre o seu projeto..." />
+                      <textarea required name="mensagem" rows={4} className="w-full bg-white/10 border border-white/20 rounded-brand-input px-6 py-4 text-white focus:border-brand-orange outline-none transition-all placeholder:text-white/60 resize-none" placeholder="Conte-nos sobre o seu projeto..." />
                     </div>
-                    <button type="submit" className="w-full bg-brand-orange text-white py-6 rounded-brand-input font-black uppercase text-xs tracking-eyebrow hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 flex items-center justify-center gap-4 group">
-                      Enviar mensagem <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    <button type="submit" disabled={formLoading} className="w-full bg-brand-orange text-white py-6 rounded-brand-input font-black uppercase text-xs tracking-eyebrow hover:bg-white hover:text-brand-green transition-all shadow-brand-medium active:scale-95 flex items-center justify-center gap-4 group disabled:opacity-50 disabled:cursor-not-allowed">
+                      {formLoading ? 'A enviar...' : 'Enviar mensagem'}
+                      {!formLoading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
                     </button>
                   </form>
                 </div>
@@ -1566,10 +1645,7 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
                 Novidades sobre coleções, projetos e eventos no showroom.
               </p>
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  // TODO: wire up to email service
-                }}
+                onSubmit={handleNewsletterSubmit}
                 className="space-y-3"
               >
                 <label htmlFor="newsletter-email" className="sr-only">Email</label>
@@ -1577,14 +1653,20 @@ const Footer = ({ contactTheme, setContactTheme }: FooterProps) => {
                   id="newsletter-email"
                   type="email"
                   required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="o.seu@email.com"
                   className="w-full bg-white/5 border border-white/10 rounded-brand-input px-5 py-3.5 text-white placeholder:text-white/30 focus:border-brand-orange outline-none transition-colors text-sm"
                 />
                 <button
                   type="submit"
-                  className="w-full bg-brand-orange text-white py-3.5 rounded-brand-input text-eyebrow font-black uppercase tracking-eyebrow hover:bg-white hover:text-brand-green transition-colors flex items-center justify-center gap-2"
+                  disabled={newsletterStatus === 'loading'}
+                  className="w-full bg-brand-orange text-white py-3.5 rounded-brand-input text-eyebrow font-black uppercase tracking-eyebrow hover:bg-white hover:text-brand-green transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  Subscrever <ArrowRight size={14} />
+                  {newsletterStatus === 'loading' ? 'A enviar...' :
+                   newsletterStatus === 'success' ? 'Subscrito!' :
+                   newsletterStatus === 'error' ? 'Erro. Tentar novamente' : 'Subscrever'}
+                  {newsletterStatus === 'idle' && <ArrowRight size={14} />}
                 </button>
               </form>
             </div>
@@ -1632,8 +1714,92 @@ export type ContactTheme = 'especialista' | 'orcamento' | 'showroom' | 'outro';
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const lenisRef = useRef<Lenis | null>(null);
+  const [categoriesList, setCategoriesList] = useState<Category[]>(categories);
+  const [partnersList, setPartnersList] = useState<BrandPartner[]>(partners);
+  const [testimonialsList, setTestimonialsList] = useState<KibanTestimonial[]>([]);
+  const [showroomImagesList, setShowroomImagesList] = useState<KibanShowroomImage[]>([]);
   const [activeBrandTab, setActiveBrandTab] = useState<string>(categories[0].id);
   const [contactTheme, setContactTheme] = useState<ContactTheme>('especialista');
+
+  useEffect(() => {
+    const fetchCmsData = async () => {
+      // 1. Fetch categories
+      try {
+        const cmsCategories = await getCategories();
+        if (cmsCategories && cmsCategories.length > 0) {
+          const mappedCategories = cmsCategories.map(cat => ({
+            id: cat.id,
+            title: cat.title,
+            description: cat.description,
+            icon: getIconNode(cat.icon),
+            imageUrl: cat.imageUrl,
+          }));
+          setCategoriesList(mappedCategories);
+        }
+      } catch (err) {
+        console.warn('Failed to load categories from KibanCMS, using fallback static data.', err);
+      }
+
+      // 2. Fetch partners
+      try {
+        const cmsPartners = await getPartners();
+        if (cmsPartners && cmsPartners.length > 0) {
+          setPartnersList(cmsPartners);
+        }
+      } catch (err) {
+        console.warn('Failed to load partners from KibanCMS, using fallback static data.', err);
+      }
+
+      // 3. Fetch testimonials
+      try {
+        const cmsTestimonials = await getTestimonials();
+        if (cmsTestimonials && cmsTestimonials.length > 0) {
+          setTestimonialsList(cmsTestimonials);
+        }
+      } catch (err) {
+        console.warn('Failed to load testimonials from KibanCMS, using fallback static data.', err);
+      }
+
+      // 4. Fetch showroom images
+      try {
+        const cmsShowroomImages = await getShowroomImages();
+        if (cmsShowroomImages && cmsShowroomImages.length > 0) {
+          setShowroomImagesList(cmsShowroomImages);
+        }
+      } catch (err) {
+        console.warn('Failed to load showroom images from KibanCMS, using fallback static data.', err);
+      }
+    };
+
+    fetchCmsData();
+  }, []);
+
+  const handleContactSubmit = async (name: string, email: string, message: string, subject: string): Promise<boolean> => {
+    try {
+      const response = await submitContactForm({
+        form_name: 'contact',
+        name,
+        email,
+        subject,
+        message,
+        source_url: window.location.href,
+      });
+      return response.success;
+    } catch (err) {
+      console.error('Error submitting contact form to KibanCMS:', err);
+      throw err;
+    }
+  };
+
+  const handleNewsletterSubscribe = async (email: string): Promise<boolean> => {
+    try {
+      const response = await subscribeNewsletter(email, 'footer');
+      return response.success;
+    } catch (err) {
+      console.error('Error subscribing to newsletter on KibanCMS:', err);
+      throw err;
+    }
+  };
 
   useEffect(() => {
     // Initialize Lenis for smooth scrolling
@@ -1777,16 +1943,26 @@ export default function App() {
           until the hero slides up. ScrollTrigger pins this in place during the reveal,
           so the page is perfectly stationary while only the hero moves. */}
       <div className="content-overlay relative z-10 bg-white">
-        <DynamicShowcase onBrandCategoryClick={(catId) => {
-          setActiveBrandTab(catId);
-          handleScrollToSection('marcas');
-        }} />
-        <BrandScroller activeTab={activeBrandTab} setActiveTab={setActiveBrandTab} />
-        <AboutUs />
-        <ShowroomExperience />
+        <DynamicShowcase 
+          categoriesList={categoriesList}
+          onBrandCategoryClick={(catId) => {
+            setActiveBrandTab(catId);
+            handleScrollToSection('marcas');
+          }} 
+        />
+        <BrandScroller 
+          activeTab={activeBrandTab} 
+          setActiveTab={setActiveBrandTab} 
+          partnersList={partnersList}
+          categoriesList={categoriesList}
+        />
+        <AboutUs testimonialsList={testimonialsList} />
+        <ShowroomExperience showroomImagesList={showroomImagesList} />
         <Footer
           contactTheme={contactTheme}
           setContactTheme={setContactTheme}
+          onSubmitContact={handleContactSubmit}
+          onSubscribeNewsletter={handleNewsletterSubscribe}
         />
       </div>
 
