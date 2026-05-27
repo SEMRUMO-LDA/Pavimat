@@ -1347,9 +1347,7 @@ const BrandScroller = ({ activeTab, setActiveTab, partnersList, categoriesList }
                   : 'bg-zinc-50 text-zinc-300 hover:text-brand-green'
               }`}
             >
-              {cat.id === 'ceramics' ? 'Cerâmicos' :
-               cat.id === 'bath' ? 'Soluções Banho' :
-               cat.id === 'stone' ? 'Pedra e Madeira' : 'Estruturais'}
+              {cat.title}
             </button>
           ))}
         </div>
@@ -1735,6 +1733,7 @@ export default function App() {
             imageUrl: cat.imageUrl,
           }));
           setCategoriesList(mappedCategories);
+          setActiveBrandTab(mappedCategories[0].id);
         }
       } catch (err) {
         console.warn('Failed to load categories from KibanCMS, using fallback static data.', err);
