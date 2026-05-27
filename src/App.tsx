@@ -988,7 +988,7 @@ interface DynamicShowcaseProps {
 }
 
 const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowcaseProps) => {
-  const showcaseCategories = categoriesList.slice(0, 4);
+  const showcaseCategories = categoriesList;
   const [activeCategory, setActiveCategory] = useState(showcaseCategories[0] || categoriesList[0]);
   const activeIndex = showcaseCategories.findIndex(c => c.id === (activeCategory?.id || ''));
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1772,6 +1772,28 @@ export default function App() {
     };
 
     fetchCmsData();
+  }, []);
+
+  useEffect(() => {
+    // Dynamic injection of the Universal Kiban Widget Loader
+    const apiUrl = import.meta.env.VITE_KIBAN_API_URL;
+    const apiKey = import.meta.env.VITE_KIBAN_API_KEY;
+
+    if (apiUrl && apiKey && apiKey !== 'your_kiban_api_key_here') {
+      const script = document.createElement('script');
+      script.src = `${apiUrl}/api/v1/widgets/loader.js`;
+      script.setAttribute('data-api-key', apiKey);
+      script.async = true;
+      document.body.appendChild(script);
+
+      return () => {
+        try {
+          document.body.removeChild(script);
+        } catch (e) {
+          // Ignore if already removed
+        }
+      };
+    }
   }, []);
 
   const handleContactSubmit = async (name: string, email: string, message: string, subject: string): Promise<boolean> => {
