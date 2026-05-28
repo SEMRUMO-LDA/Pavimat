@@ -2067,14 +2067,14 @@ export default function App() {
   return (
     <div 
       ref={containerRef}
-      className="relative selection:bg-brand-orange/30 selection:text-brand-green bg-white"
+      className="relative selection:bg-brand-orange/30 selection:text-brand-green bg-brand-green"
     >
       <Navbar onScrollTo={handleScrollToSection} onCtaClick={handleGoToContact} />
 
       {/* Page Content — sits at the top of the document, hidden under the hero curtain
           until the hero slides up. ScrollTrigger pins this in place during the reveal,
           so the page is perfectly stationary while only the hero moves. */}
-      <div className="content-overlay relative z-10 bg-white">
+      <div className="content-overlay relative z-10 bg-brand-green">
         <DynamicShowcase 
           categoriesList={categoriesList}
           onBrandCategoryClick={(catId) => {
