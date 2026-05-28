@@ -1473,44 +1473,50 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
       <div className="max-w-7xl mx-auto relative z-10">
         {/* CTA Section Integrated in Footer */}
         <div className="relative mb-24 pb-24 border-b border-white/10">
-          <AnimatePresence mode="wait">
-            {!formSubmitted ? (
-              <motion.div
-                key="footer-cta-form"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start"
-              >
-                <div>
-                  <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">Vamos falar</span>
-                  <h2 className="text-4xl md:text-7xl lg:text-display font-black text-white leading-[0.95] tracking-tight mb-8 md:mb-12">
-                    Vamos iniciar o seu <br />
-                    <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
-                  </h2>
-                  <p className="text-zinc-300 text-lg md:text-xl font-medium mb-12 max-w-xl leading-relaxed">
-                    Diga-nos o que está a desenhar. Respondemos com proposta técnica e amostras à medida — para arquitetos, construtores e promotores.
-                  </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">Vamos falar</span>
+              <h2 className="text-4xl md:text-7xl lg:text-display font-black text-white leading-[0.95] tracking-tight mb-8 md:mb-12">
+                Vamos iniciar o seu <br />
+                <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
+              </h2>
+              <p className="text-zinc-300 text-lg md:text-xl font-medium mb-12 max-w-xl leading-relaxed">
+                Diga-nos o que está a desenhar. Respondemos com proposta técnica e amostras à medida — para arquitetos, construtores e promotores.
+              </p>
 
-                  <ul className="space-y-5 text-zinc-200 font-medium">
-                    <li className="flex items-center gap-4">
-                      <Phone className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                      <span>+351 239 000 000</span>
-                    </li>
-                    <li className="flex items-center gap-4">
-                      <Mail className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                      <span>geral@pavimat.pt</span>
-                    </li>
-                    <li className="flex items-center gap-4">
-                      <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                      <span>Rua Principal, 400 — 3000-001 Coimbra, Portugal</span>
-                    </li>
-                  </ul>
-                </div>
+              <ul className="space-y-5 text-zinc-200 font-medium">
+                <li className="flex items-center gap-4">
+                  <Phone className="w-5 h-5 text-brand-orange flex-shrink-0" />
+                  <span>+351 239 000 000</span>
+                </li>
+                <li className="flex items-center gap-4">
+                  <Mail className="w-5 h-5 text-brand-orange flex-shrink-0" />
+                  <span>geral@pavimat.pt</span>
+                </li>
+                <li className="flex items-center gap-4">
+                  <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0" />
+                  <span>Rua Principal, 400 — 3000-001 Coimbra, Portugal</span>
+                </li>
+              </ul>
+            </motion.div>
 
-                <div className="bg-brand-green/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 lg:p-12 rounded-brand-large shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-                  <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="bg-brand-green/40 backdrop-blur-xl border border-white/10 p-6 md:p-8 lg:p-12 rounded-brand-large shadow-[0_20px_50px_rgba(0,0,0,0.3)] min-h-[480px] flex flex-col justify-center">
+              <AnimatePresence mode="wait">
+                {!formSubmitted ? (
+                  <motion.form
+                    key="footer-cta-form"
+                    onSubmit={handleSubmit}
+                    className="space-y-8"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -15 }}
+                    transition={{ duration: 0.4 }}
+                  >
                     <div className="space-y-3">
                       <label className="text-eyebrow uppercase tracking-eyebrow text-white font-black ml-1 block">Assunto</label>
                       <div className="flex flex-wrap gap-x-8 gap-y-3 border-b border-white/30">
@@ -1556,32 +1562,34 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
                       {formLoading ? 'A enviar...' : 'Enviar mensagem'}
                       {!formLoading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
                     </button>
-                  </form>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="footer-success-msg"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-10 md:py-20 flex flex-col items-center"
-              >
-                <div className="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mb-8 shadow-2xl">
-                  <Check size={40} className="text-white" />
-                </div>
-                <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">Mensagem Enviada!</h2>
-                <p className="text-zinc-400 text-lg md:text-xl mb-12 max-w-md mx-auto leading-relaxed">
-                  Obrigado pelo seu interesse. Um dos nossos especialistas entrará em contacto muito brevemente.
-                </p>
-                <button 
-                  onClick={() => setFormSubmitted(false)}
-                  className="text-brand-orange font-black uppercase text-xs tracking-widest hover:text-white transition-colors"
-                >
-                  Enviar nova mensagem
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  </motion.form>
+                ) : (
+                  <motion.div
+                    key="footer-success-msg"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4 }}
+                    className="text-center py-6 flex flex-col items-center justify-center"
+                  >
+                    <div className="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center mb-6 shadow-xl">
+                      <Check size={32} className="text-white" />
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight">Mensagem Enviada!</h3>
+                    <p className="text-zinc-300 text-sm md:text-base mb-8 max-w-sm mx-auto leading-relaxed">
+                      Obrigado pelo seu interesse. Um dos nossos especialistas entrará em contacto muito brevemente.
+                    </p>
+                    <button 
+                      onClick={() => setFormSubmitted(false)}
+                      className="text-brand-orange font-black uppercase text-xs tracking-widest hover:text-white transition-colors"
+                    >
+                      Enviar nova mensagem
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
 
         {/* Brand zone (col 1) gets explicit separation from the utility columns */}
