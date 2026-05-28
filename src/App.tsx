@@ -12,7 +12,9 @@ import {
   submitContactForm,
   subscribeNewsletter,
   getHeroConfig,
-  KibanHeroConfig
+  KibanHeroConfig,
+  KibanTestimonial,
+  KibanShowroomImage
 } from './lib/kiban';
 
 // Helper to render Lucide icons dynamically from a string name
@@ -210,8 +212,7 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
             style={{ color: isOpen ? '#FF6600' : logoColor }}
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => {
-              setIsOpen(false);
-              onScrollTo('top');
+              window.location.href = '/';
             }}
           >
             <PavimatLogo className="h-6 md:h-7 w-auto" />
@@ -1409,9 +1410,20 @@ interface FooterProps {
   setContactTheme: (theme: ContactTheme) => void;
   onSubmitContact: (name: string, email: string, message: string, subject: string) => Promise<boolean>;
   onSubscribeNewsletter: (email: string) => Promise<boolean>;
+  categoriesList: Category[];
+  onCategoryClick: (catId: string) => void;
+  onScrollTo: (sectionId: string) => void;
 }
 
-const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNewsletter }: FooterProps) => {
+const Footer = ({ 
+  contactTheme, 
+  setContactTheme, 
+  onSubmitContact, 
+  onSubscribeNewsletter,
+  categoriesList,
+  onCategoryClick,
+  onScrollTo
+}: FooterProps) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -1622,9 +1634,12 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
           {/* Brand block */}
           <div>
             <div
-              role="img"
+              role="button"
               aria-label="Pavimat"
-              className="mb-8 bg-brand-orange"
+              className="mb-8 bg-brand-orange cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={() => {
+                window.location.href = '/';
+              }}
               style={{
                 maskImage: 'url(/img/SVG/pavimat-logo-tagline.svg)',
                 WebkitMaskImage: 'url(/img/SVG/pavimat-logo-tagline.svg)',
@@ -1642,8 +1657,17 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
               Construímos referências em cerâmica, banho e estruturais desde 1985.
             </p>
             <div className="flex gap-4">
-              {[Instagram, Facebook].map((Icon, idx) => (
-                <a key={idx} href="#" className="w-12 h-12 rounded-brand bg-white/5 flex items-center justify-center hover:bg-brand-orange transition-all shadow-brand-soft hover:-translate-y-1">
+              {[
+                { Icon: Instagram, href: 'https://www.instagram.com/pavimat.pt' },
+                { Icon: Facebook, href: 'https://fb.com/pavimat.pt' }
+              ].map(({ Icon, href }, idx) => (
+                <a 
+                  key={idx} 
+                  href={href} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-12 h-12 rounded-brand bg-white/5 flex items-center justify-center hover:bg-brand-orange transition-all shadow-brand-soft hover:-translate-y-1"
+                >
                   <Icon className="w-5 h-5" />
                 </a>
               ))}
@@ -1655,8 +1679,15 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
             <div>
               <h4 className="text-lg font-bold mb-8">Soluções</h4>
               <ul className="space-y-4 text-zinc-300 font-medium">
-                {['Cerâmicos e Revestimentos', 'Soluções de Banho', 'Pedra Natural', 'Materiais Estruturais', 'Showroom'].map(item => (
-                  <li key={item}><a href="#" className="hover:text-white transition-colors">{item}</a></li>
+                {categoriesList.map(cat => (
+                  <li key={cat.id}>
+                    <button 
+                      onClick={() => onCategoryClick(cat.id)}
+                      className="hover:text-white transition-colors text-left font-medium focus:outline-none transition-all hover:translate-x-1"
+                    >
+                      {cat.title}
+                    </button>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -1664,8 +1695,27 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
             <div>
               <h4 className="text-lg font-bold mb-8">Empresa</h4>
               <ul className="space-y-4 text-zinc-300 font-medium">
-                {['Sobre Nós', 'Showroom', 'Carreiras', 'Projetos', 'Contacto'].map(item => (
-                  <li key={item}><a href="#" className="hover:text-white transition-colors">{item}</a></li>
+                {[
+                  { name: 'Produtos', action: () => onScrollTo('colecoes') },
+                  { name: 'Marcas', action: () => onScrollTo('marcas') },
+                  { name: 'Sobre', action: () => onScrollTo('sobre') },
+                  { name: 'Showroom', action: () => onScrollTo('showroom') },
+                  { name: 'Recrutamento', action: null, href: 'mailto:escritorio@pavimat.pt' }
+                ].map(item => (
+                  <li key={item.name}>
+                    {item.action ? (
+                      <button 
+                        onClick={item.action} 
+                        className="hover:text-white transition-colors text-left font-medium focus:outline-none transition-all hover:translate-x-1"
+                      >
+                        {item.name}
+                      </button>
+                    ) : (
+                      <a href={item.href} className="hover:text-white transition-colors block transition-all hover:translate-x-1">
+                        {item.name}
+                      </a>
+                    )}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -1706,7 +1756,7 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-4 text-sm text-white font-medium">
           <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 sm:gap-x-2">
-            <p>© 2026 Pavimat S.A. Todos os direitos reservados.</p>
+            <p>© {new Date().getFullYear()} PARAISODECOR, LDA. Todos os direitos reservados.</p>
             <span className="hidden sm:inline" aria-hidden="true">—</span>
             <p>
               Desenvolvido por{' '}
@@ -1878,7 +1928,7 @@ export default function App() {
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
-    });
+    } as any);
     lenisRef.current = lenis;
 
     // Keep ScrollTrigger in sync with Lenis's smooth scroll
@@ -2028,6 +2078,12 @@ export default function App() {
           setContactTheme={setContactTheme}
           onSubmitContact={handleContactSubmit}
           onSubscribeNewsletter={handleNewsletterSubscribe}
+          categoriesList={categoriesList}
+          onCategoryClick={(catId) => {
+            setActiveBrandTab(catId);
+            handleScrollToSection('marcas');
+          }}
+          onScrollTo={handleScrollToSection}
         />
       </div>
 

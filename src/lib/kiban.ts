@@ -183,13 +183,14 @@ export async function submitContactForm(data: ContactFormData): Promise<{ succes
 
 /**
  * Subscribe email to the KibanCMS Newsletter.
+ * Falls back to using the KibanCMS Forms API since the dedicated Newsletter addon is not installed.
  */
 export async function subscribeNewsletter(email: string, source: string = 'footer'): Promise<{ success: boolean }> {
   if (!import.meta.env.VITE_KIBAN_API_KEY) {
     throw new Error('KibanCMS API key not configured.');
   }
 
-  const url = `${API_URL}/api/v1/newsletter/subscribe`;
+  const url = `${API_URL}/api/v1/forms/submit`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -197,8 +198,12 @@ export async function subscribeNewsletter(email: string, source: string = 'foote
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      form_name: 'newsletter',
+      name: 'Subscritor Newsletter',
       email,
-      source,
+      subject: 'Nova Subscrição de Newsletter',
+      message: `Subscrição de newsletter a partir de: ${source}`,
+      source_url: typeof window !== 'undefined' ? window.location.href : '',
     }),
   });
 
