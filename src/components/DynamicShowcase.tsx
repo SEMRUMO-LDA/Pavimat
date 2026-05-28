@@ -96,8 +96,8 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
   return (
     <section id="colecoes" data-nav-theme="light" className="relative z-10 lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 md:px-8 bg-white flex flex-col lg:justify-center">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 md:items-end mb-8 lg:mb-10 flex-shrink-0">
-          <div className="md:col-span-2 max-w-2xl">
+        <div className="mb-8 lg:mb-10 flex-shrink-0">
+          <div className="max-w-2xl">
             <motion.span
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -113,14 +113,6 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
               Onde a <span className="text-brand-orange italic font-medium">Técnica</span><br/>Eleva o Design.
             </motion.h2>
           </div>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-zinc-500 font-medium text-base md:text-lg leading-relaxed"
-          >
-            Cerâmica, banho, pedra e materiais de construção. Tudo o que precisa para um projecto de assinatura.
-          </motion.p>
         </div>
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-24">
@@ -184,15 +176,15 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
                     }`}
                   >
                     <div className="relative z-10">
-                      <span className={`text-eyebrow font-black uppercase tracking-widest mb-2 block transition-colors ${isActive ? 'text-brand-orange' : 'text-zinc-400'}`}>
-                        0{idx + 1}
-                      </span>
                       <h4 className="text-brand-green font-black text-lg md:text-xl mb-2 tracking-tight leading-tight">
                          {cat.title}
                       </h4>
-                      <p className="text-xs md:text-sm text-zinc-500 font-medium leading-relaxed">
+                      <p className="text-xs md:text-sm text-zinc-500 font-medium leading-relaxed mb-4">
                         {cat.description}
                       </p>
+                      <span className={`text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-colors mt-4 ${isActive ? 'text-brand-orange' : 'text-zinc-400 group-hover:text-brand-orange'}`}>
+                        Ver Marcas <ChevronDown size={14} className="-rotate-90" />
+                      </span>
                     </div>
 
                     {isActive && (

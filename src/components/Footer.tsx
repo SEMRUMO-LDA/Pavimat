@@ -306,7 +306,7 @@ export const Footer = ({
                 {[
                   { name: 'Produtos', action: () => onScrollTo('colecoes') },
                   { name: 'Marcas', action: () => onScrollTo('marcas') },
-                  { name: 'História Pavimat', action: () => onScrollTo('sobre') },
+                  { name: 'Sobre', action: () => onScrollTo('sobre') },
                   { name: 'Showroom', action: () => onScrollTo('showroom') },
                   { name: 'Recrutamento', action: null, href: 'mailto:escritorio@pavimat.pt' }
                 ].map(item => (

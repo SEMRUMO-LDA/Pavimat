@@ -38,21 +38,15 @@ export const AboutUs = ({ testimonialsList }: { testimonialsList: KibanTestimoni
     <section id="sobre" data-nav-theme="light" className="py-32 md:py-48 px-6 md:px-8 bg-brand-lilac overflow-hidden">
       <div className="max-w-7xl mx-auto">
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
+        <motion.span
+          initial={{ opacity: 0, x: -10 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex items-center gap-6 mb-12 md:mb-16"
+          className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6"
         >
-          <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-            Sobre
-          </span>
-          <div className="flex-1 h-px bg-zinc-300/60" />
-          <span className="text-brand-green/60 font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-            Tradição & Excelência
-          </span>
-        </motion.div>
+          Sobre
+        </motion.span>
 
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
