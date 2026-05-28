@@ -239,7 +239,8 @@ export interface KibanHeroConfig {
  */
 export async function getHeroConfig(): Promise<KibanHeroConfig | null> {
   try {
-    return await kibanFetch<KibanHeroConfig>('/entries/hero/config');
+    const entry = await kibanFetch<KibanEntry<KibanHeroConfig>>('/entries/hero/config');
+    return entry.content;
   } catch (err) {
     console.warn('Failed to load Hero config from KibanCMS, using fallback static data.', err);
     return null;
