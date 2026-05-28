@@ -115,7 +115,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-24">
+        <div className="flex flex-col lg:flex-row-reverse items-center justify-between gap-0 lg:gap-24">
           
           <div className="w-full lg:w-1/2 relative flex justify-center items-center">
             <div className="absolute inset-0 bg-brand-green/2 rounded-full blur-[100px] scale-75 md:scale-100 -z-10" />
@@ -127,7 +127,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 exit={{ opacity: 0, scale: 1.1, rotate: 5 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="relative w-full aspect-square max-w-[380px] md:max-w-[480px]"
+                className="relative w-full aspect-square max-w-[440px] md:max-w-[540px]"
               >
                 <div className="absolute inset-4 border border-brand-orange/20 rounded-full animate-spin-slow pointer-events-none" />
                 <img
