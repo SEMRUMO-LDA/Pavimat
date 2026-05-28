@@ -96,28 +96,9 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
   return (
     <section id="colecoes" data-nav-theme="light" className="relative z-10 lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 md:px-8 bg-white flex flex-col lg:justify-center">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
-        <div className="mb-8 lg:mb-10 flex-shrink-0">
-          <div className="max-w-2xl">
-            <motion.span
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6"
-            >
-              Produtos
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight"
-            >
-              Onde a <span className="text-brand-orange italic font-medium">técnica</span><br/>eleva o design
-            </motion.h2>
-          </div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row-reverse items-center justify-between gap-0 lg:gap-24">
+        <div className="flex flex-col lg:flex-row-reverse items-start justify-between gap-12 lg:gap-24">
           
-          <div className="w-full lg:w-1/2 relative flex justify-center items-center my-auto">
+          <div className="w-full lg:w-1/2 relative flex justify-center items-start pt-2">
             <div className="absolute inset-0 bg-brand-green/2 rounded-full blur-[100px] scale-75 md:scale-100 -z-10" />
             
             <AnimatePresence mode="wait">
@@ -142,9 +123,26 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
             </AnimatePresence>
           </div>
 
-          <div className="w-full lg:w-5/12 flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-16 mt-8 lg:mt-0 relative z-10">
-            
-            <div className="w-full relative lg:h-[500px]">
+          <div className="w-full lg:w-5/12 flex flex-col relative z-10">
+            <div className="mb-12 lg:mb-16 flex-shrink-0">
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6"
+              >
+                Produtos
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight"
+              >
+                Onde a <span className="text-brand-orange italic font-medium">técnica</span><br/>eleva o design
+              </motion.h2>
+            </div>
+
+            <div className="w-full flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-16">
+              <div className="w-full relative lg:h-[500px]">
               <div
                 ref={scrollRef}
                 style={{ scrollPaddingLeft: '24px' }}
