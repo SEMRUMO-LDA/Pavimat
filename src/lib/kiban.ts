@@ -254,3 +254,33 @@ export async function getHeroConfig(): Promise<KibanHeroConfig | null> {
     return null;
   }
 }
+
+export interface KibanSEOSettings {
+  meta_title: string;
+  meta_description: string;
+  favicon_url: string;
+}
+
+/**
+ * Fetch SEO settings from KibanCMS.
+ */
+export async function getSEOSettings(): Promise<KibanSEOSettings | null> {
+  try {
+    const entries = await kibanFetch<KibanEntry<KibanSEOSettings>[]>('/entries/seo-settings?status=published&limit=1');
+    if (entries && entries.length > 0) {
+      return entries[0].content;
+    }
+  } catch (err) {
+    // try fallback
+  }
+
+  try {
+    const fallbackEntries = await kibanFetch<KibanEntry<KibanSEOSettings>[]>('/entries/seo?status=published&limit=1');
+    if (fallbackEntries && fallbackEntries.length > 0) {
+      return fallbackEntries[0].content;
+    }
+  } catch (err) {
+    console.warn('Failed to load SEO settings from KibanCMS.', err);
+  }
+  return null;
+}

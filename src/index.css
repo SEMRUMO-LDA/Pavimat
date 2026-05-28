@@ -103,4 +103,14 @@
       -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
     }
   }
+
+  /* Marquee Animation */
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
 }
