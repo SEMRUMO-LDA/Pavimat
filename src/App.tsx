@@ -329,7 +329,7 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
     titleHighlight: 'Certeza',
     titleSuffix: 'da Nossa Experiência.',
     subtitle: 'Materiais certificados e consultoria técnica para arquitetos, construtores e designers que recusam compromissos.',
-    card1Title: 'Showroom 700m²',
+    card1Title: 'Showroom',
     card1Subtitle: 'Consultoria tátil e técnica.',
     card1Icon: 'LayoutGrid',
     card2Title: 'Marcas Master',
@@ -903,7 +903,7 @@ const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList: { url:
               className="max-w-xl"
             >
               <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">
-                Showroom 700m²
+                Showroom
               </span>
               <h2 className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-6 md:mb-8">
                 Espaço de <br/>
