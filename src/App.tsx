@@ -325,9 +325,9 @@ interface HeroProps {
 
 const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
   const config = heroConfig || {
-    titlePrefix: 'Construa o seu',
-    titleHighlight: 'Legado',
-    titleSuffix: 'de Confiança.',
+    titlePrefix: 'Construa com a Certeza',
+    titleHighlight: 'Experiência',
+    titleSuffix: 'da Nossa',
     subtitle: 'Materiais certificados e consultoria técnica para arquitetos, construtores e designers que recusam compromissos.',
     card1Title: 'Showroom 700m²',
     card1Subtitle: 'Consultoria tátil e técnica.',
@@ -400,8 +400,8 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
               className="w-full lg:w-3/5"
             >
               <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
-                {config.titlePrefix}<br />
-                <span className="text-brand-green italic">{config.titleHighlight}</span> <br className="hidden sm:inline" />{config.titleSuffix}
+                Construa com a <span className="text-brand-green italic">Certeza</span><br />
+                da Nossa <span className="text-brand-green italic">Experiência</span>.
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
