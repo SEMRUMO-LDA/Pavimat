@@ -978,10 +978,11 @@ const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList: { url:
                 Showroom 700m²
               </span>
               <h2 className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-6 md:mb-8">
-                Uma Experiência <br/>Sensorial <span className="text-brand-orange italic font-medium">Tátil</span>.
+                Espaço de <br/>
+                <span className="text-brand-orange italic font-medium">Inspiração</span>.
               </h2>
               <p className="text-zinc-500 mb-10 text-lg leading-relaxed font-medium">
-                Em 700m² de exposição encontra cada material, textura e acabamento. A nossa equipa acompanha-o na seleção, com olho técnico e noção de obra.
+                Para que possa ver, tocar e imaginar os nossos produtos no seu próprio espaço, criámos um <span className="text-brand-green font-bold">Showroom com 700 m²</span> de área de exposição. Este espaço foi desenhado para facilitar o acesso às nossas diversas gamas, proporcionando-lhe o ambiente ideal para escolher os materiais da sua próxima obra ou remodelação.
               </p>
               
               <div className="space-y-6 mb-12">
@@ -1003,7 +1004,7 @@ const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList: { url:
 
               <div className="flex flex-wrap gap-4">
                 <button 
-                  onClick={() => window.open('https://www.google.com/maps/dir/?api=1&destination=Pavimat+Anadia+Malaposta', '_blank')}
+                  onClick={() => window.open('https://www.google.com/maps/search/?api=1&query=Pavimat+Vale+Para%C3%ADso+Albufeira', '_blank')}
                   className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer"
                 >
                   Visitar o Showroom
