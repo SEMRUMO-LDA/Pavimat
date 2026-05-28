@@ -388,9 +388,9 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
           </svg>
         </div>
         
-        <div className="relative z-10 h-full max-w-7xl mx-auto flex flex-col pt-32 md:pt-32">
+        <div className="relative z-10 h-full max-w-7xl mx-auto flex flex-col pt-32 md:pt-32 px-6 md:px-8 w-full">
           {/* Main Content Area */}
-          <div className="flex-grow flex flex-col lg:flex-row items-center justify-start lg:justify-between px-6 md:px-12 lg:px-20 gap-10 lg:gap-0">
+          <div className="flex-grow flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-10 lg:gap-0 w-full">
             
             {/* Left Content */}
             <motion.div
