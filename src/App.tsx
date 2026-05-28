@@ -1516,13 +1516,13 @@ const Footer = ({
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">Vamos falar</span>
+              <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">VAMOS TRABALHAR JUNTOS</span>
               <h2 className="text-4xl md:text-7xl lg:text-display font-black text-white leading-[0.95] tracking-tight mb-8 md:mb-12">
-                Vamos iniciar o seu <br />
-                <span className="text-brand-orange italic font-medium">Próximo Legado</span>.
+                A base sólida para <br />
+                a sua <span className="text-brand-orange italic font-medium">Próxima Obra</span>.
               </h2>
               <p className="text-zinc-300 text-lg md:text-xl font-medium mb-12 max-w-xl leading-relaxed">
-                Diga-nos o que está a desenhar. Respondemos com proposta técnica e amostras à medida — para arquitetos, construtores e promotores.
+                Traga-nos a sua planta ou a sua ideia. Apoiamos arquitetos, designers e construtores com rigor técnico e os materiais certos, validados por décadas de experiência no setor.
               </p>
 
               <ul className="space-y-5 text-zinc-200 font-medium">
