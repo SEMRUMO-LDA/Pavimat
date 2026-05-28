@@ -117,7 +117,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
 
         <div className="flex flex-col lg:flex-row-reverse items-center justify-between gap-0 lg:gap-24">
           
-          <div className="w-full lg:w-1/2 relative flex justify-center items-center">
+          <div className="w-full lg:w-1/2 relative flex justify-center items-center my-auto">
             <div className="absolute inset-0 bg-brand-green/2 rounded-full blur-[100px] scale-75 md:scale-100 -z-10" />
             
             <AnimatePresence mode="wait">
@@ -142,7 +142,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
             </AnimatePresence>
           </div>
 
-          <div className="w-full lg:w-5/12 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 -mt-10 lg:mt-0 relative z-10">
+          <div className="w-full lg:w-5/12 flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-16 mt-8 lg:mt-0 relative z-10">
             
             <div className="w-full relative lg:h-[500px]">
               <div
