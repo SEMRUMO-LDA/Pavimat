@@ -67,7 +67,7 @@ export const AboutUs = ({ testimonialsList }: { testimonialsList: KibanTestimoni
             transition={{ duration: 0.6 }}
             className="lg:col-span-7"
           >
-            <p className="text-xl md:text-2xl font-bold text-brand-green leading-relaxed mb-6">
+            <p className="text-[20px] font-bold text-brand-green leading-relaxed mb-6">
               A história da PAVIMAT (uma marca da Paraisodecor, Lda) é construída sobre alicerces sólidos e uma profunda paixão pelo setor da construção.
             </p>
             <p className="text-lg text-zinc-600 font-medium leading-relaxed">
