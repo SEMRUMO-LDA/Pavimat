@@ -1529,15 +1529,32 @@ const Footer = ({
               <ul className="space-y-5 text-zinc-200 font-medium">
                 <li className="flex items-center gap-4">
                   <Phone className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                  <span>+351 289 587 313 <span className="text-xs text-white/50 block font-normal">(chamada para a rede fixa nacional)</span></span>
+                  <a 
+                    href="tel:+351289587313" 
+                    className="hover:text-brand-orange transition-colors focus:outline-none"
+                  >
+                    +351 289 587 313 <span className="text-xs text-white/50 block font-normal">(chamada para a rede fixa nacional)</span>
+                  </a>
                 </li>
                 <li className="flex items-center gap-4">
                   <Mail className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                  <span>escritorio@pavimat.pt</span>
+                  <a 
+                    href="mailto:escritorio@pavimat.pt" 
+                    className="hover:text-brand-orange transition-colors focus:outline-none"
+                  >
+                    escritorio@pavimat.pt
+                  </a>
                 </li>
                 <li className="flex items-center gap-4">
                   <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                  <span>VALE PARAISO, 8200-567 Albufeira, Portugal</span>
+                  <a 
+                    href="https://www.google.com/maps/search/?api=1&query=Pavimat+Vale+Para%C3%ADso+Albufeira" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="hover:text-brand-orange transition-colors focus:outline-none"
+                  >
+                    VALE PARAISO, 8200-567 Albufeira, Portugal
+                  </a>
                 </li>
               </ul>
             </motion.div>
