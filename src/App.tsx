@@ -682,7 +682,7 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
   const prevTestimonial = () => setTestimonialIdx((i) => (i - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <section id="sobre" data-nav-theme="light" className="py-32 md:py-48 px-6 lg:px-12 bg-brand-lilac overflow-hidden">
+    <section id="sobre" data-nav-theme="light" className="py-32 md:py-48 px-6 md:px-8 bg-brand-lilac overflow-hidden">
       <div className="max-w-6xl mx-auto">
 
         {/* Eyebrow + divider rule */}
@@ -883,7 +883,7 @@ const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList: { url:
   };
 
   return (
-    <section id="showroom" data-nav-theme="light" className="py-20 md:py-32 px-6 lg:px-12 bg-white">
+    <section id="showroom" data-nav-theme="light" className="py-20 md:py-32 px-6 md:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
           <div className="order-2 lg:order-1">
@@ -1084,10 +1084,10 @@ const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowca
   }, [activeCategory.id, showcaseCategories]);
 
   return (
-    <section id="colecoes" data-nav-theme="light" className="relative z-10 lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 lg:px-12 bg-white flex flex-col lg:justify-center">
+    <section id="colecoes" data-nav-theme="light" className="relative z-10 lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 md:px-8 bg-white flex flex-col lg:justify-center">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         {/* Header (Top) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 md:items-end mb-8 lg:mb-10 px-4 flex-shrink-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 md:items-end mb-8 lg:mb-10 flex-shrink-0">
           <div className="md:col-span-2 max-w-2xl">
             <motion.span
               initial={{ opacity: 0, x: -10 }}
@@ -1357,8 +1357,8 @@ const BrandScroller = ({ activeTab, setActiveTab, partnersList, categoriesList }
   }, [activeTab]);
 
   return (
-    <section id="marcas" data-nav-theme="light" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center mb-16">
+    <section id="marcas" data-nav-theme="light" className="py-24 bg-white px-6 md:px-8">
+      <div className="max-w-7xl mx-auto text-center mb-16">
         <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-zinc-300 mb-8">
           Parceiros que escolhemos a dedo
         </h3>
@@ -1485,7 +1485,7 @@ const Footer = ({
   };
 
   return (
-    <footer id="contactos" data-nav-theme="dark" className="relative text-white py-24 px-6 lg:px-12 overflow-hidden">
+    <footer id="contactos" data-nav-theme="dark" className="relative text-white py-24 px-6 md:px-8 overflow-hidden">
       {/* ── BG LAYER ── (mirrors the hero pattern: solid canvas + ambient
           highlights + chevron all in a single absolute z-0 layer, separated
           from the content layer so backdrop-filter sees through cleanly) */}
