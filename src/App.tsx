@@ -351,8 +351,8 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
   const heroCards = [
     { Icon: getIconComp(config.card1Icon), iconBg: 'bg-brand-orange', iconClass: 'text-white', title: config.card1Title, subtitle: config.card1Subtitle },
     { Icon: getIconComp(config.card2Icon), iconBg: 'bg-brand-green', iconClass: 'text-white opacity-80', title: config.card2Title, subtitle: config.card2Subtitle },
-    { Icon: getIconComp(config.card3Icon), iconBg: 'bg-brand-black', iconClass: 'text-white', title: config.card3Title, subtitle: config.card3Subtitle },
-    { Icon: getIconComp(config.card4Icon), iconBg: 'bg-white', iconClass: 'text-brand-orange fill-current', title: config.card4Title, subtitle: config.card4Subtitle },
+    { Icon: getIconComp(config.card3Icon), iconBg: 'bg-brand-orange', iconClass: 'text-white', title: config.card3Title, subtitle: config.card3Subtitle },
+    { Icon: getIconComp(config.card4Icon), iconBg: 'bg-brand-green', iconClass: 'text-white fill-current', title: config.card4Title, subtitle: config.card4Subtitle },
   ];
   const [activeCardIdx, setActiveCardIdx] = useState(0);
   useEffect(() => {
