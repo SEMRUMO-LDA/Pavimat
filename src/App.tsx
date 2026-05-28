@@ -654,7 +654,7 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
     { year: 'Anos 70', label: 'As Nossas Raízes', desc: 'Primeiros passos na comercialização de materiais pelos pais do Sr. Norberto Cabrita.' },
     { year: '1985', label: 'Fundação', desc: 'Fundação da Vale Paraíso – Materiais de Construção.' },
     { year: '1997', label: 'Exclusividade Recer', desc: 'Início da comercialização exclusiva de cerâmica de excelência.' },
-    { year: '2000 - Pres.', label: 'Expansão & Inovação', desc: 'Adesão de marcas premium e gama integral de remodelações.' },
+    { year: '2000+', label: 'Expansão & Inovação', desc: 'Adesão de marcas premium e gama integral de remodelações.' },
   ];
 
   const testimonials = testimonialsList && testimonialsList.length > 0 ? testimonialsList : [
