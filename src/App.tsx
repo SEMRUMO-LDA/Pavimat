@@ -400,8 +400,9 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
               className="w-full lg:w-3/5"
             >
               <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
-                Construa com a <span className="text-brand-green italic">Certeza</span><br />
-                da Nossa Experiência.
+                Construa com a <br />
+                <span className="text-brand-green italic">Certeza</span> da Nossa <br />
+                Experiência.
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
