@@ -366,7 +366,7 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
 
   return (
     <section data-nav-theme="dark" className="relative h-screen w-full bg-white z-40">
-      <div className="relative h-full w-full overflow-hidden rounded-brand-hero shadow-[0_20px_80px_rgba(0,0,0,0.3)] z-10">
+      <div className="relative h-full w-full overflow-hidden rounded-brand-hero shadow-[0_20px_80px_rgba(0,0,0,0.3)] z-10 px-6 md:px-8">
         <div className="absolute inset-0 z-0 bg-brand-orange overflow-hidden">
           {/* Ambient highlights — warm light + soft shadow for depth on orange */}
           <div className="absolute top-[5%] -right-[5%] w-[800px] h-[800px] bg-white/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
@@ -388,7 +388,7 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
           </svg>
         </div>
         
-        <div className="relative z-10 h-full max-w-7xl mx-auto flex flex-col pt-32 md:pt-32 px-6 md:px-8 w-full">
+        <div className="relative z-10 h-full max-w-7xl mx-auto flex flex-col pt-32 md:pt-32 w-full">
           {/* Main Content Area */}
           <div className="flex-grow flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-10 lg:gap-0 w-full">
             
