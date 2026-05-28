@@ -647,18 +647,14 @@ const AboutUsV1 = () => {
 };
 
 /**
- * AboutUs V2 — editorial manifesto. Typography-as-image: large display
- * headline, lead paragraph + aside, horizontal timeline strip, one pull-quote
- * testimonial. No decorative cards — the section earns its weight from
- * hierarchy and whitespace alone, matching the editorial scale of Hero/Coleções
- * while staying light without imagery.
+ * AboutUs V2 — editorial manifesto.
  */
 const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; role: string; quote: string }[] }) => {
   const milestones = [
-    { year: '1985', label: 'Fundação', desc: 'Vale Paraíso' },
-    { year: '1997', label: 'Exclusividade', desc: 'Recer · referência ibérica' },
-    { year: '2010', label: 'Showroom', desc: '700m² de experiência' },
-    { year: 'Hoje', label: '+50 marcas', desc: 'Cerâmica, banho e design' },
+    { year: 'Anos 70', label: 'As Nossas Raízes', desc: 'Primeiros passos na comercialização de materiais pelos pais do Sr. Norberto Cabrita.' },
+    { year: '1985', label: 'Fundação', desc: 'Fundação da Vale Paraíso – Materiais de Construção.' },
+    { year: '1997', label: 'Exclusividade Recer', desc: 'Início da comercialização exclusiva de cerâmica de excelência.' },
+    { year: '2000 - Pres.', label: 'Expansão & Inovação', desc: 'Adesão de marcas premium e gama integral de remodelações.' },
   ];
 
   const testimonials = testimonialsList && testimonialsList.length > 0 ? testimonialsList : [
@@ -697,11 +693,11 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
           className="flex items-center gap-6 mb-12 md:mb-16"
         >
           <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-            A nossa história
+            Sobre Nós
           </span>
           <div className="flex-1 h-px bg-zinc-300/60" />
           <span className="text-brand-green/60 font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-            Desde 1985
+            Tradição & Excelência
           </span>
         </motion.div>
 
@@ -713,8 +709,8 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
           transition={{ duration: 0.7 }}
           className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-20 md:mb-28 max-w-5xl"
         >
-          Quatro décadas a construir<br />
-          o <span className="text-brand-orange italic font-medium">legado</span> dos seus projetos.
+          Décadas de Tradição<br />
+          e <span className="text-brand-orange italic font-medium">Excelência</span>.
         </motion.h2>
 
         {/* Lead paragraph + aside */}
@@ -726,8 +722,11 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
             transition={{ duration: 0.6 }}
             className="lg:col-span-7"
           >
-            <p className="text-xl md:text-2xl font-medium text-brand-black/80 leading-relaxed">
-              Fundada como Vale Paraíso em <span className="text-brand-green font-black">1985</span>, a Pavimat cresceu de uma empresa familiar para uma referência ibérica em materiais premium. A exclusividade Recer em 1997 marcou o início dessa transformação.
+            <p className="text-xl md:text-2xl font-bold text-brand-green leading-relaxed mb-6">
+              A história da PAVIMAT (uma marca da Paraisodecor, Lda) é construída sobre alicerces sólidos e uma profunda paixão pelo setor da construção.
+            </p>
+            <p className="text-lg text-zinc-600 font-medium leading-relaxed">
+              Com um percurso que atravessa gerações, o nosso maior orgulho é ter crescido lado a lado com os projetos e os sonhos dos nossos clientes.
             </p>
           </motion.div>
           <motion.aside
@@ -737,12 +736,10 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-5 lg:pl-10 lg:border-l border-zinc-300/60"
           >
-            <p className="text-zinc-500 text-base md:text-lg font-medium leading-relaxed mb-6">
-              Hoje cobrimos toda a obra: cerâmica, banho, pedra e estruturais. Acompanhamos cada projeto do desenho ao acabamento — porque a estética só vale quando a técnica responde.
+            <h4 className="text-xl font-bold text-brand-green mb-4">As Nossas Raízes</h4>
+            <p className="text-zinc-600 text-base md:text-lg font-medium leading-relaxed">
+              A nossa experiência nasce de uma autêntica herança familiar. Nos anos 70, os pais do nosso Sócio-Gerente, Sr. Norberto Cabrita, plantaram a semente do nosso futuro. Em 1985, o legado formalizou-se com a fundação da Vale Paraíso – Materiais de Construção (mais tarde evoluindo para a Pavimat), fornecendo as bases de qualquer grande obra.
             </p>
-            <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase">
-              Compromisso · Excelência · Acompanhamento
-            </span>
           </motion.aside>
         </div>
 
@@ -769,6 +766,89 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
               </motion.div>
             ))}
           </div>
+        </div>
+
+        {/* 3-Column Content Block for Showroom, Portfolio & Commitment */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-24 md:mb-32">
+          {/* Column 1: O Seu Espaço de Inspiração */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col"
+          >
+            <h3 className="text-2xl font-black text-brand-green mb-6 flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-brand-orange rounded-full inline-block" />
+              Espaço de Inspiração
+            </h3>
+            <p className="text-zinc-600 text-base md:text-lg font-medium leading-relaxed">
+              Para que possa ver, tocar e imaginar os nossos produtos no seu próprio espaço, criámos um <span className="font-bold text-brand-green">Showroom com 700 m²</span> de área de exposição. Este espaço foi desenhado para facilitar o acesso às nossas diversas gamas, proporcionando-lhe o ambiente ideal para escolher os materiais da sua próxima obra ou remodelação.
+            </p>
+          </motion.div>
+
+          {/* Column 2: Evolução e Inovação */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex flex-col"
+          >
+            <h3 className="text-2xl font-black text-brand-green mb-6 flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-brand-orange rounded-full inline-block" />
+              O Nosso Portefólio
+            </h3>
+            <p className="text-zinc-500 text-sm font-bold uppercase tracking-wider mb-4">Hoje, a nossa gama inclui:</p>
+            <ul className="space-y-3 text-zinc-600 font-medium text-base md:text-lg">
+              <li className="flex items-start gap-2.5">
+                <span className="text-brand-orange mt-1">✓</span>
+                <span>Soluções completas de casa de banho (sanitários, móveis, torneiras, resguardos)</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-brand-orange mt-1">✓</span>
+                <span>Equipamentos de bem-estar (jacuzzis e banheiras de hidromassagem)</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-brand-orange mt-1">✓</span>
+                <span>Pavimentos flutuantes e pedras naturais</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-brand-orange mt-1">✓</span>
+                <span>Pastilhas para piscinas, colas e juntas para acabamento perfeito</span>
+              </li>
+            </ul>
+          </motion.div>
+
+          {/* Column 3: O Nosso Compromisso */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex flex-col"
+          >
+            <h3 className="text-2xl font-black text-brand-green mb-6 flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-brand-orange rounded-full inline-block" />
+              Compromisso Consigo
+            </h3>
+            <p className="text-zinc-600 text-base md:text-lg font-medium leading-relaxed mb-4">
+              Acreditamos que a venda é apenas o início de uma relação de confiança. Orgulhamo-nos de:
+            </p>
+            <ul className="space-y-3 text-zinc-600 font-medium text-base md:text-lg mb-6">
+              <li className="flex items-start gap-2.5">
+                <span className="text-brand-orange mt-1">✓</span>
+                <span>Acompanhamento próximo e personalizado na escolha e pós-venda</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-brand-orange mt-1">✓</span>
+                <span>Garantir a melhor relação preço/qualidade do mercado</span>
+              </li>
+            </ul>
+            <p className="text-zinc-700 text-base font-bold italic border-l-2 border-brand-orange pl-3">
+              Seja para construir de raiz ou para remodelar, conte com quem conhece os materiais desde os alicerces até ao último detalhe.
+            </p>
+          </motion.div>
         </div>
 
         {/* Testimonials slider — pull quote of the week, with crossfade between voices */}
