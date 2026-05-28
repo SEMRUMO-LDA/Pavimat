@@ -186,7 +186,7 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
   const menuItems = [
     { name: 'Produtos', id: 'colecoes' },
     { name: 'Marcas', id: 'marcas' },
-    { name: 'Sobre', id: 'sobre' },
+    { name: 'História', id: 'sobre' },
     { name: 'Showroom', id: 'showroom' },
     { name: 'Contactos', id: 'contactos' }
   ];
@@ -683,7 +683,7 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
 
   return (
     <section id="sobre" data-nav-theme="light" className="py-32 md:py-48 px-6 md:px-8 bg-brand-lilac overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
 
         {/* Eyebrow + divider rule */}
         <motion.div
@@ -694,7 +694,7 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
           className="flex items-center gap-6 mb-12 md:mb-16"
         >
           <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-            Sobre Nós
+            História Pavimat
           </span>
           <div className="flex-1 h-px bg-zinc-300/60" />
           <span className="text-brand-green/60 font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
@@ -1359,7 +1359,7 @@ const BrandScroller = ({ activeTab, setActiveTab, partnersList, categoriesList }
   return (
     <section id="marcas" data-nav-theme="light" className="py-24 bg-white px-6 md:px-8">
       <div className="max-w-7xl mx-auto text-center mb-16">
-        <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-zinc-300 mb-8">
+        <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-brand-orange mb-8">
           Parceiros que escolhemos a dedo
         </h3>
         <div className="flex sm:flex-wrap justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar -mx-6 sm:mx-0 px-6 sm:px-0 py-4 sm:py-0 -my-4 sm:my-0">
@@ -1716,7 +1716,7 @@ const Footer = ({
                 {[
                   { name: 'Produtos', action: () => onScrollTo('colecoes') },
                   { name: 'Marcas', action: () => onScrollTo('marcas') },
-                  { name: 'Sobre', action: () => onScrollTo('sobre') },
+                  { name: 'História', action: () => onScrollTo('sobre') },
                   { name: 'Showroom', action: () => onScrollTo('showroom') },
                   { name: 'Recrutamento', action: null, href: 'mailto:escritorio@pavimat.pt' }
                 ].map(item => (
@@ -1789,8 +1789,7 @@ const Footer = ({
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 sm:gap-8">
-            <a href="#" className="hover:text-brand-orange transition-colors">Privacidade</a>
-            <a href="#" className="hover:text-brand-orange transition-colors">Termos de Uso</a>
+            <a href="#" className="hover:text-brand-orange transition-colors">Política de Privacidade & Cookies</a>
             <a
               href="https://www.livroreclamacoes.pt/"
               target="_blank"
