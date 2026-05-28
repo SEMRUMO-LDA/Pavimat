@@ -352,7 +352,7 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
     { Icon: getIconComp(config.card1Icon), iconBg: 'bg-brand-orange', iconClass: 'text-white', title: config.card1Title, subtitle: config.card1Subtitle },
     { Icon: getIconComp(config.card2Icon), iconBg: 'bg-brand-green', iconClass: 'text-white opacity-80', title: config.card2Title, subtitle: config.card2Subtitle },
     { Icon: getIconComp(config.card3Icon), iconBg: 'bg-brand-orange', iconClass: 'text-white', title: config.card3Title, subtitle: config.card3Subtitle },
-    { Icon: getIconComp(config.card4Icon), iconBg: 'bg-brand-green', iconClass: 'text-white fill-current', title: config.card4Title, subtitle: config.card4Subtitle },
+    { Icon: getIconComp(config.card4Icon), iconBg: 'bg-brand-green', iconClass: 'text-white', title: config.card4Title, subtitle: config.card4Subtitle },
   ];
   const [activeCardIdx, setActiveCardIdx] = useState(0);
   useEffect(() => {
@@ -401,8 +401,17 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
             >
               <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
                 {config.titlePrefix} <br />
-                <span className="text-brand-green italic">{config.titleHighlight}</span> <br />
-                {config.titleSuffix}
+                <span className="text-brand-green italic">{config.titleHighlight}</span>{' '}
+                {config.titleSuffix ? (
+                  config.titleSuffix.includes('Experiência') ? (
+                    <>
+                      {config.titleSuffix.replace('Experiência', '').trim()} <br />
+                      Experiência
+                    </>
+                  ) : (
+                    config.titleSuffix
+                  )
+                ) : null}
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
