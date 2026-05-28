@@ -703,7 +703,7 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
           className="flex items-center gap-6 mb-12 md:mb-16"
         >
           <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-            História Pavimat
+            Sobre
           </span>
           <div className="flex-1 h-px bg-zinc-300/60" />
           <span className="text-brand-green/60 font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
