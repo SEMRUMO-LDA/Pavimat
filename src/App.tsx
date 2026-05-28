@@ -1517,15 +1517,15 @@ const Footer = ({ contactTheme, setContactTheme, onSubmitContact, onSubscribeNew
               <ul className="space-y-5 text-zinc-200 font-medium">
                 <li className="flex items-center gap-4">
                   <Phone className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                  <span>+351 239 000 000</span>
+                  <span>+351 289 587 313 <span className="text-xs text-white/50 block font-normal">(chamada para a rede fixa nacional)</span></span>
                 </li>
                 <li className="flex items-center gap-4">
                   <Mail className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                  <span>geral@pavimat.pt</span>
+                  <span>escritorio@pavimat.pt</span>
                 </li>
                 <li className="flex items-center gap-4">
                   <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0" />
-                  <span>Rua Principal, 400 — 3000-001 Coimbra, Portugal</span>
+                  <span>VALE PARAISO, 8200-567 Albufeira, Portugal</span>
                 </li>
               </ul>
             </motion.div>
