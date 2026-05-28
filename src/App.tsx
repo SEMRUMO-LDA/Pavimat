@@ -186,7 +186,7 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
   const menuItems = [
     { name: 'Produtos', id: 'colecoes' },
     { name: 'Marcas', id: 'marcas' },
-    { name: 'História Pavimat', id: 'sobre' },
+    { name: 'Sobre', id: 'sobre' },
     { name: 'Showroom', id: 'showroom' },
     { name: 'Contactos', id: 'contactos' }
   ];
@@ -325,9 +325,9 @@ interface HeroProps {
 
 const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
   const config = heroConfig || {
-    titlePrefix: 'Construa com a Certeza',
-    titleHighlight: 'Experiência',
-    titleSuffix: 'da Nossa',
+    titlePrefix: 'Construa com a',
+    titleHighlight: 'Certeza',
+    titleSuffix: 'da Nossa Experiência.',
     subtitle: 'Materiais certificados e consultoria técnica para arquitetos, construtores e designers que recusam compromissos.',
     card1Title: 'Showroom 700m²',
     card1Subtitle: 'Consultoria tátil e técnica.',
@@ -400,9 +400,9 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
               className="w-full lg:w-3/5"
             >
               <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
-                Construa com a <br />
-                <span className="text-brand-green italic">Certeza</span> da Nossa <br />
-                Experiência.
+                {config.titlePrefix} <br />
+                <span className="text-brand-green italic">{config.titleHighlight}</span> <br />
+                {config.titleSuffix}
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
@@ -694,7 +694,7 @@ const AboutUsV2 = ({ testimonialsList }: { testimonialsList: { name: string; rol
           className="flex items-center gap-6 mb-12 md:mb-16"
         >
           <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
-            Sobre
+            História Pavimat
           </span>
           <div className="flex-1 h-px bg-zinc-300/60" />
           <span className="text-brand-green/60 font-black text-eyebrow tracking-eyebrow uppercase whitespace-nowrap">
@@ -1716,7 +1716,7 @@ const Footer = ({
                 {[
                   { name: 'Produtos', action: () => onScrollTo('colecoes') },
                   { name: 'Marcas', action: () => onScrollTo('marcas') },
-                  { name: 'História Pavimat', action: () => onScrollTo('sobre') },
+                  { name: 'Sobre', action: () => onScrollTo('sobre') },
                   { name: 'Showroom', action: () => onScrollTo('showroom') },
                   { name: 'Recrutamento', action: null, href: 'mailto:escritorio@pavimat.pt' }
                 ].map(item => (
