@@ -56,7 +56,7 @@ export const AboutUs = ({ testimonialsList }: { testimonialsList: KibanTestimoni
           className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-20 md:mb-28 max-w-5xl"
         >
           Décadas de Tradição<br />
-          e <span className="text-brand-orange italic font-medium">Excelência</span>.
+          e <span className="text-brand-orange italic font-medium">Excelência</span>
         </motion.h2>
 
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 mb-24 md:mb-32">
@@ -88,8 +88,8 @@ export const AboutUs = ({ testimonialsList }: { testimonialsList: KibanTestimoni
           </motion.aside>
         </div>
 
-        <div className="border-y border-zinc-300/60 py-12 md:py-16 mb-24 md:mb-32">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6">
+        <div className="py-12 md:py-16 mb-24 md:mb-32">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12">
             {milestones.map((m, idx) => (
               <motion.div
                 key={m.year}
@@ -97,7 +97,13 @@ export const AboutUs = ({ testimonialsList }: { testimonialsList: KibanTestimoni
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
+                className="relative pt-10 pr-6 md:pr-10"
               >
+                <div className="absolute top-2 left-0 w-full h-px bg-zinc-300/80" />
+                <div className="absolute top-2 left-0 -translate-y-1/2 w-3 h-3 rounded-full bg-brand-orange z-10">
+                  <div className="absolute inset-0 rounded-full bg-brand-orange animate-ping opacity-60" style={{ animationDuration: '2s' }} />
+                </div>
+                
                 <div className="text-5xl md:text-6xl font-black text-brand-green tracking-tighter leading-none mb-3">
                   {m.year}
                 </div>

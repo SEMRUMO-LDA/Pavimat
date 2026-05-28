@@ -110,7 +110,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
               whileInView={{ opacity: 1, y: 0 }}
               className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight"
             >
-              Onde a <span className="text-brand-orange italic font-medium">Técnica</span><br/>Eleva o Design.
+              Onde A <span className="text-brand-orange italic font-medium">Técnica</span><br/>Eleva O Design
             </motion.h2>
           </div>
         </div>

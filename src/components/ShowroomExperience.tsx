@@ -57,7 +57,7 @@ export const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList:
               </span>
               <h2 className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-6 md:mb-8">
                 Espaço de <br/>
-                <span className="text-brand-orange italic font-medium">Inspiração</span>.
+                <span className="text-brand-orange italic font-medium">Inspiração</span>
               </h2>
               <p className="text-zinc-500 mb-10 text-lg leading-relaxed font-medium">
                 Para que possa ver, tocar e imaginar os nossos produtos no seu espaço, criámos um <span className="text-brand-green font-bold">Showroom com 700 m²</span> de área de exposição. Este espaço foi concebido para facilitar o acesso às nossas diversas gamas, proporcionando o ambiente ideal para escolher os materiais da sua próxima obra ou remodelação.
