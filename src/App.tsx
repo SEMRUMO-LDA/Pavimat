@@ -405,8 +405,8 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
                 {config.titleSuffix ? (
                   config.titleSuffix.includes('Experiência') ? (
                     <>
-                      {config.titleSuffix.replace('Experiência', '').trim()} <br />
-                      Experiência
+                      {config.titleSuffix.replace(/Experiência\.?/, '').trim()} <br />
+                      Experiência{config.titleSuffix.endsWith('.') ? '.' : ''}
                     </>
                   ) : (
                     config.titleSuffix
