@@ -401,7 +401,7 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
             >
               <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
                 Construa com a <span className="text-brand-green italic">Certeza</span><br />
-                da Nossa <span className="text-brand-green italic">Experiência</span>.
+                da Nossa Experiência.
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
@@ -419,7 +419,7 @@ const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
                   onClick={() => onScrollTo('colecoes')}
                   className="w-full sm:w-auto bg-transparent border border-white hover:bg-white hover:text-brand-orange text-white px-8 py-3.5 rounded-full text-eyebrow font-black uppercase tracking-widest transition-all cursor-pointer"
                 >
-                  Explorar Coleções
+                  Explorar Produtos
                 </button>
               </div>
             </motion.div>
@@ -1093,7 +1093,7 @@ const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowca
               whileInView={{ opacity: 1, x: 0 }}
               className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6"
             >
-              Coleções
+              Produtos
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -1240,7 +1240,7 @@ const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowca
               {/* Previous arrow — top of the indicator */}
               <button
                 type="button"
-                aria-label="Coleção anterior"
+                aria-label="Produto anterior"
                 onClick={() => {
                   const newIdx = Math.max(0, activeIndex - 1);
                   scrollToCard(newIdx);
@@ -1255,7 +1255,7 @@ const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowca
               {/* Next arrow — bottom of the indicator */}
               <button
                 type="button"
-                aria-label="Coleção seguinte"
+                aria-label="Produto seguinte"
                 onClick={() => {
                   const newIdx = Math.min(showcaseCategories.length - 1, activeIndex + 1);
                   scrollToCard(newIdx);
@@ -1739,7 +1739,7 @@ const Footer = ({
             <div>
               <h4 className="text-lg font-bold mb-4">Newsletter</h4>
               <p className="text-zinc-300 text-sm font-medium leading-relaxed mb-6">
-                Novidades sobre coleções, projetos e eventos no showroom.
+                Novidades sobre produtos, projetos e eventos no showroom.
               </p>
               <form
                 onSubmit={handleNewsletterSubmit}

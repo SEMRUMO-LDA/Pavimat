@@ -93,7 +93,7 @@
     @apply bg-brand-green/80 backdrop-blur-xl border border-white/10;
   }
 
-  /* Coleções vertical scroll fade mask — only on desktop where the cards
+  /* Produtos vertical scroll fade mask — only on desktop where the cards
      stack vertically with snap-y. Mobile/tablet uses horizontal scroll without mask. */
   @media (min-width: 1024px) {
     .cards-mask {
