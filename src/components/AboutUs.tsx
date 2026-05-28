@@ -55,8 +55,8 @@ export const AboutUs = ({ testimonialsList }: { testimonialsList: KibanTestimoni
           transition={{ duration: 0.7 }}
           className="text-4xl md:text-7xl lg:text-display font-black text-brand-green leading-[0.95] tracking-tight mb-20 md:mb-28 max-w-5xl"
         >
-          Décadas de Tradição<br />
-          e <span className="text-brand-orange italic font-medium">Excelência</span>
+          Décadas de tradição<br />
+          e <span className="text-brand-orange italic font-medium">excelência</span>
         </motion.h2>
 
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 mb-24 md:mb-32">
