@@ -10,7 +10,9 @@ import {
   getTestimonials,
   getShowroomImages,
   submitContactForm,
-  subscribeNewsletter
+  subscribeNewsletter,
+  getHeroConfig,
+  KibanHeroConfig
 } from './lib/kiban';
 
 // Helper to render Lucide icons dynamically from a string name
@@ -317,15 +319,39 @@ const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
 interface HeroProps {
   onContactClick: (theme: ContactTheme) => void;
   onScrollTo: (id: string) => void;
+  heroConfig: KibanHeroConfig | null;
 }
 
-const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
+const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
+  const config = heroConfig || {
+    titlePrefix: 'Construa o seu',
+    titleHighlight: 'Legado',
+    titleSuffix: 'de Confiança.',
+    subtitle: 'Materiais certificados e consultoria técnica para arquitetos, construtores e designers que recusam compromissos.',
+    card1Title: 'Showroom 700m²',
+    card1Subtitle: 'Consultoria tátil e técnica.',
+    card1Icon: 'LayoutGrid',
+    card2Title: 'Marcas Master',
+    card2Subtitle: 'Líderes ibéricos e mundiais.',
+    card2Icon: 'ShieldCheck',
+    card3Title: 'Frota Própria',
+    card3Subtitle: 'Entregas em obra, sem intermediários.',
+    card3Icon: 'Truck',
+    card4Title: 'DESDE 1985',
+    card4Subtitle: 'Quatro décadas a construir.',
+    card4Icon: 'Star'
+  };
+
+  const getIconComp = (name: string) => {
+    return (LucideIcons as any)[name] || LucideIcons.HelpCircle;
+  };
+
   // Loop: cycle through cards every 2.8s
   const heroCards = [
-    { Icon: LayoutGrid, iconBg: 'bg-brand-orange', iconClass: 'text-white', title: 'Showroom 700m²', subtitle: 'Consultoria tátil e técnica.' },
-    { Icon: ShieldCheck, iconBg: 'bg-brand-green', iconClass: 'text-white opacity-80', title: 'Marcas Master', subtitle: 'Líderes ibéricos e mundiais.' },
-    { Icon: Truck, iconBg: 'bg-brand-black', iconClass: 'text-white', title: 'Frota Própria', subtitle: 'Entregas em obra, sem intermediários.' },
-    { Icon: Star, iconBg: 'bg-white', iconClass: 'text-brand-orange fill-current', title: 'DESDE 1985', subtitle: 'Quatro décadas a construir.' },
+    { Icon: getIconComp(config.card1Icon), iconBg: 'bg-brand-orange', iconClass: 'text-white', title: config.card1Title, subtitle: config.card1Subtitle },
+    { Icon: getIconComp(config.card2Icon), iconBg: 'bg-brand-green', iconClass: 'text-white opacity-80', title: config.card2Title, subtitle: config.card2Subtitle },
+    { Icon: getIconComp(config.card3Icon), iconBg: 'bg-brand-black', iconClass: 'text-white', title: config.card3Title, subtitle: config.card3Subtitle },
+    { Icon: getIconComp(config.card4Icon), iconBg: 'bg-white', iconClass: 'text-brand-orange fill-current', title: config.card4Title, subtitle: config.card4Subtitle },
   ];
   const [activeCardIdx, setActiveCardIdx] = useState(0);
   useEffect(() => {
@@ -343,7 +369,7 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
         <div className="absolute inset-0 z-0 bg-brand-orange overflow-hidden">
           {/* Ambient highlights — warm light + soft shadow for depth on orange */}
           <div className="absolute top-[5%] -right-[5%] w-[800px] h-[800px] bg-white/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-          <div className="absolute top-[30%] -left-[10%] w-[900px] h-[900px] bg-brand-black/20 rounded-full blur-[150px] animate-pulse" style={{ animationDuration: '12s' }} />
+          <div className="absolute bottom-[10%] -left-[10%] w-[900px] h-[900px] bg-brand-black/20 rounded-full blur-[150px] animate-pulse" style={{ animationDuration: '12s' }} />
 
           {/* Brand chevron — on mobile sits behind the cycling card area so the
               glassmorphism reads; on lg+ peeks from bottom-right of the floating cards. */}
@@ -373,13 +399,12 @@ const Hero = ({ onContactClick, onScrollTo }: HeroProps) => {
               className="w-full lg:w-3/5"
             >
               <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-display font-black text-white leading-[0.95] mb-6 tracking-tight">
-                Construa o seu<br />
-                <span className="text-brand-green italic">Legado</span> de<br />
-                Confiança.
+                {config.titlePrefix}<br />
+                <span className="text-brand-green italic">{config.titleHighlight}</span> <br className="hidden sm:inline" />{config.titleSuffix}
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
-                Materiais certificados e consultoria técnica para arquitetos, construtores e designers que recusam compromissos.
+                {config.subtitle}
               </p>
 
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
@@ -1154,7 +1179,7 @@ const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowca
                   >
                     <div className="relative z-10">
                       <span className={`text-eyebrow font-black uppercase tracking-widest mb-2 block transition-colors ${isActive ? 'text-brand-orange' : 'text-zinc-400'}`}>
-                        0{idx + 1} &mdash; Linha
+                        0{idx + 1}
                       </span>
                       <h4 className="text-brand-green font-black text-lg md:text-xl mb-2 tracking-tight leading-tight">
                          {cat.title}
@@ -1726,6 +1751,7 @@ export default function App() {
   const [showroomImagesList, setShowroomImagesList] = useState<KibanShowroomImage[]>([]);
   const [activeBrandTab, setActiveBrandTab] = useState<string>(categories[0].id);
   const [contactTheme, setContactTheme] = useState<ContactTheme>('especialista');
+  const [heroConfig, setHeroConfig] = useState<KibanHeroConfig | null>(null);
 
   useEffect(() => {
     const fetchCmsData = async () => {
@@ -1775,6 +1801,16 @@ export default function App() {
         }
       } catch (err) {
         console.warn('Failed to load showroom images from KibanCMS, using fallback static data.', err);
+      }
+
+      // 5. Fetch Hero Config
+      try {
+        const cmsHeroConfig = await getHeroConfig();
+        if (cmsHeroConfig) {
+          setHeroConfig(cmsHeroConfig);
+        }
+      } catch (err) {
+        console.warn('Failed to load Hero config from KibanCMS, using fallback static data.', err);
       }
     };
 
@@ -1998,7 +2034,7 @@ export default function App() {
       {/* Hero — fixed overlay above the content. Animates upward on scroll to
           reveal the (pinned) page beneath it. */}
       <div className="hero-curtain fixed inset-x-0 top-0 h-screen z-30 will-change-transform">
-        <Hero onContactClick={handleGoToContact} onScrollTo={handleScrollToSection} />
+        <Hero onContactClick={handleGoToContact} onScrollTo={handleScrollToSection} heroConfig={heroConfig} />
       </div>
     </div>
   );

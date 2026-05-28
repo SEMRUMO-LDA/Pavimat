@@ -214,3 +214,34 @@ export async function subscribeNewsletter(email: string, source: string = 'foote
   const result = await response.json();
   return { success: result.success };
 }
+
+export interface KibanHeroConfig {
+  titlePrefix: string;
+  titleHighlight: string;
+  titleSuffix: string;
+  subtitle: string;
+  card1Title: string;
+  card1Subtitle: string;
+  card1Icon: string;
+  card2Title: string;
+  card2Subtitle: string;
+  card2Icon: string;
+  card3Title: string;
+  card3Subtitle: string;
+  card3Icon: string;
+  card4Title: string;
+  card4Subtitle: string;
+  card4Icon: string;
+}
+
+/**
+ * Fetch Hero settings/config from KibanCMS.
+ */
+export async function getHeroConfig(): Promise<KibanHeroConfig | null> {
+  try {
+    return await kibanFetch<KibanHeroConfig>('/entries/hero/config');
+  } catch (err) {
+    console.warn('Failed to load Hero config from KibanCMS, using fallback static data.', err);
+    return null;
+  }
+}
