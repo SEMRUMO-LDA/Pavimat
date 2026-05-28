@@ -73,44 +73,51 @@ interface BrandPartner {
 // --- Data ---
 const categories: Category[] = [
   {
-    id: 'ceramics',
-    title: 'Cerâmicos e Revestimentos',
+    id: 'pavimentos-e-revestimentos',
+    title: 'Pavimentos e Revestimentos',
     description: 'Texturas, formatos e acabamentos que definem o caráter de cada espaço.',
     icon: <LayoutGrid className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800'
   },
   {
-    id: 'bath',
-    title: 'Soluções de Banho',
+    id: 'casa-de-banho',
+    title: 'Casa de Banho',
     description: 'Sanitários, hidromassagem e mobiliário com a precisão dos grandes nomes europeus.',
     icon: <Droplets className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800'
   },
   {
-    id: 'stone',
-    title: 'Pedra Natural e Flutuantes',
+    id: 'materiais-de-construcao',
+    title: 'Materiais de Construção',
+    description: 'A base técnica de cada obra — argamassas, impermeabilização e soluções de fundação.',
+    icon: <Hammer className="w-6 h-6" />,
+    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 'mobiliario-e-decoracao',
+    title: 'Mobiliário e Decoração',
     description: 'Pedras nobres e pavimentos flutuantes para interiores que duram gerações.',
     icon: <Gem className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&q=80&w=800'
   },
   {
-    id: 'structural',
-    title: 'Materiais Estruturais',
-    description: 'A base técnica de cada obra — argamassas, impermeabilização e soluções de fundação.',
+    id: 'ferramentas-e-drogaria',
+    title: 'Ferramentas e Drogaria',
+    description: 'Tudo o que precisa para as suas obras e projetos de bricolage.',
     icon: <Hammer className="w-6 h-6" />,
     imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
   }
 ];
 
 const partners: BrandPartner[] = [
-  { name: 'Recer', category: 'ceramics', url: 'https://www.recer.pt' },
-  { name: 'Margres', category: 'ceramics', url: 'https://www.margres.com' },
-  { name: 'Jacuzzi', category: 'bath', url: 'https://www.jacuzzi.pt' },
-  { name: 'Sanindusa', category: 'bath', url: 'https://www.sanindusa.pt' },
-  { name: 'Grohe', category: 'bath', url: 'https://www.grohe.pt' },
-  { name: 'Silestone', category: 'stone', url: 'https://www.cosentino.com/silestone/' },
-  { name: 'Weber', category: 'structural', url: 'https://www.pt.weber/' },
-  { name: 'Sika', category: 'structural', url: 'https://prt.sika.com/' },
+  { name: 'Recer',     category: 'pavimentos-e-revestimentos', url: 'https://www.recer.pt' },
+  { name: 'Margres',   category: 'pavimentos-e-revestimentos', url: 'https://www.margres.com' },
+  { name: 'Jacuzzi',   category: 'casa-de-banho',              url: 'https://www.jacuzzi.pt' },
+  { name: 'Sanindusa', category: 'casa-de-banho',              url: 'https://www.sanindusa.pt' },
+  { name: 'Grohe',     category: 'casa-de-banho',              url: 'https://www.grohe.pt' },
+  { name: 'Silestone', category: 'pavimentos-e-revestimentos', url: 'https://www.cosentino.com/silestone/' },
+  { name: 'Weber',     category: 'materiais-de-construcao',    url: 'https://www.pt.weber/' },
+  { name: 'Sika',      category: 'materiais-de-construcao',    url: 'https://prt.sika.com/' },
 ];
 
 // --- Components ---
@@ -1369,7 +1376,7 @@ const BrandScroller = ({ activeTab, setActiveTab, partnersList, categoriesList }
     <section id="marcas" data-nav-theme="light" className="py-24 bg-white px-6 md:px-8">
       <div className="max-w-7xl mx-auto text-center mb-16">
         <h3 className="text-eyebrow font-black uppercase tracking-eyebrow text-brand-orange mb-8">
-          Parceiros que escolhemos a dedo
+          Marcas
         </h3>
         <div className="flex sm:flex-wrap justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar -mx-6 sm:mx-0 px-6 sm:px-0 py-4 sm:py-0 -my-4 sm:my-0">
           {categoriesList.map((cat) => (
@@ -1526,7 +1533,7 @@ const Footer = ({
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">VAMOS TRABALHAR JUNTOS</span>
+              <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">CONTACTOS</span>
               <h2 className="text-4xl md:text-7xl lg:text-display font-black text-white leading-[0.95] tracking-tight mb-8 md:mb-12">
                 A base sólida <br />
                 para a sua <br />
