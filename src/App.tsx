@@ -1041,6 +1041,27 @@ const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: DynamicShowca
     }
   }, [categoriesList]);
 
+  // On mount (and whenever list changes), snap scroll to item 0 so it appears
+  // centered and selected without requiring any user interaction.
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || showcaseCategories.length === 0) return;
+    // Small delay to let layout settle before measuring
+    const t = setTimeout(() => {
+      const firstChild = container.children[0] as HTMLElement | undefined;
+      if (!firstChild) return;
+      const isHorizontal = container.scrollWidth > container.clientWidth + 1;
+      if (isHorizontal) {
+        const offset = firstChild.offsetLeft - (container.clientWidth - firstChild.clientWidth) / 2;
+        container.scrollTo({ left: Math.max(0, offset), behavior: 'instant' as ScrollBehavior });
+      } else {
+        const offset = firstChild.offsetTop - (container.clientHeight - firstChild.clientHeight) / 2;
+        container.scrollTo({ top: Math.max(0, offset), behavior: 'instant' as ScrollBehavior });
+      }
+    }, 50);
+    return () => clearTimeout(t);
+  }, [showcaseCategories]);
+
   // Scroll only the cards container — using element.scrollIntoView({block:'center'})
   // also bubbles up to the document/window, causing the whole page to shift.
   const scrollToCard = (idx: number) => {
