@@ -14,7 +14,7 @@ export const BrandScroller = ({ activeTab, setActiveTab, partnersList, categorie
   return (
     <section id="marcas" data-nav-theme="light" className="py-24 bg-white px-6 md:px-8 overflow-hidden">
       <div className="max-w-7xl mx-auto mb-12 flex justify-end">
-        <div className="w-full lg:w-1/2 flex flex-col items-center text-center">
+        <div className="w-full lg:w-1/2 flex flex-col items-end text-right">
           <span className="text-brand-orange font-black text-eyebrow tracking-eyebrow uppercase block mb-6">
             Marcas
           </span>
