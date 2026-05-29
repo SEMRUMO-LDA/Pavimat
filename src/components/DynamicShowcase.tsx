@@ -265,6 +265,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
           </div>
         </div>
       </div>
+    </div>
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes spin-slow {
           from { transform: rotate(0deg); }
