@@ -108,7 +108,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 exit={{ opacity: 0, scale: 1.1, rotate: 5 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="relative w-full aspect-square max-w-[440px] md:max-w-[540px]"
+                className="relative w-full aspect-square max-w-[440px] md:max-w-[600px]"
               >
                 <div className="absolute inset-4 border border-brand-orange/20 rounded-full animate-spin-slow pointer-events-none" />
                 <img
