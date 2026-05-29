@@ -13,6 +13,14 @@ export const BrandScroller = ({ activeTab, setActiveTab, partnersList, categorie
 
   return (
     <section id="marcas" data-nav-theme="light" className="py-24 bg-white px-6 md:px-8 overflow-hidden">
+      <div className="max-w-7xl mx-auto mb-12 flex justify-end">
+        <div className="w-full lg:w-1/2 flex flex-col items-center text-center">
+          <h2 className="text-4xl md:text-6xl font-black text-brand-green tracking-tight uppercase">
+            Marcas
+          </h2>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto text-center mb-16">
         <div className="flex sm:flex-wrap justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar -mx-6 sm:mx-0 px-6 sm:px-0 py-4 sm:py-0 -my-4 sm:my-0">
           {categoriesList.map((cat) => (
