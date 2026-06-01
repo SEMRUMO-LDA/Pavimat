@@ -94,7 +94,7 @@ export const DynamicShowcase = ({ onBrandCategoryClick, categoriesList }: Dynami
   }, [activeCategory.id, showcaseCategories]);
 
   return (
-    <section id="colecoes" data-nav-theme="light" className="relative z-10 lg:min-h-screen pt-28 pb-16 lg:pt-32 lg:pb-12 px-6 md:px-8 bg-white flex flex-col lg:justify-center">
+    <section id="colecoes" data-nav-theme="light" className="relative z-10 lg:min-h-screen pt-28 pb-8 lg:pt-32 lg:pb-4 px-6 md:px-8 bg-white flex flex-col lg:justify-center">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         <div className="flex flex-col lg:flex-row-reverse items-start justify-between gap-12 lg:gap-24">
           
