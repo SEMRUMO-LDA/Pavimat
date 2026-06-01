@@ -117,7 +117,7 @@ export const Footer = ({
                 <span className="text-brand-orange italic font-medium">próxima obra</span>
               </h2>
               <p className="text-zinc-300 text-lg md:text-xl font-medium mb-12 max-w-xl leading-relaxed">
-                Traga-nos a sua planta ou a sua ideia. Apoiamos arquitectos, designers e construtores com rigor técnico e os materiais certos, validados por décadas de experiência no sector.
+                Traga-nos a sua planta ou ideia. Apoiamos arquitectos, designers e construtores com rigor técnico e os materiais certos, validados por décadas de experiência no sector.
               </p>
 
               <ul className="space-y-5 text-zinc-200 font-medium">

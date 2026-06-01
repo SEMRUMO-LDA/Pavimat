@@ -74,7 +74,7 @@ export const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
               </h1>
 
               <p className="text-base md:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-xl">
-                {config?.subtitle ?? ''}
+                A solidez que a sua casa merece, apoiada por décadas de experiência a construir o Algarve.
               </p>
 
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
