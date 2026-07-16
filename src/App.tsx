@@ -50,14 +50,14 @@ const defaultCategories: Category[] = [
     title: 'Casa de Banho',
     description: 'Sanitários, hidromassagem e mobiliário com a precisão dos grandes nomes europeus.',
     icon: <LucideIcons.Droplets className="w-6 h-6" />,
-    imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800'
+    imageUrl: '/casas-de-banho.jpg'
   },
   {
     id: 'materiais-de-construcao',
     title: 'Materiais de Construção',
     description: 'A base técnica de cada obra — argamassas, impermeabilização e soluções de fundação.',
     icon: <LucideIcons.Hammer className="w-6 h-6" />,
-    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
+    imageUrl: '/materiais-de-construcao.jpg'
   },
   {
     id: 'mobiliario-e-decoracao',
