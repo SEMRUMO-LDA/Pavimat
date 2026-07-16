@@ -8,10 +8,6 @@ export const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList:
 
   const showroomImages = showroomImagesList && showroomImagesList.length > 0 ? showroomImagesList : [
     {
-      url: "/gallery-1.jpg",
-      title: "Equipa Pavimat"
-    },
-    {
       url: "/gallery-2.jpg",
       title: "Design e Sofisticação"
     },
