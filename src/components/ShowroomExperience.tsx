@@ -8,28 +8,24 @@ export const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList:
 
   const showroomImages = showroomImagesList && showroomImagesList.length > 0 ? showroomImagesList : [
     {
-      url: "/img/pavimat-showroom-out1.png",
-      title: "Showroom Pavimat - Exterior"
+      url: "/gallery-1.jpg",
+      title: "Equipa Pavimat"
     },
     {
-      url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200",
-      title: "Design de Interiores"
+      url: "/gallery-2.jpg",
+      title: "Design e Sofisticação"
     },
     {
-      url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200",
-      title: "Pavimentos Modernos"
+      url: "/gallery-3.jpg",
+      title: "Inspiração para Ambientes"
     },
     {
-      url: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200",
-      title: "Espaços Gourmet"
+      url: "/gallery-4.jpg",
+      title: "Detalhes de Excelência"
     },
     {
-      url: "https://images.unsplash.com/photo-1616489953149-75897fa94ee3?auto=format&fit=crop&q=80&w=1200",
-      title: "Revestimentos de Luxo"
-    },
-    {
-      url: "https://images.unsplash.com/photo-1616137422495-1e90558f2473?auto=format&fit=crop&q=80&w=1200",
-      title: "Soluções Térmicas"
+      url: "/gallery-5.jpg",
+      title: "Acessórios Exclusivos"
     }
   ];
 
