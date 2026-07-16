@@ -40,10 +40,10 @@ const getIconNode = (iconName: string): React.ReactNode => {
 const defaultCategories: Category[] = [
   {
     id: 'pavimentos-e-revestimentos',
-    title: 'Pavimentos e Revestimentos',
+    title: 'Cerâmicas, Pavimentos e Revestimentos',
     description: 'Texturas, formatos e acabamentos que definem o carácter de cada espaço.',
     icon: <LucideIcons.LayoutGrid className="w-6 h-6" />,
-    imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800'
+    imageUrl: '/ceramicas.jpg'
   },
   {
     id: 'casa-de-banho',
