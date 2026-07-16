@@ -64,14 +64,14 @@ const defaultCategories: Category[] = [
     title: 'Mobiliário e Decoração',
     description: 'Pedras nobres e pavimentos flutuantes para interiores que duram gerações.',
     icon: <LucideIcons.Gem className="w-6 h-6" />,
-    imageUrl: 'https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&q=80&w=800'
+    imageUrl: '/mobiliario-e-decoracao.jpg'
   },
   {
     id: 'ferramentas-e-drogaria',
-    title: 'Ferramentas e Drogaria',
+    title: 'Ferragens e Drogaria',
     description: 'Ferramentas profissionais, acessórios e produtos de drogaria para todos os trabalhos em obra.',
     icon: <LucideIcons.Hammer className="w-6 h-6" />,
-    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
+    imageUrl: '/ferramentas-e-drogaria.jpg'
   }
 ];
 
