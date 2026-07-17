@@ -86,6 +86,25 @@ const defaultPartners: BrandPartner[] = [
   { name: 'Sika',      category: 'materiais-de-construcao',    url: 'https://prt.sika.com/' },
 ];
 
+const defaultHeroConfig: KibanHeroConfig = {
+  titlePrefix: "A sua casa,",
+  titleHighlight: "elevada",
+  titleSuffix: "à máxima Experiência.",
+  subtitle: "A solidez que a sua casa merece, apoiada por décadas de experiência a construir o Algarve.",
+  card1Title: "Cerâmicas",
+  card1Subtitle: "Texturas e formatos",
+  card1Icon: "LayoutGrid",
+  card2Title: "Casa de Banho",
+  card2Subtitle: "Sanitários e mobiliário",
+  card2Icon: "Droplets",
+  card3Title: "Construção",
+  card3Subtitle: "A base técnica",
+  card3Icon: "Hammer",
+  card4Title: "Decoração",
+  card4Subtitle: "Pedras nobres e pisos",
+  card4Icon: "Gem"
+};
+
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const lenisRef = useRef<Lenis | null>(null);
@@ -95,7 +114,7 @@ export default function App() {
   const [showroomImagesList, setShowroomImagesList] = useState<KibanShowroomImage[]>([]);
   const [activeBrandTab, setActiveBrandTab] = useState<string>(defaultCategories[0].id);
   const [contactTheme, setContactTheme] = useState<ContactTheme>('especialista');
-  const [heroConfig, setHeroConfig] = useState<KibanHeroConfig | null>(null);
+  const [heroConfig, setHeroConfig] = useState<KibanHeroConfig | null>(defaultHeroConfig);
   const [seoSettings, setSeoSettings] = useState<KibanSEOSettings | null>(null);
 
   useEffect(() => {
