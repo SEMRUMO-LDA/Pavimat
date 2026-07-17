@@ -12,8 +12,27 @@ interface HeroProps {
   heroConfig: KibanHeroConfig | null;
 }
 
+const fallbackConfig: KibanHeroConfig = {
+  titlePrefix: "A sua casa,",
+  titleHighlight: "elevada",
+  titleSuffix: "à máxima Experiência.",
+  subtitle: "A solidez que a sua casa merece, apoiada por décadas de experiência a construir o Algarve.",
+  card1Title: "Cerâmicas",
+  card1Subtitle: "Texturas e formatos",
+  card1Icon: "LayoutGrid",
+  card2Title: "Casa de Banho",
+  card2Subtitle: "Sanitários e mobiliário",
+  card2Icon: "Droplets",
+  card3Title: "Construção",
+  card3Subtitle: "A base técnica",
+  card3Icon: "Hammer",
+  card4Title: "Decoração",
+  card4Subtitle: "Pedras nobres e pisos",
+  card4Icon: "Gem"
+};
+
 export const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
-  const config = heroConfig;
+  const config = heroConfig && heroConfig.titlePrefix ? heroConfig : fallbackConfig;
 
   const getIconComp = (name: string) => {
     return (LucideIcons as any)[name] || LucideIcons.HelpCircle;
