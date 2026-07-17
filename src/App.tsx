@@ -164,7 +164,7 @@ export default function App() {
         console.warn('Failed to load showroom images from KibanCMS, using fallback static data.', showroomImagesResult.reason);
       }
 
-      if (heroConfigResult.status === 'fulfilled' && heroConfigResult.value) {
+      if (heroConfigResult.status === 'fulfilled' && heroConfigResult.value && heroConfigResult.value.titlePrefix) {
         setHeroConfig(heroConfigResult.value);
       } else if (heroConfigResult.status === 'rejected') {
         console.warn('Failed to load Hero config from KibanCMS, using fallback static data.', heroConfigResult.reason);
