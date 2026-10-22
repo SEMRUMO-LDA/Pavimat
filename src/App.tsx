@@ -387,7 +387,11 @@ export default function App() {
           categoriesList={categoriesList}
         />
         <AboutUs testimonialsList={testimonialsList} />
-        <ShowroomExperience showroomImagesList={showroomImagesList} />
+        <ShowroomExperience 
+          showroomImagesList={showroomImagesList} 
+          onContactClick={handleGoToContact}
+          onScrollTo={handleScrollToSection}
+        />
         <Footer
           contactTheme={contactTheme}
           setContactTheme={setContactTheme}

@@ -2,8 +2,19 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight, Layout } from 'lucide-react';
 import { KibanShowroomImage } from '../lib/kiban';
+import { ContactTheme } from '../types';
 
-export const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList: KibanShowroomImage[] }) => {
+interface ShowroomExperienceProps {
+  showroomImagesList: KibanShowroomImage[];
+  onContactClick?: (theme?: ContactTheme) => void;
+  onScrollTo?: (id: string) => void;
+}
+
+export const ShowroomExperience = ({ 
+  showroomImagesList,
+  onContactClick,
+  onScrollTo
+}: ShowroomExperienceProps) => {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   const showroomImages = showroomImagesList && showroomImagesList.length > 0 ? showroomImagesList : [
@@ -82,10 +93,18 @@ export const ShowroomExperience = ({ showroomImagesList }: { showroomImagesList:
 
               <div className="flex flex-wrap gap-4">
                 <button 
-                  onClick={() => window.open('https://www.google.com/maps/search/?api=1&query=Pavimat+Vale+Para%C3%ADso+Albufeira', '_blank')}
+                  onClick={() => {
+                    if (onContactClick) {
+                      onContactClick('showroom');
+                    } else if (onScrollTo) {
+                      onScrollTo('contactos');
+                    } else {
+                      document.getElementById('contactos')?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                   className="bg-brand-green text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-orange hover:scale-105 transition-all shadow-2xl active:scale-95 cursor-pointer"
                 >
-                  Visitar o Showroom
+                  VAMOS FALAR?
                 </button>
               </div>
             </motion.div>
