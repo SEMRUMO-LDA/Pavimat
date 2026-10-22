@@ -1,10 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import * as LucideIcons from 'lucide-react';
-import { ArrowRight } from 'lucide-react';
+import {
+  LayoutGrid,
+  Droplets,
+  Hammer,
+  Gem,
+  HelpCircle,
+  ArrowRight,
+  Wrench,
+  Sparkles,
+  Home,
+  Layers,
+  Box,
+  Building,
+  Paintbrush,
+  Compass,
+  ShieldCheck,
+  Award,
+  Phone,
+  Mail,
+  Truck
+} from 'lucide-react';
 import { BrandChevron } from './BrandChevron';
 import { KibanHeroConfig } from '../lib/kiban';
 import { ContactTheme } from '../types';
+
+const heroIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  LayoutGrid,
+  Droplets,
+  Hammer,
+  Gem,
+  HelpCircle,
+  ArrowRight,
+  Wrench,
+  Sparkles,
+  Home,
+  Layers,
+  Box,
+  Building,
+  Paintbrush,
+  Compass,
+  ShieldCheck,
+  Award,
+  Phone,
+  Mail,
+  Truck
+};
 
 interface HeroProps {
   onContactClick: (theme: ContactTheme) => void;
@@ -35,7 +76,7 @@ export const Hero = ({ onContactClick, onScrollTo, heroConfig }: HeroProps) => {
   const config = heroConfig && heroConfig.titlePrefix ? heroConfig : fallbackConfig;
 
   const getIconComp = (name: string) => {
-    return (LucideIcons as any)[name] || LucideIcons.HelpCircle;
+    return heroIconMap[name] || HelpCircle;
   };
 
   const heroCards = config ? [

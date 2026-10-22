@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { Menu, X, Instagram, Linkedin } from 'lucide-react';
+import { Menu, X, Instagram, Facebook } from 'lucide-react';
 import { PavimatLogo } from './PavimatLogo';
 import { ContactTheme } from '../types';
 
@@ -149,8 +149,24 @@ export const Navbar = ({ onScrollTo, onCtaClick }: NavbarProps) => {
                 className="px-8 flex flex-col items-center gap-6"
               >
                 <div className="flex gap-6">
-                  <Instagram className="text-zinc-400 hover:text-brand-orange transition-colors cursor-pointer" size={22} />
-                  <Linkedin className="text-zinc-400 hover:text-brand-orange transition-colors cursor-pointer" size={22} />
+                  <a
+                    href="https://www.instagram.com/pavimat.pt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram Pavimat"
+                    className="text-zinc-400 hover:text-brand-orange transition-colors"
+                  >
+                    <Instagram size={22} />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/pavimat.materiais"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook Pavimat"
+                    className="text-zinc-400 hover:text-brand-orange transition-colors"
+                  >
+                    <Facebook size={22} />
+                  </a>
                 </div>
                 <button
                   type="button"

@@ -379,7 +379,7 @@ export const Footer = ({
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 sm:gap-8">
-            <a href="#" className="hover:text-brand-orange transition-colors">Política de Privacidade & Cookies</a>
+            <a href="mailto:geral@pavimat.pt?subject=Pedido%20de%20Informa%C3%A7%C3%A3o%20-%20Pol%C3%ADtica%20de%20Privacidade" className="hover:text-brand-orange transition-colors">Política de Privacidade & Cookies</a>
             <a
               href="https://www.livroreclamacoes.pt/"
               target="_blank"

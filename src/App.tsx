@@ -1,5 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
-import * as LucideIcons from 'lucide-react';
+import {
+  LayoutGrid,
+  Droplets,
+  Hammer,
+  Gem,
+  HelpCircle,
+  Wrench,
+  Sparkles,
+  Home,
+  Layers,
+  Box,
+  Building,
+  Paintbrush,
+  Compass,
+  ShieldCheck,
+  Award,
+  Phone,
+  Mail,
+  Truck
+} from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -31,9 +50,31 @@ import { Footer } from './components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Curated map for Lucide icons to enable Vite tree-shaking
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  LayoutGrid,
+  Droplets,
+  Hammer,
+  Gem,
+  HelpCircle,
+  Wrench,
+  Sparkles,
+  Home,
+  Layers,
+  Box,
+  Building,
+  Paintbrush,
+  Compass,
+  ShieldCheck,
+  Award,
+  Phone,
+  Mail,
+  Truck
+};
+
 // Helper to render Lucide icons dynamically from a string name
 const getIconNode = (iconName: string): React.ReactNode => {
-  const IconComponent = (LucideIcons as any)[iconName] || LucideIcons.HelpCircle;
+  const IconComponent = iconMap[iconName] || HelpCircle;
   return <IconComponent className="w-6 h-6" />;
 };
 
@@ -42,35 +83,35 @@ const defaultCategories: Category[] = [
     id: 'pavimentos-e-revestimentos',
     title: 'Cerâmicas, Pavimentos e Revestimentos',
     description: 'Texturas, formatos e acabamentos que definem o carácter de cada espaço.',
-    icon: <LucideIcons.LayoutGrid className="w-6 h-6" />,
+    icon: <LayoutGrid className="w-6 h-6" />,
     imageUrl: '/ceramicas.jpg'
   },
   {
     id: 'casa-de-banho',
     title: 'Casa de Banho',
     description: 'Sanitários, hidromassagem e mobiliário com a precisão dos grandes nomes europeus.',
-    icon: <LucideIcons.Droplets className="w-6 h-6" />,
+    icon: <Droplets className="w-6 h-6" />,
     imageUrl: '/casas-de-banho.jpg'
   },
   {
     id: 'materiais-de-construcao',
     title: 'Materiais de Construção',
     description: 'A base técnica de cada obra — argamassas, impermeabilização e soluções de fundação.',
-    icon: <LucideIcons.Hammer className="w-6 h-6" />,
+    icon: <Hammer className="w-6 h-6" />,
     imageUrl: '/materiais-de-construcao.jpg'
   },
   {
     id: 'mobiliario-e-decoracao',
     title: 'Mobiliário e Decoração',
     description: 'Pedras nobres e pavimentos flutuantes para interiores que duram gerações.',
-    icon: <LucideIcons.Gem className="w-6 h-6" />,
+    icon: <Gem className="w-6 h-6" />,
     imageUrl: '/mobiliario-e-decoracao.jpg'
   },
   {
     id: 'ferramentas-e-drogaria',
     title: 'Ferragens e Drogaria',
     description: 'Ferramentas profissionais, acessórios e produtos de drogaria para todos os trabalhos em obra.',
-    icon: <LucideIcons.Hammer className="w-6 h-6" />,
+    icon: <Hammer className="w-6 h-6" />,
     imageUrl: '/ferramentas-e-drogaria.jpg'
   }
 ];

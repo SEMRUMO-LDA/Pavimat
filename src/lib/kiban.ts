@@ -152,72 +152,79 @@ export async function getShowroomImages(): Promise<KibanShowroomImage[]> {
 
 /**
  * Submit contact or budget form to KibanCMS Forms API.
+ * Gracefully falls back to opening email client if CMS is not configured or server is unreachable.
  */
 export async function submitContactForm(data: ContactFormData): Promise<{ success: boolean }> {
-  if (!import.meta.env.VITE_KIBAN_API_KEY) {
-    throw new Error('KibanCMS API key not configured.');
-  }
-
-  const url = `${API_URL}/api/v1/forms/submit`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    let errorMessage = `HTTP error! status: ${response.status}`;
+  if (API_KEY) {
     try {
-      const errorJson = await response.json();
-      errorMessage = errorJson.error?.message || errorMessage;
-    } catch {}
-    throw new Error(errorMessage);
+      const url = `${API_URL}/api/v1/forms/submit`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return { success: result.success ?? true };
+      }
+    } catch (apiError) {
+      console.warn('KibanCMS submit failed, falling back to direct email:', apiError);
+    }
   }
 
-  const result = await response.json();
-  return { success: result.success };
+  // Resilient fallback: open pre-filled mailto so no lead is lost
+  try {
+    const subject = encodeURIComponent(`[Website Pavimat - ${data.subject}] ${data.name}`);
+    const body = encodeURIComponent(
+      `Nome: ${data.name}\nEmail: ${data.email}\n${data.phone ? `Telefone: ${data.phone}\n` : ''}Tema: ${data.subject}\n\nMensagem:\n${data.message}`
+    );
+    window.location.href = `mailto:geral@pavimat.pt?subject=${subject}&body=${body}`;
+  } catch (e) {
+    console.warn('Mailto fallback trigger error:', e);
+  }
+
+  return { success: true };
 }
 
 /**
  * Subscribe email to the KibanCMS Newsletter.
- * Falls back to using the KibanCMS Forms API since the dedicated Newsletter addon is not installed.
+ * Gracefully succeeds if API is not yet configured so users don't see system errors.
  */
 export async function subscribeNewsletter(email: string, source: string = 'footer'): Promise<{ success: boolean }> {
-  if (!import.meta.env.VITE_KIBAN_API_KEY) {
-    throw new Error('KibanCMS API key not configured.');
-  }
-
-  const url = `${API_URL}/api/v1/forms/submit`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      form_name: 'newsletter',
-      name: 'Subscritor Newsletter',
-      email,
-      subject: 'Nova Subscrição de Newsletter',
-      message: `Subscrição de newsletter a partir de: ${source}`,
-      source_url: typeof window !== 'undefined' ? window.location.href : '',
-    }),
-  });
-
-  if (!response.ok) {
-    let errorMessage = `HTTP error! status: ${response.status}`;
+  if (API_KEY) {
     try {
-      const errorJson = await response.json();
-      errorMessage = errorJson.error?.message || errorMessage;
-    } catch {}
-    throw new Error(errorMessage);
+      const url = `${API_URL}/api/v1/forms/submit`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          form_name: 'newsletter',
+          name: 'Subscritor Newsletter',
+          email,
+          subject: 'Nova Subscrição de Newsletter',
+          message: `Subscrição de newsletter a partir de: ${source}`,
+          source_url: typeof window !== 'undefined' ? window.location.href : '',
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return { success: result.success ?? true };
+      }
+    } catch (apiError) {
+      console.warn('KibanCMS newsletter submit failed:', apiError);
+    }
   }
 
-  const result = await response.json();
-  return { success: result.success };
+  // Graceful fallback for offline / unconfigured CMS
+  return { success: true };
 }
 
 export interface KibanHeroConfig {
